@@ -1,0 +1,56 @@
+#include "Config.h"
+#include "ZoCfg.h"
+#include "Builder.h"
+#include "Processor.h"
+//#include "Gateway.h"
+
+#include "Worker/Tcp.h"
+
+//#include "Object/GameMaster.h"
+#include "Model/Object/User.h"
+#include "Model/Object/UserManager.h"
+//#include "Object/Hero.h"
+//#include "Object/PendingLoot.h"
+//#include "Object/Donation.h"
+//#include "Object/Feast.h"
+//#include "Object/GroupBattle.h"
+//#include "Object/MapSaver.h"
+//#include "Object/SysMsg.h"
+//#include "Object/Boss.h"
+//#include "Object/Athletics.h"
+//#include "Object/Market.h"
+//#include "Object/GuildManager.h"
+//#include "Object/SysMsg.h"
+//#include "Object/GiftCode.h"
+//#include "Object/TeamDemon.h"
+//#include "Object/Rankings.h"
+#include "Model/Object/ValidateName.h"
+#include "Model/Object/ServerManager.h"
+//
+//#include "Map/Map.h"
+//#include "Map/City.h"
+//#include "Map/MapObject.h"
+//
+//#include "Battle/BattleReplay.h"
+//
+//#include "Script/ActionLua.h"
+//
+//#include "Data/ItemMgr.h"
+//#include "Data/Loot.h"
+//#include "Data/Store.h"
+#include "Model/Data/NameGen.h"
+//#include "Data/GemLoot.h"
+//
+//#include "Item/Soul.h"
+//#include "Item/Equipment.h"
+//#include "Item/Item.h"
+//#include "Item/ItemPack.h"
+//#include "Item/Equipment.h"
+//
+//#include "Worker/Block.h"
+
+#include "System/SHA1Engine.h"
+#include "System/TimeUtil.h"
+
+#include "Handler/Handler.h"
+#include "Handler/Handlers.inl"

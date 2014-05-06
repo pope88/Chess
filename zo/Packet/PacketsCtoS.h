@@ -1,0 +1,124 @@
+#ifndef _SSU_PACKETSCTOS_H_
+#define _SSU_PACKETSCTOS_H_
+
+#include <stdint.h>
+#include "SsuObject.h"
+
+namespace game {
+namespace net {
+namespace data {
+namespace CtoS {
+
+class HeadPack: public ::ssu::Object {
+ public:
+  inline HeadPack(): _cmdtype(0), _cmdlen(0) { }
+
+  virtual ~HeadPack() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline int Cmdtype() const { return _cmdtype; }
+  inline void SetCmdtype(int val__) { _cmdtype = val__; }
+
+  inline int Cmdlen() const { return _cmdlen; }
+  inline void SetCmdlen(int val__) { _cmdlen = val__; }
+
+ protected:
+  int _cmdtype;
+  int _cmdlen;
+
+};
+
+class CSUserLogout_0xFFFF: public ::ssu::Object {
+ public:
+  virtual ~CSUserLogout_0xFFFF() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+
+};
+
+class CSUserRegister_0x01: public ::ssu::Object {
+ public:
+  virtual ~CSUserRegister_0x01() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline const std::string& Username() const { return _username; }
+  inline void SetUsername(const std::string& val__) { _username = val__; }
+  inline std::string& MutableUsername() { return _username; }
+
+  inline const std::string& Pwd() const { return _pwd; }
+  inline void SetPwd(const std::string& val__) { _pwd = val__; }
+  inline std::string& MutablePwd() { return _pwd; }
+
+ protected:
+  std::string _username;
+  std::string _pwd;
+
+};
+
+class CSUserLogin_0x02: public ::ssu::Object {
+ public:
+  inline CSUserLogin_0x02(): _wallow(0)
+  { memset(_isSetFlag, 0, sizeof(_isSetFlag)); }
+
+  virtual ~CSUserLogin_0x02() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline const std::string& Username() const { return _username; }
+  inline void SetUsername(const std::string& val__) { _username = val__; }
+  inline std::string& MutableUsername() { return _username; }
+
+  inline const std::string& Pwd() const { return _pwd; }
+  inline void SetPwd(const std::string& val__) { _pwd = val__; _isSetFlag[0] |= 0x01; }
+  inline std::string& MutablePwd() { _isSetFlag[0] |= 0x01; return _pwd; }
+  inline bool HasPwd() const { return (_isSetFlag[0] & 0x01) > 0; }
+
+  inline uint32_t Wallow() const { return _wallow; }
+  inline void SetWallow(uint32_t val__) { _wallow = val__; _isSetFlag[0] |= 0x02; }
+  inline bool HasWallow() const { return (_isSetFlag[0] & 0x02) > 0; }
+
+ protected:
+  std::string _username;
+  std::string _pwd;
+  uint32_t _wallow;
+
+  uint32_t _isSetFlag[1];
+
+};
+
+class CSUserInfo_0x03: public ::ssu::Object {
+ public:
+  virtual ~CSUserInfo_0x03() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+
+};
+
+}
+}
+}
+}
+
+#endif // _SSU_PACKETSCTOS_H_

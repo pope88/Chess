@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="System">
+      <UniqueIdentifier>{CB5C2949-D78B-2A42-B7A1-8B921B212605}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\System\Any.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Clock.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\CsvParser.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\DigestEngine.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\DirectoryIterator.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Err.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Event.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\File.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\IniFile.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Lock.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Logger.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\MsgQueue.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Mutex.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\NonCopyable.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\NumberConv.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Path.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Platform.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Random.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Resource.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Serialize.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\SHA1Engine.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Sleep.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\String.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\StringFormatter.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\StringTokenizer.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\System.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Thread.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\ThreadLocal.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\ThreadLocalPtr.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Timer.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\TimeUtil.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\UniqueID.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Utf.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Vector2.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Vector3.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\System\Singleton.h">
+      <Filter>System</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\System\Clock.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\CsvParser.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\DigestEngine.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\DirectoryIterator.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Err.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Event.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\File.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\IniFile.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Lock.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Logger.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Mutex.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\NumberConv.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Path.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Platform.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Random.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Serialize.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\SHA1Engine.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Sleep.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\String.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\StringTokenizer.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Thread.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\ThreadLocal.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\Timer.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\System\TimeUtil.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

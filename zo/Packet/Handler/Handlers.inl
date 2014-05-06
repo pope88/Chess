@@ -1,0 +1,5 @@
+#include "HeroUpdate.h"
+#include "UserInfo.h"
+#include "UserLogin.h"
+#include "UserLogout.h"
+#include "UserRegister.h"

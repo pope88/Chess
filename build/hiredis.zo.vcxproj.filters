@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="hiredis">
+      <UniqueIdentifier>{487BC4D9-4368-3748-92B0-59DA01A3F64B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hiredis\adapters">
+      <UniqueIdentifier>{C9D5071F-9A96-E743-A294-1A441849AAA2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\hiredis\async.h">
+      <Filter>hiredis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hiredis\dict.h">
+      <Filter>hiredis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hiredis\fmacros.h">
+      <Filter>hiredis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hiredis\hiredis.h">
+      <Filter>hiredis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hiredis\net.h">
+      <Filter>hiredis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hiredis\sds.h">
+      <Filter>hiredis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hiredis\adapters\ae.h">
+      <Filter>hiredis\adapters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hiredis\adapters\libev.h">
+      <Filter>hiredis\adapters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hiredis\adapters\libevent.h">
+      <Filter>hiredis\adapters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hiredis\adapters\libuv.h">
+      <Filter>hiredis\adapters</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\hiredis\async.c">
+      <Filter>hiredis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\hiredis\dict.c">
+      <Filter>hiredis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\hiredis\hiredis.c">
+      <Filter>hiredis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\hiredis\net.c">
+      <Filter>hiredis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\hiredis\sds.c">
+      <Filter>hiredis</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
