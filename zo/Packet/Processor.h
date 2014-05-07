@@ -21,9 +21,10 @@ namespace Packet
 		Processor() {}
 	public:
 		bool parseInit(evbuffer *evbuf, UInt32 data, UInt32 addr);
+		//bool parseGPlayer(evbuffer *, Object::GPlayer *gplayer);
 		bool parsePlayer(evbuffer *, Object::User *user);
 		bool parseGateway(evbuffer*, UInt32);
-		void pushDisconnect(UInt32, Object::User *gplayer);
+		void pushDisconnect(UInt32, Object::User *user);
 		void pushGatewayDisconnect(UInt32);
 		void process();
 		void processGatewayMsg(HandlerMsgHeader *);
@@ -31,7 +32,7 @@ namespace Packet
 	private:
 		std::vector<Handler *> _initHandlers;
 		std::vector<Handler*> _playerHandlers;
-		std::vector<Handler*> _gplayerHandlers;
+		//std::vector<Handler*> _gplayerHandlers;
 	};
 }
 #endif

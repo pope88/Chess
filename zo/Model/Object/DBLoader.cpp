@@ -277,14 +277,14 @@ namespace Object
 
 
 				User *user = new User(dbpl.id, dbpl.playerId);
-				//user->setroleId(dbpl.roleId, false);
-				user->name(dbpl.name, false);
-				user->setserverNo(dbpl.serverNo == 0 ? zocfg.serverNo[0] : dbpl.serverNo, false);
-				user->levelexperience(dbpl.level, dbpl.experience, false);
-				user->setdailyProgress(dbpl.dailyProgress, false);
-				user->setguideStep(dbpl.guideStep, false);
+				////user->setroleId(dbpl.roleId, false);
+				//user->name(dbpl.name, false);
+				//user->setserverNo(dbpl.serverNo == 0 ? zocfg.serverNo[0] : dbpl.serverNo, false);
+				//user->levelexperience(dbpl.level, dbpl.experience, false);
+				//user->setdailyProgress(dbpl.dailyProgress, false);
+				//user->setguideStep(dbpl.guideStep, false);
 
-				userManager.add(user);
+				//userManager.add(user);
 
 			}
 

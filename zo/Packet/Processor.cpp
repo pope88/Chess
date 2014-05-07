@@ -2,7 +2,9 @@
 #include "Processor.h"
 #include "Packet/Handler/Handler.h"
 #include "Model/Object/UserManager.h"
+//#include "Object/GPlayerManager.h"
 #include "Worker/Tcp.h"
+#include "Worker/Game.h"
 #include "PacketHead.h"
 
 #include <event2/buffer.h>
@@ -20,39 +22,26 @@ namespace Packet
 		printf("parseInit....\n");
 		int len = static_cast<int>(evbuffer_get_length(evbuf));
 
-		if(len < 20)
+		if(len < CLIENTHLEN)
 			return false;
-#pragma pack(push, 1)
-		struct PktHdr
-		{
-			Int32 op;
-			Int32 len;
-			Int32 cllid;
-			Int32 svrid;
-		} ATTR_PACKED();
-#pragma pack(pop)
-		UInt8 hdr[20] = {0};
-		//evbuffer_copyout(evbuf, &hdr[0], 20);
-		//packhead.Unpack((UInt8*)&hdr, 20);
-		evbuffer_copyout(evbuf, hdr, 20);
-		packhead.Unpack(hdr, 20);
+		UInt8 hdr[CLIENTHLEN] = {0};
+		evbuffer_copyout(evbuf, hdr, CLIENTHLEN);
+		packhead.Unpack(hdr, CLIENTHLEN);
 		UInt32 sz = packhead.Getlen() & 0x00FFFFFF;
-		if(static_cast<int>(sz) + 20 > len)
+		if(static_cast<int>(sz) + CLIENTHLEN > len)
 			return false;
 		UInt32 key = packhead.Getlen() >> 24;
 		HandlerMsgInit * msg = (HandlerMsgInit *)malloc(sz + sizeof(HandlerMsgInit));
 		if(msg == NULL)
 		{
-			evbuffer_drain(evbuf, sz + 20);
+			evbuffer_drain(evbuf, sz + CLIENTHLEN);
 			return true;
 		}
-		msg->hdr.cliid = packhead.Getcliid();
-		msg->hdr.svrid = packhead.Getsvrid();
 		msg->hdr.size = sz;
 		msg->sessionId = data;
 		msg->fromGateway = 0xFFFFFFFF;
 		msg->remoteAddr = addr;
-		evbuffer_drain(evbuf, 20);
+		evbuffer_drain(evbuf, CLIENTHLEN);
 		UInt8 * buf = ((UInt8 *)msg) + sizeof(HandlerMsgInit);
 		evbuffer_remove(evbuf, buf, sz);
 		int op = packhead.Getop();
@@ -73,36 +62,82 @@ namespace Packet
 		return true;
 	}
 
+	//bool Processor::parseGPlayer(evbuffer *evbuf, Object::GPlayer *gplayer)
+	//{
+	//	printf("prase gplayer...\n");
+	//	int len = static_cast<int>(evbuffer_get_length(evbuf));
+	//	if(len < CLIENTHLEN)
+	//		return false;
+
+	//	UInt8 hdr[CLIENTHLEN] = {0};
+	//	evbuffer_copyout(evbuf, &hdr, CLIENTHLEN);
+	//	packhead.Unpack((UInt8*)&hdr, CLIENTHLEN);
+	//	UInt32 sz = packhead.Getlen() & 0x00FFFFFF;
+	//	if(static_cast<int>(sz) + CLIENTHLEN > len)
+	//		return false;
+	//	UInt32 key = packhead.Getlen() >> 24;
+	//	//if(!player->updateKey(key))
+	//	//{
+	//	//	Worker::tcp.close(player->sessionId(), player->gatewayId());
+	//	//	return false;
+	//	//}
+	//	HandlerMsgGPlayer * msg = (HandlerMsgGPlayer *)malloc(sz + sizeof(HandlerMsgGPlayer));
+	//	if(msg == NULL)
+	//	{
+	//		evbuffer_drain(evbuf, sz + CLIENTHLEN);
+	//		return true;
+	//	}
+	//	msg->hdr.size = sz;
+	//	msg->gplayer = gplayer;
+	//	evbuffer_drain(evbuf, CLIENTHLEN);
+	//	UInt8 * buf = ((UInt8 *)msg) + sizeof(HandlerMsgGPlayer);
+	//	evbuffer_remove(evbuf, buf, sz);
+	//	UInt16 op = packhead.Getop();
+	//	decryptPacket(key, op, sz, buf);
+
+	//	if (op >= (int)_gplayerHandlers.size())
+	//	{
+	//		free(msg);
+	//		return false;
+	//	}
+	//	Handler * hdl = _gplayerHandlers[op];
+	//	if(hdl == NULL)
+	//	{
+	//		free((void *)msg);
+	//		return true;
+	//	}
+	//	msg->hdr.handler = hdl;
+	//	pushMsg((HandlerMsgHeader *)msg);
+	//	return true;
+	//}
 
 	bool Processor::parsePlayer(evbuffer *evbuf, Object::User *user)
 	{
 		int len = static_cast<int>(evbuffer_get_length(evbuf));
-		if(len < 20)
+		if(len < CLIENTHLEN)
 			return false;
 
-		UInt8 hdr[20] = {0};
-		evbuffer_copyout(evbuf, &hdr, 20);
-		packhead.Unpack((UInt8*)&hdr, 20);
+		UInt8 hdr[CLIENTHLEN] = {0};
+		evbuffer_copyout(evbuf, &hdr, CLIENTHLEN);
+		packhead.Unpack((UInt8*)&hdr, CLIENTHLEN);
 		UInt32 sz = packhead.Getlen() & 0x00FFFFFF;
-		if(static_cast<int>(sz) + 20 > len)
+		if(static_cast<int>(sz) + CLIENTHLEN > len)
 			return false;
 		UInt32 key = packhead.Getlen() >> 24;
-		//if(!user->updateKey(key))
+		//if(!player->updateKey(key))
 		//{
-		//	Worker::tcp.close(user->sessionId(), user->gatewayId());
+		//	Worker::tcp.close(player->sessionId(), player->gatewayId());
 		//	return false;
 		//}
 		HandlerMsgPlayer * msg = (HandlerMsgPlayer *)malloc(sz + sizeof(HandlerMsgPlayer));
 		if(msg == NULL)
 		{
-			evbuffer_drain(evbuf, sz + 20);
+			evbuffer_drain(evbuf, sz + CLIENTHLEN);
 			return true;
 		}
-		msg->hdr.cliid = packhead.Getcliid();
-		msg->hdr.svrid = packhead.Getsvrid();
 		msg->hdr.size = sz;
 		msg->user = user;
-		evbuffer_drain(evbuf, 20);
+		evbuffer_drain(evbuf, CLIENTHLEN);
 		UInt8 * buf = ((UInt8 *)msg) + sizeof(HandlerMsgPlayer);
 		evbuffer_remove(evbuf, buf, sz);
 		UInt16 op = packhead.Getop();
@@ -124,23 +159,51 @@ namespace Packet
 		return true;
 	}
 
+
+	class HandlerGGateway: public Handler
+	{
+	public:
+		virtual void handle(HandlerMsgHeader * hdr)
+		{
+			Worker::game.processor()->processGatewayMsg(hdr);
+		}
+	};
+
+	class HandlerGateway: public Handler
+	{
+	public:
+		virtual void handle(HandlerMsgHeader * hdr)
+		{
+			Worker::game.processor()->processGatewayMsg(hdr);
+		}
+	};
+
+
 	bool Processor::parseGateway(evbuffer *evbuf, UInt32 sid)
 	{
 		int len = static_cast<int>(evbuffer_get_length(evbuf));
 		if(len < 10)
 			return false;
-
-		UInt8 hdr[20] = {0};
+#pragma pack(push, 1)
+		struct PktHdr
+		{
+			UInt32 pid;
+			UInt32 size;
+			UInt16 op;
+		} ATTR_PACKED();
+#pragma pack(pop)
+		PktHdr hdr;
 		evbuffer_copyout(evbuf, &hdr, 10);
 		// UInt8 crc = static_cast<UInt8>(hdr->size >> 24);
-		UInt32 sz = packhead.Getlen() & 0x00FFFFFF;
+		UInt32 sz = hdr.size & 0x00FFFFFF;
 		if(static_cast<int>(sz) + 10 > len)
 			return false;
-		UInt16 op = packhead.Getop();
-		if (op == 0xFFFF)
+		UInt16 op = hdr.op;
+
+		if(op == 0xFFFF)
 		{
-			//HandlerMsgPlayer *msg = (HandlerMsgPlayer*)malloc(sizeof(UInt32) + sizeof(HandlerMsgPlayer));
-			//if (msg == NULL)
+			//HandlerMsgPlayer * msg = (HandlerMsgPlayer *)malloc(sizeof(HandlerMsgPlayer) + sizeof(UInt32));
+			//if(msg == NULL)
 			//{
 			//	evbuffer_drain(evbuf, sz + 10);
 			//	return true;
@@ -148,51 +211,72 @@ namespace Packet
 			//static HandlerGateway hdlGate;
 			//msg->hdr.handler = &hdlGate;
 			//msg->hdr.size = sz;
-			//msg->gateway.playerId = hdr.pid;
+			//msg->gateway.pId = hdr.pid;
 			//msg->gateway.op = op;
+			//evbuffer_drain(evbuf, sz + 10);
 			//memcpy(((UInt8 *)msg) + sizeof(HandlerMsgPlayer), &sid, 4);
 			//pushMsg((HandlerMsgHeader *)msg);
 		}
-		else if ((op & 0x8000) > 0)
+		else if((op & 0x8000) > 0)
 		{
-			//op &= 0x7FFF;
-			//Handler * hdl = _initHandlers[op];
-			//if(hdl == NULL)
-			//{
-			//	evbuffer_drain(evbuf, sz + 10);
-			//	return false;
-			//}
-			//HandlerMsgInit * msg = (HandlerMsgInit *)malloc(sz + sizeof(HandlerMsgInit));
-			//if(msg == NULL)
-			//{
-			//	evbuffer_drain(evbuf, sz + 10);
-			//	return true;
-			//}
-			//msg->hdr.handler = hdl;
-			//msg->hdr.size = sz;
-			//msg->sessionId = sid;
-			//msg->fromGateway = hdr.pid;
-			//msg->remoteAddr = 0;
-			//evbuffer_drain(evbuf, 10);
-			//evbuffer_remove(evbuf, ((UInt8 *)msg) + sizeof(HandlerMsgInit), sz);
-			//pushMsg((HandlerMsgHeader *)msg);
+			op &= 0x7FFF;
+			Handler * hdl = _initHandlers[op];
+			if(hdl == NULL)
+			{
+				evbuffer_drain(evbuf, sz + 10);
+				return false;
+			}
+			HandlerMsgInit * msg = (HandlerMsgInit *)malloc(sz + sizeof(HandlerMsgInit));
+			if(msg == NULL)
+			{
+				evbuffer_drain(evbuf, sz + 10);
+				return true;
+			}
+			msg->hdr.handler = hdl;
+			msg->hdr.size = sz;
+			msg->sessionId = hdr.pid;
+			msg->fromGateway = sid;
+			msg->remoteAddr = 0;
+			evbuffer_drain(evbuf, 10);
+			evbuffer_remove(evbuf, ((UInt8 *)msg) + sizeof(HandlerMsgInit), sz);
+			pushMsg((HandlerMsgHeader *)msg);
 		}
 		else
 		{
-			//HandlerMsgPlayer * msg = (HandlerMsgPlayer *)malloc(sz + sizeof(HandlerMsgPlayer));
-			//if(msg == NULL)
-			//{
-			//	evbuffer_drain(evbuf, sz + 10);
-			//	return true;
-			//}
-			//static HandlerGateway hdlGate;
-			//msg->hdr.handler = &hdlGate;
-			//msg->hdr.size = sz;
-			//msg->gateway.playerId = hdr.pid;
-			//msg->gateway.op = op;
-			//evbuffer_drain(evbuf, 10);
-			//evbuffer_remove(evbuf, ((UInt8 *)msg) + sizeof(HandlerMsgPlayer), sz);
-			//pushMsg((HandlerMsgHeader *)msg);
+			if(op <= 2)
+			{
+				HandlerMsgPlayer * msg = (HandlerMsgPlayer *)malloc(sz + sizeof(HandlerMsgPlayer));
+				if(msg == NULL)
+				{
+					evbuffer_drain(evbuf, sz + 10);
+					return true;
+				}
+				static HandlerGateway hdlGate;
+				msg->hdr.handler = &hdlGate;
+				msg->hdr.size = sz;
+				msg->gateway.playerId = hdr.pid;
+				msg->gateway.op = op;
+				evbuffer_drain(evbuf, 10);
+				evbuffer_remove(evbuf, ((UInt8 *)msg) + sizeof(HandlerMsgPlayer), sz);
+				pushMsg((HandlerMsgHeader *)msg);
+			}
+			else
+			{
+				HandlerMsgPlayer * msg = (HandlerMsgPlayer *)malloc(sz + sizeof(HandlerMsgPlayer));
+				if(msg == NULL)
+				{
+					evbuffer_drain(evbuf, sz + 10);
+					return true;
+				}
+				static HandlerGateway hdlGate;
+				msg->hdr.handler = &hdlGate;
+				msg->hdr.size = sz;
+				msg->gateway.playerId = hdr.pid;
+				msg->gateway.op = op;
+				evbuffer_drain(evbuf, 10);
+				evbuffer_remove(evbuf, ((UInt8 *)msg) + sizeof(HandlerMsgPlayer), sz);
+				pushMsg((HandlerMsgHeader *)msg);
+			}
 		}
 		return true;
 	}
@@ -250,22 +334,13 @@ namespace Packet
 
 	void Processor::addHandler(UInt16 op, UInt8 type, Handler *handler)
 	{
-		if (type ==  1)
+		if (type ==  1 || type == 2)
 		{
 			if (_playerHandlers.size() <= op)
 			{
 				_playerHandlers.resize((size_t)op + 1);
 			}
 			_playerHandlers[op] = handler;
-		}
-
-		if (type == 2)
-		{
-			if (_gplayerHandlers.size() <= op)
-			{
-				_gplayerHandlers.resize((size_t)op + 1);
-			}
-			_gplayerHandlers[op] = handler;
 		}
 
 		if (type == 3)

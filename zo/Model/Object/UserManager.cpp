@@ -96,22 +96,21 @@ namespace Object
 		return it2->second;
 	}
 
-
-	 //User* UserManager::findPlayerById(UInt32 serverNo,const std::string &pid)
-	 //{
-		// auto it = _idUsersByServer.find(serverNo);
-		// if (it == _idUsersByServer.end())
-		// {
-		//	 return NULL;
-		// }
-		// std::string playerid = pid;
-		// auto it2 = it->second.find(pid);
-		// if (it2 == it->second.end())
-		// {
-		//	 return NULL;
-		// }
-		// return it2->second;
-	 //}
+	User* UserManager::findUserById(UInt32 serverNo, const std::string &pid)
+	{
+		auto it = _idUsersByServer.find(serverNo);
+		if (it == _idUsersByServer.end())
+		{
+			return NULL;
+		}
+		std::string playerId = pid;
+		auto it2 = it->second.find(pid);
+		if (it2 == it->second.end())
+		{
+			return NULL;
+		}
+		return it2->second;
+	}
 
 }
 

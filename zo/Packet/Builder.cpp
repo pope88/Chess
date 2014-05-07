@@ -1,56 +1,68 @@
 #include "Config.h"
 #include "Builder.h"
 #include "Model/Object/User.h"
-#include "Model/Object/GPlayer.h"
 #include "Worker/Tcp.h"
 #include "PacketHead.h"
 
 namespace Packet
 {
-	void Builder::send(Object::User *user, int cliid, int svrid)
+	void Builder::send(Object::User *user)
 	{
-		_cliid = cliid;
-		_svrid = svrid;
 		if (user->online())
 		{
 			send(user->sessionId(), user->gatewayId());
 		}
 	}
 
-	void Builder::send(UInt32 sid, UInt32 gid, int cliid, int svrid)
+	//void Builder::send(Object::GPlayer *gplayer)
+	//{
+	//	if (gplayer->online())
+	//	{
+	//		send(gplayer->sessionId(), gplayer->gatewayId());
+	//	}
+	//}
+
+	void Builder::send(UInt32 sid, UInt32 gid)
 	{
-		_cliid = cliid;
-		_svrid = svrid;
+		if (gid == 0xFFFFFFFF)
+		{
+			_isGateWay = false;
+		}
 		if (stream.get() != NULL || pack())
 		{
 			Worker::tcp.send(sid, gid, stream);
 		}
 	}
 
-	void Builder::sendMulti(void *multi, int cliid, int svrid)
+	void Builder::sendMulti(void *multi)
 	{
-		_cliid = cliid;
-		_svrid = svrid;
 		if(stream.get() != NULL || pack())
 			Worker::tcp.sendMulti(multi, stream);
 	}
 
 
-	void Builder::sendNolock(Object::User *user, int cliid, int svrid)
+	void Builder::sendNolock(Object::User *player)
 	{
-		_cliid = cliid;
-		_svrid = svrid;
-		if (user->online())
+		if (player->online())
 		{
-			sendNolock(user->sessionId(), user->gatewayId());
+			sendNolock(player->sessionId(), player->gatewayId());
 		}
 	}
 
+	//void Builder::sendNolock(Object::GPlayer *gplayer)
+	//{
+	//	if (gplayer->online())
+	//	{
+	//		sendNolock(gplayer->sessionId(), gplayer->gatewayId());
+	//	}
+	//}
 
-	void Builder::sendNolock(UInt32 sid, UInt32 gid, int cliid, int svrid)
+	void Builder::sendNolock(UInt32 sid, UInt32 gid)
 	{
-		_cliid = cliid;
-		_svrid = svrid;
+		if (gid == 0xFFFFFFFF)
+		{
+			_isGateWay = false;
+		}
 		if (stream.get() != NULL || pack())
 		{
 			Worker::tcp.sendNolock(sid, gid, stream);
@@ -67,7 +79,7 @@ namespace Packet
 		Worker::tcp.sendLock();
 	}
 
-	void Builder::broadcast(int cliid, int svrid)
+	void Builder::broadcast()
 	{
 		if (stream.get() != NULL || pack())
 		{
@@ -75,7 +87,7 @@ namespace Packet
 		}
 	}
 
-	void Builder::broadcast(broadcastFilter, int cliid, int svrid)
+	void Builder::broadcast(broadcastFilter)
 	{
 		if (stream.get() != NULL || pack())
 		{
@@ -83,7 +95,7 @@ namespace Packet
 		}
 	}
 
-	//void Builder::broadcastCity(UInt16 cid, Object::User *user)
+	//void Builder::broadcastCity(UInt16 cid, Object::Player *player)
 	//{
 
 	//}
@@ -95,21 +107,36 @@ namespace Packet
 
 	bool Builder::pack()
 	{
-		std::string *s = new(std::nothrow) std::string(20, 0);
-		if (s == NULL)
+		if (_isGateWay)
 		{
-			return false;
+			std::string *s = new (std::nothrow) std::string(6, 0);
+			if (s == NULL)
+			{
+				return false;
+			}
+			stream.reset(s);
+			*(UInt16*)&((*s)[4]) = op; 
+			packContent();
+			size_t sz = s->size() - 6;
+			memcpy(&(*s)[0], &sz, 3);
+			return true;
 		}
-		stream.reset(s);
-		//*((UInt16*)&((*s)[4])) =  op;
-		packContent();
-		size_t sz = s->size() - 20;
-		packhead.Setop(op);
-		packhead.Setlen(sz);
-		packhead.SetCliid(_cliid);
-		packhead.SetSvrid(_svrid);
-		packhead.PackBuffer(reinterpret_cast<uint8_t*>(&((*s)[0])) );
-		return true;
+		else
+		{
+			std::string *s = new(std::nothrow) std::string(10, 0);
+			if (s == NULL)
+			{
+				return false;
+			}
+			stream.reset(s);
+			//*((UInt16*)&((*s)[4])) =  op;
+			packContent();
+			size_t sz = s->size() - 10;
+			packhead.Setop(op);
+			packhead.Setlen(sz);
+			packhead.PackBuffer(reinterpret_cast<uint8_t*>(&((*s)[0])) );
+			return true;
+		}
 	}
 
 	const std::string& Builder::data()

@@ -26,6 +26,7 @@
 //#include "Object/Rankings.h"
 #include "Model/Object/ValidateName.h"
 #include "Model/Object/ServerManager.h"
+#include "Packet/Gateway.h"
 //
 //#include "Map/Map.h"
 //#include "Map/City.h"

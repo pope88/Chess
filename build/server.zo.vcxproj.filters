@@ -19,9 +19,6 @@
     <Filter Include="zo\Packet\Handler\Player">
       <UniqueIdentifier>{5a8ed75d-5492-46dc-9f6a-0908e46965f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="zo\Packet\Handler\GPlayer">
-      <UniqueIdentifier>{09dcbff8-5081-4b7a-b40f-1e02acb66406}</UniqueIdentifier>
-    </Filter>
     <Filter Include="zo\Model">
       <UniqueIdentifier>{8e5c01a2-6a05-4b5a-a3f5-640168bc1d19}</UniqueIdentifier>
     </Filter>
@@ -168,9 +165,6 @@
     <ClInclude Include="..\zo\Model\BaseModel\RoomPlayerManager.h">
       <Filter>zo\Model\BaseModel</Filter>
     </ClInclude>
-    <ClInclude Include="..\zo\Model\BaseModel\User.h">
-      <Filter>zo\Model\BaseModel</Filter>
-    </ClInclude>
     <ClInclude Include="..\zo\Model\Object\UserManager.h">
       <Filter>zo\Model\Object</Filter>
     </ClInclude>
@@ -206,6 +200,18 @@
     </ClInclude>
     <ClInclude Include="..\zo\Script\Script.h">
       <Filter>zo\Model\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Packet\Handler\Basic\UserLogin.h">
+      <Filter>zo\Packet\Handler\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Packet\Handler\Basic\UserLogout.h">
+      <Filter>zo\Packet\Handler\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Packet\Handler\Basic\UserRegister.h">
+      <Filter>zo\Packet\Handler\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Packet\Gateway.h">
+      <Filter>zo\Packet\Handler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -309,9 +315,6 @@
     <ClCompile Include="..\zo\Model\BaseModel\RoomPlayerManager.cpp">
       <Filter>zo\Model\BaseModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\zo\Model\BaseModel\User.cpp">
-      <Filter>zo\Model\BaseModel</Filter>
-    </ClCompile>
     <ClCompile Include="..\zo\Model\Object\UserManager.cpp">
       <Filter>zo\Model\Object</Filter>
     </ClCompile>
@@ -344,6 +347,9 @@
     </ClCompile>
     <ClCompile Include="..\zo\Script\Script.cpp">
       <Filter>zo\Model\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Packet\Gateway.cpp">
+      <Filter>zo\Packet\Handler</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -17,17 +17,19 @@ namespace Packet
 	public:
 		typedef bool (*broadcastFilter)(Object::User *user);
 	public:
-		inline Builder(int o): op(o), _cliid(0), _svrid(0) {}
+		inline Builder(int o): op(o), _isGateWay(true) {}
 		virtual ~Builder() {}
-		void send(Object::User *user, int cliid = 0, int svrid = 0);
-		void send(UInt32 sid, UInt32 gid, int cliid = 0, int svrid = 0);
-		void sendMulti(void *multi, int cliid = 0, int svrid = 0);
-		void sendNolock(Object::User *user, int cliid = 0, int svrid = 0);
-		void sendNolock(UInt32 sid, UInt32 gid, int cliid = 0, int svrid = 0);
+		void send(Object::User *user);
+	/*	void send(Object::GPlayer *gplayer);*/
+		void send(UInt32 sid, UInt32 gid);
+		void sendMulti(void *multi);
+		void sendNolock(Object::User *user);
+		/*void sendNolock(Object::GPlayer *gplayer);*/
+		void sendNolock(UInt32 sid, UInt32 gid);
 		void sendLock();
 		void sendUnlock();
-		void broadcast(int cliid = 0, int svrid = 0);
-		void broadcast(broadcastFilter, int cliid = 0, int svrid = 0);
+		void broadcast();
+		void broadcast(broadcastFilter);
 		//void broadcastCity(UInt16 cid, Object::User *user = NULL);
 		const std::string& data();
 		bool repack();
@@ -40,8 +42,7 @@ namespace Packet
 		std::shared_ptr<std::string> stream;
 	private:
 		int op;
-		int _cliid;
-		int _svrid;
+		bool _isGateWay;
 	};
 
 	template <class T, UInt16 OP>

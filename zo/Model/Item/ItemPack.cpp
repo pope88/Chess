@@ -169,28 +169,28 @@ namespace Item
 
 	void ItemPack::sendItemList()
 	{
-		Packet::ItemList il;
-		il.SetListType(0);  
-		il.SetHint(0);
-		for (auto iter = _packItems.begin(); iter != _packItems.end(); ++iter)
-		{
-			if (iter->first < 100000) //
-			{
-				Packet::SCItem *sci = il.AddItems();
-				sci->SetItemId(iter->second->_itemId.id);
-				sci->SetIcount(iter->second->_itemParam);
-				sci->SetIsBand(iter->second->isBound());
-				sci->SetPosition(1);
-			}
-			else
-			{
-				Packet::SCEquipAttribute *ea = il.AddEquipments();
-				ea->SetEquipId(iter->second->_itemId.id);
-				ea->SetPosition(1);
-				ea->SetIsBand(iter->second->isBound());
-			}
-			il.send(static_cast<Object::User*>(this));
-		}
+		//Packet::ItemList il;
+		//il.SetListType(0);  
+		//il.SetHint(0);
+		//for (auto iter = _packItems.begin(); iter != _packItems.end(); ++iter)
+		//{
+		//	if (iter->first < 100000) //
+		//	{
+		//		Packet::SCItem *sci = il.AddItems();
+		//		sci->SetItemId(iter->second->_itemId.id);
+		//		sci->SetIcount(iter->second->_itemParam);
+		//		sci->SetIsBand(iter->second->isBound());
+		//		sci->SetPosition(1);
+		//	}
+		//	else
+		//	{
+		//		Packet::SCEquipAttribute *ea = il.AddEquipments();
+		//		ea->SetEquipId(iter->second->_itemId.id);
+		//		ea->SetPosition(1);
+		//		ea->SetIsBand(iter->second->isBound());
+		//	}
+		//	il.send(static_cast<Object::User*>(this));
+		//}
 	}
 
 	Int32 ItemPack::getUsableSize()
@@ -208,7 +208,7 @@ namespace Item
 
 	bool ItemPack::endItemOperation(bool operate , bool is_hint, bool is_send)
 	{
-		assert(PThisPtr->id() == operationCache.playerid);
+		/*assert(PThisPtr->id() == operationCache.playerid);
 		bool result;
 		if (operationReason != REASON_NOERROR)
 		{
@@ -329,8 +329,8 @@ namespace Item
 				}
 			}
 
-			return result;
-			//return true;
+			return result;*/
+			return true;
 	}
 	
 
@@ -550,7 +550,7 @@ namespace Item
 	
 	bool ItemPack::tryRemoveItem(UInt32 id, UInt32 count, bool is_bound, bool is_hint, bool is_send)
 	{
-		if(id >= 100000)
+		/*if(id >= 100000)
 		{
 			auto pack_iter = _packItems.find(id);
 			if(pack_iter == _packItems.end())
@@ -628,12 +628,13 @@ namespace Item
 				}
 			}
 			return false;
-		}
+		}*/
 		return false;
 	}
 
 	bool ItemPack::TryRemoveItemAny(UInt32 id, UInt32 count, bool& is_bound, bool is_hint, bool is_send)
 	{
+		/*
 		if(id >= 100000)
 		{
 			auto pack_iter = _packItems.find(id);
@@ -755,7 +756,8 @@ namespace Item
 					return true;
 				}
 			}
-		}
+		}*/
 		return false;
 	}
+	
 }

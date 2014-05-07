@@ -122,7 +122,6 @@
     <ClInclude Include="..\zo\Model\BaseModel\Mtable.h" />
     <ClInclude Include="..\zo\Model\BaseModel\RoomManager.h" />
     <ClInclude Include="..\zo\Model\BaseModel\RoomPlayerManager.h" />
-    <ClInclude Include="..\zo\Model\BaseModel\User.h" />
     <ClInclude Include="..\zo\Model\Data\CsvLoader.h" />
     <ClInclude Include="..\zo\Model\Data\ItemMgr.h" />
     <ClInclude Include="..\zo\Model\Data\NameGen.h" />
@@ -141,6 +140,10 @@
     <ClInclude Include="..\zo\Model\Object\ServerManager.h" />
     <ClInclude Include="..\zo\Model\Object\TimerBase.h" />
     <ClInclude Include="..\zo\Model\Object\ValidateName.h" />
+    <ClInclude Include="..\zo\Packet\Gateway.h" />
+    <ClInclude Include="..\zo\Packet\Handler\Basic\UserLogin.h" />
+    <ClInclude Include="..\zo\Packet\Handler\Basic\UserLogout.h" />
+    <ClInclude Include="..\zo\Packet\Handler\Basic\UserRegister.h" />
     <ClInclude Include="..\zo\Script\ActionLua.h" />
     <ClInclude Include="..\zo\Script\lua_tinker.h" />
     <ClInclude Include="..\zo\Script\Script.h" />
@@ -169,7 +172,6 @@
     <ClCompile Include="..\zo\Model\BaseModel\Mtable.cpp" />
     <ClCompile Include="..\zo\Model\BaseModel\RoomManager.cpp" />
     <ClCompile Include="..\zo\Model\BaseModel\RoomPlayerManager.cpp" />
-    <ClCompile Include="..\zo\Model\BaseModel\User.cpp" />
     <ClCompile Include="..\zo\Model\Data\CsvLoader.cpp" />
     <ClCompile Include="..\zo\Model\Data\ExternVariables.cpp" />
     <ClCompile Include="..\zo\Model\Data\NameGen.cpp" />
@@ -187,6 +189,7 @@
     <ClCompile Include="..\zo\Model\Object\Puppet.cpp" />
     <ClCompile Include="..\zo\Model\Object\ServerManager.cpp" />
     <ClCompile Include="..\zo\Model\Object\ValidateName.cpp" />
+    <ClCompile Include="..\zo\Packet\Gateway.cpp" />
     <ClCompile Include="..\zo\Script\ActionLua.cpp" />
     <ClCompile Include="..\zo\Script\lua_tinker.cpp" />
     <ClCompile Include="..\zo\Script\Script.cpp" />
