@@ -25,9 +25,6 @@
     <Filter Include="zo\Game">
       <UniqueIdentifier>{12b5ba42-3a36-4d26-bd9d-3b115201d816}</UniqueIdentifier>
     </Filter>
-    <Filter Include="zo\Model\Object">
-      <UniqueIdentifier>{621b2b75-9a6a-4c92-b0f3-a982968b021e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="zo\Model\Data">
       <UniqueIdentifier>{ed5de361-fe76-447f-9395-6e49ffc30716}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,9 @@
     </Filter>
     <Filter Include="zo\Model\Script">
       <UniqueIdentifier>{40e7a0db-9f27-4901-821c-a6303dcae1a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zo\Model\Object">
+      <UniqueIdentifier>{eb52e90e-cb9f-435c-8ba5-c3abccc26a2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,30 +99,6 @@
     <ClInclude Include="..\zo\Worker\Block.h">
       <Filter>zo\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\DBLoader.h">
-      <Filter>zo\Model\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\DBObject.h">
-      <Filter>zo\Model\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\GameTimer.h">
-      <Filter>zo\Model\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\IdPool.h">
-      <Filter>zo\Model\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\Puppet.h">
-      <Filter>zo\Model\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\ServerManager.h">
-      <Filter>zo\Model\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\TimerBase.h">
-      <Filter>zo\Model\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\ValidateName.h">
-      <Filter>zo\Model\Object</Filter>
-    </ClInclude>
     <ClInclude Include="..\zo\Model\Data\CsvLoader.h">
       <Filter>zo\Model\Data</Filter>
     </ClInclude>
@@ -147,9 +123,6 @@
     <ClInclude Include="..\zo\Model\Item\ItemPack.h">
       <Filter>zo\Model\Item</Filter>
     </ClInclude>
-    <ClInclude Include="..\zo\Model\BaseModel\GameRoom.h">
-      <Filter>zo\Model\BaseModel</Filter>
-    </ClInclude>
     <ClInclude Include="..\zo\Model\BaseModel\Mplayer.h">
       <Filter>zo\Model\BaseModel</Filter>
     </ClInclude>
@@ -158,18 +131,6 @@
     </ClInclude>
     <ClInclude Include="..\zo\Model\BaseModel\Mtable.h">
       <Filter>zo\Model\BaseModel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\BaseModel\RoomManager.h">
-      <Filter>zo\Model\BaseModel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\BaseModel\RoomPlayerManager.h">
-      <Filter>zo\Model\BaseModel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\UserManager.h">
-      <Filter>zo\Model\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\User.h">
-      <Filter>zo\Model\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\zo\Game\Interface\PlayerCreator.h">
       <Filter>zo\Game\Interface</Filter>
@@ -188,9 +149,6 @@
     </ClInclude>
     <ClInclude Include="..\zo\Game\Logic\Poke.h">
       <Filter>zo\Game\Logic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\BaseModel\BGameTable.h">
-      <Filter>zo\Model\BaseModel</Filter>
     </ClInclude>
     <ClInclude Include="..\zo\Script\ActionLua.h">
       <Filter>zo\Model\Script</Filter>
@@ -212,6 +170,48 @@
     </ClInclude>
     <ClInclude Include="..\zo\Packet\Gateway.h">
       <Filter>zo\Packet\Handler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\BGameTable.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\DBLoader.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\DBObject.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\GameRoom.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\GameTimer.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\IdPool.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\Puppet.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\RoomManager.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\RoomPlayerManager.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\ServerManager.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\TimerBase.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\User.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\UserManager.h">
+      <Filter>zo\Model\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\ValidateName.h">
+      <Filter>zo\Model\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -255,27 +255,6 @@
     <ClCompile Include="..\zo\Worker\Block.cpp">
       <Filter>zo\Worker</Filter>
     </ClCompile>
-    <ClCompile Include="..\zo\Model\Object\DBLoader.cpp">
-      <Filter>zo\Model\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zo\Model\Object\DBObject.cpp">
-      <Filter>zo\Model\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zo\Model\Object\GameTimer.cpp">
-      <Filter>zo\Model\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zo\Model\Object\IdPool.cpp">
-      <Filter>zo\Model\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zo\Model\Object\Puppet.cpp">
-      <Filter>zo\Model\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zo\Model\Object\ServerManager.cpp">
-      <Filter>zo\Model\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zo\Model\Object\ValidateName.cpp">
-      <Filter>zo\Model\Object</Filter>
-    </ClCompile>
     <ClCompile Include="..\zo\Model\Data\CsvLoader.cpp">
       <Filter>zo\Model\Data</Filter>
     </ClCompile>
@@ -300,26 +279,11 @@
     <ClCompile Include="..\zo\Model\Item\ItemPack.cpp">
       <Filter>zo\Model\Item</Filter>
     </ClCompile>
-    <ClCompile Include="..\zo\Model\BaseModel\GameRoom.cpp">
-      <Filter>zo\Model\BaseModel</Filter>
-    </ClCompile>
     <ClCompile Include="..\zo\Model\BaseModel\Mplayer.cpp">
       <Filter>zo\Model\BaseModel</Filter>
     </ClCompile>
     <ClCompile Include="..\zo\Model\BaseModel\Mtable.cpp">
       <Filter>zo\Model\BaseModel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zo\Model\BaseModel\RoomManager.cpp">
-      <Filter>zo\Model\BaseModel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zo\Model\BaseModel\RoomPlayerManager.cpp">
-      <Filter>zo\Model\BaseModel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zo\Model\Object\UserManager.cpp">
-      <Filter>zo\Model\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\zo\Model\Object\User.cpp">
-      <Filter>zo\Model\Object</Filter>
     </ClCompile>
     <ClCompile Include="..\zo\Game\Interface\PlayerCreator.cpp">
       <Filter>zo\Game\Interface</Filter>
@@ -336,9 +300,6 @@
     <ClCompile Include="..\zo\Game\Logic\Poke.cpp">
       <Filter>zo\Game\Logic</Filter>
     </ClCompile>
-    <ClCompile Include="..\zo\Model\BaseModel\BGameTable.cpp">
-      <Filter>zo\Model\BaseModel</Filter>
-    </ClCompile>
     <ClCompile Include="..\zo\Script\ActionLua.cpp">
       <Filter>zo\Model\Script</Filter>
     </ClCompile>
@@ -350,6 +311,45 @@
     </ClCompile>
     <ClCompile Include="..\zo\Packet\Gateway.cpp">
       <Filter>zo\Packet\Handler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\BGameTable.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\DBLoader.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\DBObject.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\GameRoom.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\GameTimer.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\IdPool.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\Puppet.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\RoomManager.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\RoomPlayerManager.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\ServerManager.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\User.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\UserManager.cpp">
+      <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\Object\ValidateName.cpp">
+      <Filter>zo\Model\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

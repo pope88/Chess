@@ -18,4 +18,6 @@ private:
 	UInt8 _playerNum;       //one table contain max player num
 };
 
+extern ZoGlobal zoGlobal;
+
 #endif

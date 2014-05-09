@@ -10,6 +10,8 @@
 #include "Model/Object/GameTimer.h"
 #include "Model/Object/DBLoader.h"
 #include "Model/Data/CsvLoader.h"
+#include "Model/Object/RoomManager.h"
+#include "ZoGlobal.h"
 #include "Block.h"
 
 namespace Worker
@@ -26,6 +28,8 @@ namespace Worker
 		Object::userManager.init();
 
 		//Script::gAction.doFile((ktCfg.scriptPath + "main.lua").c_str());
+
+		zoGlobal.init();
 
 		Data::CsvLoader::load();
 
@@ -52,6 +56,8 @@ namespace Worker
 		//block.start();  //login
 
 		tcp.start();
+
+		Object::roomManager.init();
 
 		UInt32 lastSec = 0;
 		while(_running)

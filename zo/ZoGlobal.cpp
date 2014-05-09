@@ -1,6 +1,7 @@
 #include "Config.h"
 #include "ZoGlobal.h"
 
+ZoGlobal zoGlobal;
 void ZoGlobal::init()
 {
 	_serverVer = "1.1.0";

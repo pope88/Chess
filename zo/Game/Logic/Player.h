@@ -1,7 +1,7 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 #include "Model/BaseModel/Mplayer.h"
-#include "Model/BaseModel/BGameTable.h"
+#include "Model/Object/DBObject.h"
 #include "SsuObject.h"
 #include "../Common/PlayCard.h"
 class Player

@@ -1,9 +1,11 @@
 #ifndef _GAMETABLE_H_
 #define _GAMETABLE_H_
-#include "Mplayer.h"
-#include "Mtable.h"
+#include "../BaseModel/Mplayer.h"
+#include "../BaseModel/Mtable.h"
 #include "RoomManager.h"
 
+namespace Object
+{
 class BGameTable : public Mtable
 {
 public:
@@ -159,4 +161,6 @@ private:
 //	UInt32 _tableId;
 //
 //};
+}
+
 #endif

@@ -2,7 +2,7 @@
 #define _ACTIONLUA_H_
 
 #include "Script.h"
-#include "Model/Object/User.h"
+#include "../Model/Object/User.h"
 //#include "Object/Guild.h"
 #include "System/TimeUtil.h"
 
@@ -13,8 +13,8 @@ namespace Map
 
 namespace Script
 {
-	using namespace Object;
 	using namespace Item;
+	using namespace Object;
 
 #define GetObj(BaseObj, DeriveObj)  BaseObj *Get##BaseObj(DeriveObj *dobj) { return dynamic_cast<BaseObj *>(dobj); }
 	class ActionLua:
