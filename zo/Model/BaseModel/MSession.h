@@ -13,5 +13,6 @@ public:
 	virtual void onRecv(const UInt8 *pData, int nLen) = 0;
 	virtual void release() = 0;
 	virtual void onRecvFrom(struct sockaddr* remoteaddr, const UInt8 *pData, int nLen) = 0;
+	virtual void heartBit() = 0;
 };
 #endif

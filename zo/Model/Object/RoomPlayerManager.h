@@ -13,6 +13,7 @@ namespace Object
 		User* findPlayer(UInt32 pid) { return NULL; }
 		//void broadcastRoom(Packet::Builder& builder, User *pExceptPlayer = NULL);
 		UInt32 getPlayerNum() { return _roomPlayers.size(); }
+		void onHeartBit();
 	private:
 		UInt32 _roomId;
 		std::unordered_map< UInt32, User* > _roomPlayers; 

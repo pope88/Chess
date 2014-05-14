@@ -36,26 +36,26 @@ public:
 		}
 	};
 public:
-	BGameTable(char cTableID, RoomPlayerManager* pPlayerManager);
-	~BGameTable(void);
+	BGameTable(char cTableID, RoomPlayerManager* rpm):_tableId(cTableID), _pPlayerManager(rpm) {}
+	~BGameTable(void) {}
 
 	//IBDTimerModule
-	virtual void onTimer(void* pParam);
+	virtual void onTimer(void* pParam) {}
 
 	//ICoreTable
-	virtual int getGameType();
-	virtual Mplayer* getCorePlayer(int nChairID);
-	virtual void endGame();
+	virtual int getGameType() { return 0;}
+	virtual Mplayer* getCorePlayer(int nChairID) {return NULL;}
+	virtual void endGame() {}
 	virtual int getCurPlyNum() { return m_cCurPlyNum; }
-	virtual void setTimer(int nPeriod, void* pParam);
-	virtual void removeTimer();
-	virtual void notifyVisitor(char cChairID, const char* pData, int nLength, bool bExclude);
-	virtual void startClientTimer(char cChairID, int nPeriod);
-	virtual int getTaxRate();
-	virtual int getTableID();
-	virtual int changePlayerMoney(int nPID, int nVarMoney);
-	virtual void setBaseScore(int nScore);
-	int joinTable(User* pPlayer, int nChairID, const std::string& strPassword);
+	virtual void setTimer(int nPeriod, void* pParam) {}
+	virtual void removeTimer() {}
+	virtual void notifyVisitor(char cChairID, const char* pData, int nLength, bool bExclude) {}
+	virtual void startClientTimer(char cChairID, int nPeriod) {}
+	virtual int getTaxRate(){ return 0; }
+	virtual int getTableID() { return 0; }
+	virtual int changePlayerMoney(int nPID, int nVarMoney) { return 0; }
+	virtual void setBaseScore(int nScore) {}
+	int joinTable(User* pPlayer, int nChairID, const std::string& strPassword) {}
 //	void StartClientFinished(CUserSession* pPlayer, char cChairID);
 	/**
 	   @brief 重新进入桌子，用于断线重连
@@ -65,12 +65,12 @@ public:
 	   @brief 离开桌子
 	   @param pPlayer 离开玩家指针
 	*/
-	bool leaveTable(User* pPlayer);
-	int findEmptyChair();
-	bool canStartGame();
-	void onStartGame();
-	void getCompleteData();
-	int isCanJoin(User* pPlayer, const std::string& strPassword, int& nPID, bool bVisitor = false);
+	bool leaveTable(User* pPlayer) {}
+	int findEmptyChair() {}
+	bool canStartGame() {}
+	void onStartGame(){}
+	void getCompleteData() {}
+	int isCanJoin(User* pPlayer, const std::string& strPassword, int& nPID, bool bVisitor = false) {}
 	template<class T>
 		void notifyPlayer(const T& packet, User* pExceptPlayer = NULL)
 	{
@@ -91,19 +91,19 @@ public:
 	//ITable* getTable() { return m_pTable; }
 	int	getBaseScore() { return m_nBaseScore; }
 
-	void reqLeaveGame(User* pSession, const std::string& strReason);
-	void reqLeaveGameAck(int nPID, char cRet);
-	void GMBreakGame(int nPID);
-	User* getPlayer(int nChair);
+	void reqLeaveGame(User* pSession, const std::string& strReason) {}
+	void reqLeaveGameAck(int nPID, char cRet) {}
+	void GMBreakGame(int nPID) {}
+	User* getPlayer(int nChair) {}
 private:
-	void notifyPlayer(const char* pData, int nLength, User* pExceptPlayer);
-	void notifyTable(const char* pData, int nLength, User* pExceptPlayer);
-	void checkReadyStatus();
-	void setKickTimer(int nChairID);
-	void removeKickTimer();
+	void notifyPlayer(const char* pData, int nLength, User* pExceptPlayer) {}
+	void notifyTable(const char* pData, int nLength, User* pExceptPlayer) {}
+	void checkReadyStatus() {}
+	void setKickTimer(int nChairID) {}
+	void removeKickTimer() {}
 private:
 	//st_tabledata	m_stTableData;
-	RoomPlayerManager* m_pPlayerManager;
+	RoomPlayerManager* _pPlayerManager;
 	//ITable*	m_pTable;
 	int		m_cMaxPlyNum;
 	int		m_cCurPlyNum;
@@ -116,6 +116,7 @@ private:
 	std::map<int, st_vote> m_mapArrangeLeave;
 	int		m_nKickChairID;
 	int		m_nKickTimerID;
+	int     _tableId;
 	//int g_nSetTimerNum;
 	//int g_nRemoveTimerNum;
 	//int g_nOnTimerNum;

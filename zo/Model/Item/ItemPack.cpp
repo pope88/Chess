@@ -546,6 +546,7 @@ namespace Item
 		}
 		return false;
 	}
+	return false;
 }
 	
 	bool ItemPack::tryRemoveItem(UInt32 id, UInt32 count, bool is_bound, bool is_hint, bool is_send)

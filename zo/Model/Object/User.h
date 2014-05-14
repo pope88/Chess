@@ -91,6 +91,7 @@ class User;
 		virtual void onRecv(const UInt8 *pData, int nLen) {}
 		virtual void release() {}
 		virtual void onRecvFrom(struct sockaddr* remoteaddr, const UInt8 *pData, int nLen) {}
+		virtual void heartBit() {}
 
 		//mplayer
 		virtual int getTableId() { return 0; }

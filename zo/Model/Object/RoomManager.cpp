@@ -72,6 +72,17 @@ namespace Object
 
 	void RoomManager::heartBit()
 	{
-		for
+		for (auto it = _vecRooms.begin(); it != _vecRooms.end(); ++it)
+		{
+			(*it)->onHeartBit();
+		}
+	}
+
+	void  RoomManager::breakAllGame()
+	{
+		for (auto it = _vecRooms.begin(); it != _vecRooms.end(); ++it)
+		{
+			(*it)->breakAllGame();
+		}
 	}
 }

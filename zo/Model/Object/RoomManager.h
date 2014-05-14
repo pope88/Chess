@@ -16,7 +16,7 @@ namespace Object
 		bool playerEnterRoom(UInt8 r, User *user);
 		bool playerLeaveRoom(UInt8 r, User *user);
 		void heartBit();
-		void breakAllGame(){}
+		void breakAllGame();
 	private:
 		std::vector<GameRoom*> _vecRooms;
 		std::unordered_map<UInt32, UInt8> _userInRoomMap;
