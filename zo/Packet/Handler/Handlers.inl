@@ -1,3 +1,6 @@
 #include "Basic/UserLogin.h"
 #include "Basic/UserLogout.h"
 #include "Basic/UserRegister.h"
+#include "User/UserEnterRoom.h"
+#include "User/UserInfo.h"
+#include "User/UserRoomInfo.h"

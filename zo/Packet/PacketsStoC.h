@@ -109,6 +109,38 @@ class SCUserInfo_0x03: public ::ssu::Object {
 
 };
 
+class SCUserRoomInfo_0x04: public ::ssu::Object {
+ public:
+  virtual ~SCUserRoomInfo_0x04() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+
+};
+
+class SCUserEnterRoom_0x05: public ::ssu::Object {
+ public:
+  inline SCUserEnterRoom_0x05(): _res(0) { }
+
+  virtual ~SCUserEnterRoom_0x05() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Res() const { return _res; }
+  inline void SetRes(uint32_t val__) { _res = val__; }
+
+ protected:
+  uint32_t _res;
+
+};
+
 }
 }
 }

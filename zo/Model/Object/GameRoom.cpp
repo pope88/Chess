@@ -9,7 +9,7 @@ namespace Object
 	{
 		_arrGameTable.resize(_maxTableNum);
 		_roomPlayers = new(std::nothrow)RoomPlayerManager();
-		assert(_roomPlayers == NULL);
+		assert(_roomPlayers != NULL);
 		
 		for(size_t i = 0; i < _maxTableNum; ++i)
 		{

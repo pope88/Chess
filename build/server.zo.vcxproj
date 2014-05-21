@@ -144,6 +144,9 @@
     <ClInclude Include="..\zo\Packet\Handler\Basic\UserLogin.h" />
     <ClInclude Include="..\zo\Packet\Handler\Basic\UserLogout.h" />
     <ClInclude Include="..\zo\Packet\Handler\Basic\UserRegister.h" />
+    <ClInclude Include="..\zo\Packet\Handler\User\UserEnterRoom.h" />
+    <ClInclude Include="..\zo\Packet\Handler\User\UserInfo.h" />
+    <ClInclude Include="..\zo\Packet\Handler\User\UserRoomInfo.h" />
     <ClInclude Include="..\zo\Script\ActionLua.h" />
     <ClInclude Include="..\zo\Script\lua_tinker.h" />
     <ClInclude Include="..\zo\Script\Script.h" />

@@ -107,6 +107,41 @@ size_t SCUserInfo_0x03::Size() const {
   return 1 + ::ssu::Utils::SizeUInt32(_gold) + 1 + ::ssu::Utils::SizeUInt32(_totalTopup) + 1 + ::ssu::Utils::SizeUInt32(_totalConsume);
 }
 
+uint8_t * SCUserRoomInfo_0x04::PackBuffer(uint8_t * buf) {
+  return buf;
+}
+
+bool SCUserRoomInfo_0x04::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  return true;
+}
+
+size_t SCUserRoomInfo_0x04::Size() const {
+  return 0;
+}
+
+uint8_t * SCUserEnterRoom_0x05::PackBuffer(uint8_t * buf) {
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 1, _res);
+  return buf;
+}
+
+bool SCUserEnterRoom_0x05::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  uint32_t tag_; uint8_t type_;
+  while(leftSize > 0) {
+    if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
+    switch(tag_) {
+     case 1:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _res)) return false;
+      break;
+     default: break;
+    }
+  }
+  return true;
+}
+
+size_t SCUserEnterRoom_0x05::Size() const {
+  return 1 + ::ssu::Utils::SizeUInt32(_res);
+}
+
 }
 }
 }

@@ -36,7 +36,7 @@ public:
 		}
 	};
 public:
-	BGameTable(char cTableID, RoomPlayerManager* rpm):_tableId(cTableID), _pPlayerManager(rpm) {}
+	BGameTable(char cTableID, RoomPlayerManager* rpm);
 	~BGameTable(void) {}
 
 	//IBDTimerModule
@@ -103,20 +103,20 @@ private:
 	void removeKickTimer() {}
 private:
 	//st_tabledata	m_stTableData;
-	RoomPlayerManager* _pPlayerManager;
+	UInt8     m_TableId;
+	RoomPlayerManager* pPlayerManager;
 	//ITable*	m_pTable;
-	int		m_cMaxPlyNum;
-	int		m_cCurPlyNum;
+	UInt8		m_MaxPlyNum;
+	UInt8		m_cCurPlyNum;
 	std::vector<User*>	m_vecPlayers;
 	std::vector<User*>	m_vecVisitors;
-	int		m_nTimerID;
-	int		m_cMasterChairID;
-	int		m_nBaseScore;
+	UInt32		m_nTimerID;
+	UInt8		m_cMasterChairID;
+	UInt32		m_nBaseScore;
 
 	std::map<int, st_vote> m_mapArrangeLeave;
 	int		m_nKickChairID;
 	int		m_nKickTimerID;
-	int     _tableId;
 	//int g_nSetTimerNum;
 	//int g_nRemoveTimerNum;
 	//int g_nOnTimerNum;

@@ -43,3 +43,17 @@ message SCUserInfo_0x03
   // 总消费值
   required uint32 totalConsume = 3;
 }
+
+//0x04
+//玩家请求房间信息
+message SCUserRoomInfo_0x04
+{
+}
+
+//0x05
+//玩家请求进入房间
+message SCUserEnterRoom_0x05
+{
+  //玩家进入失败
+  required uint32 res = 1;
+}
