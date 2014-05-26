@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "system.zo", "system.zo.vcxproj", "{2BEAB2A1-7A49-6647-99EA-8BAF88915278}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "network.zo", "network.zo.vcxproj", "{D2B09578-DDA3-654E-8B77-4408FAFEF792}"

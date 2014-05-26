@@ -132,7 +132,6 @@ class User;
 		DB_PROP_ADD(UInt64, totalLoseGold);
 		DB_PROP_ADD(UInt8, lastOnline);
 		DB_PROP_ADD(UInt8, lockEnd);
-		//DB_PROP_ADD(UInt8, roleId);
 		DB_PROP_ADD(bool, isMale);
 		DB_PROP_ADD_REF(std::string, name);
 		DB_PROP_ADD(UInt32, serverNo);
@@ -141,9 +140,6 @@ class User;
 		DB_PROP_ADD(UInt64, guideStep);
 		DB_PROP_ADD(UInt32, experience);
 		DB_MERGE_PROP2(UInt8, level, UInt32, experience);
-	public:
-		inline void setRoleId(UInt8 rid) { _roleid = rid; }
-		inline  UInt8 getRoleId() { return _roleid; }
 	public:
 		inline UInt8 vip() { return 0; }
 	protected:
@@ -157,18 +153,16 @@ class User;
 		UInt32 _lastbattleEnd;
 		bool _bUnderUse;
 		bool _roleOnline;
-		UInt8 _roleid;
 	private:
-		UInt32 _key;
 		UInt32 _sessionId;
 		UInt32 _gatewayId;
 		UInt32 _remoteAddr;
 		UInt32 _lastPacketTime;  // last receive packet time
 		bool _bBroken;
-		UInt16 _onlineTime;      //online time point
+		UInt16 _onlineTime;       //online time point
 		UInt16 _dayWinRound;      //today win round
-		UInt32 _gameStartTime;   //the round game start time
-		UInt16 _todayGameTime;   //the time count
+		UInt32 _gameStartTime;    //the round game start time
+		UInt16 _todayGameTime;    //the time count
 	};
 }
 

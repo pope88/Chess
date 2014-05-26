@@ -1,8 +1,0 @@
-// 基础信息包（测试子包）
-message baseInfo
-{
-  required uint32 id = 1;
-  required string name = 2;
-  optional bool btest = 3;
-  optional uint32 oid = 4;
-}

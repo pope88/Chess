@@ -23,7 +23,7 @@ namespace Database
 			UInt32 id;
 		};
 
-		struct DBPlayer
+		struct DBUser
 		{
 			UInt32 id;
 			std::string playerId;
@@ -68,7 +68,7 @@ namespace Database
 		MBIND(id);
 	MBINDEND();
 
-	MBINDBEGIN(DBPlayer) 
+	MBINDBEGIN(DBUser) 
 		MBIND(id);
 		MBIND(playerId);
 		//MBIND(roleId);
@@ -258,9 +258,9 @@ namespace Object
 
 		finder->ensureIndex("user", "id", true);
 		finder->ensureIndex("user", "serverNo", "name", true);
-		finder->ensureIndex("user", "serverNo", "playerId", false);
+		finder->ensureIndex("user", "serverNo", "playerId", true);
 		//finder->ensureIndex("user", "serverNo", "playerId", "roleId", true);
-		Database::DBPlayer dbpl;
+		Database::DBUser dbpl;
 		UInt32 maxId = 0;
 		if (finder->findPrepare(Database::MongoActionBson("user").finish(), dbpl) == Database::OK)
 		{
@@ -275,14 +275,12 @@ namespace Object
 					maxId = dbpl.id;
 				}
 
-
 				User *user = new User(dbpl.id, dbpl.playerId);
-				////user->setroleId(dbpl.roleId, false);
-				//user->name(dbpl.name, false);
+				user->name(dbpl.name, false);
 				//user->setserverNo(dbpl.serverNo == 0 ? zocfg.serverNo[0] : dbpl.serverNo, false);
-				//user->levelexperience(dbpl.level, dbpl.experience, false);
-				//user->setdailyProgress(dbpl.dailyProgress, false);
-				//user->setguideStep(dbpl.guideStep, false);
+				user->levelexperience(dbpl.level, dbpl.experience, false);
+				user->setdailyProgress(dbpl.dailyProgress, false);
+				user->setguideStep(dbpl.guideStep, false);
 
 				//userManager.add(user);
 
@@ -297,7 +295,6 @@ namespace Object
 				userManager.setMaxID(maxId);
 			}
 		}
-
 	}
 
 	void DBLoader::loadItems(Database::MongoFinder *finder)
