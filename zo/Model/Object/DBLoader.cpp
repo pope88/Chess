@@ -26,26 +26,21 @@ namespace Database
 		struct DBUser
 		{
 			UInt32 id;
-			std::string playerId;
-			//UInt8 roleId;
-			bool isMale;
+			std::string playerid;
+			UInt32 regtime;
+			UInt32 dailycp;
+			UInt32 gold;
+			UInt32 totaltopup;
+			UInt64 totallosegold;
+			UInt32 lastonline;
+			UInt8 lockend;
+			bool ismale;
 			std::string name;
-			UInt32 serverNo;
-			UInt32 regRoleTime;
-			UInt32 goldB;
-			UInt32 silver;
-			UInt32 energy; 
-			UInt32 prestige;
-			UInt32 status;
-			UInt16 packSize;
-			UInt16 lastCity;   //the city last went
+			UInt32 serverno;
 			UInt8 level;
-			UInt32 dailyCP;
-			UInt32 dailyProgress;
-			UInt32 guideStep;
+			UInt32 dailyprogress;
+			UInt64 guidestep;
 			UInt32 experience;
-		    UInt8 pet;
-			UInt32 itemFlag;
 		};
 
 		struct DBItem
@@ -70,25 +65,21 @@ namespace Database
 
 	MBINDBEGIN(DBUser) 
 		MBIND(id);
-		MBIND(playerId);
-		//MBIND(roleId);
-		MBIND(isMale);
+		MBIND(playerid);
+		MBIND(regtime);
+		MBIND(dailycp);
+		MBIND(gold);
+		MBIND(totaltopup);
+		MBIND(totallosegold);
+		MBIND(lastonline);
+		MBIND(lockend);
+		MBIND(ismale);
 		MBIND(name);
-		MBIND(serverNo);
-		MBIND(regRoleTime);
-		MBIND(goldB);
-		MBIND(silver);
-		MBIND(energy);
-		MBIND(prestige);
-		MBIND(status);
-		MBIND(packSize);
-		MBINDDEF(lastCity, 1);
+		MBIND(serverno);
 		MBIND(level);
-		MBIND(dailyProgress);
-		MBIND(guideStep);
+		MBIND(dailyprogress);
+		MBIND(guidestep);
 		MBIND(experience);
-		MBIND(pet);
-		MBIND(itemFlag);
 	MBINDEND();
 
 	MBINDBEGIN(DBItem)
@@ -275,14 +266,24 @@ namespace Object
 					maxId = dbpl.id;
 				}
 
-				User *user = new User(dbpl.id, dbpl.playerId);
+				User *user = new User(dbpl.id, dbpl.playerid);
+				
+				//user->setserverNo();
+				user->setregtime(dbpl.regtime, false);
+				user->setdailycp(dbpl.dailycp, false);
+				user->setgold(dbpl.gold, false);
+				user->settotaltopup(dbpl.totaltopup, false);
+				user->settotallosegold(dbpl.totallosegold, false);
+				user->setlastonline(dbpl.lastonline, false);
+				user->setlockend(dbpl.lockend, false);
+				user->setismale(dbpl.ismale, false);
 				user->name(dbpl.name, false);
-				//user->setserverNo(dbpl.serverNo == 0 ? zocfg.serverNo[0] : dbpl.serverNo, false);
-				user->levelexperience(dbpl.level, dbpl.experience, false);
-				user->setdailyProgress(dbpl.dailyProgress, false);
-				user->setguideStep(dbpl.guideStep, false);
-
-				//userManager.add(user);
+				user->setserverno(dbpl.serverno == 0 ? zocfg.serverNo[0] : dbpl.serverno, false);
+				user->setlevel(dbpl.level, false);
+				user->setdailyprogress(dbpl.dailyprogress, false);
+				user->setguidestep(dbpl.guidestep, false);
+				user->setexperience(dbpl.experience, false);
+				userManager.add(user);
 
 			}
 

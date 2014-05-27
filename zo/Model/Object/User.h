@@ -124,20 +124,20 @@ class User;
 	public:
 		//id same to GPlayer
 		DB_PROP_ADD(UInt32, id);  
-		DB_PROP_ADD_REF(std::string, playerId);
-		DB_PROP_ADD(UInt32, regTime);
-		DB_PROP_ADD(UInt32, dailyCP);
+		DB_PROP_ADD_REF(std::string, playerid);
+		DB_PROP_ADD(UInt32, regtime);
+		DB_PROP_ADD(UInt32, dailycp);
 		DB_PROP_ADD(UInt32, gold);
-		DB_PROP_ADD(UInt32, totalTopup);
-		DB_PROP_ADD(UInt64, totalLoseGold);
-		DB_PROP_ADD(UInt8, lastOnline);
-		DB_PROP_ADD(UInt8, lockEnd);
-		DB_PROP_ADD(bool, isMale);
+		DB_PROP_ADD(UInt32, totaltopup);
+		DB_PROP_ADD(UInt64, totallosegold);
+		DB_PROP_ADD(UInt32, lastonline);
+		DB_PROP_ADD(UInt8, lockend);
+		DB_PROP_ADD(bool, ismale);
 		DB_PROP_ADD_REF(std::string, name);
-		DB_PROP_ADD(UInt32, serverNo);
+		DB_PROP_ADD(UInt32, serverno);
 		DB_PROP_ADD(UInt8, level);
-		DB_PROP_ADD(UInt32, dailyProgress);
-		DB_PROP_ADD(UInt64, guideStep);
+		DB_PROP_ADD(UInt32, dailyprogress);
+		DB_PROP_ADD(UInt64, guidestep);
 		DB_PROP_ADD(UInt32, experience);
 		DB_MERGE_PROP2(UInt8, level, UInt32, experience);
 	public:
