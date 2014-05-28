@@ -10,6 +10,8 @@ namespace Object
 	public:
 		GameRoom(UInt8 id);
 		~GameRoom() {}
+		inline UInt8 roomId() { return _roomId; }
+		UInt32 roomPlayerNum()  { return _roomPlayers->getPlayerNum(); }
 		BGameTable* findTable(UInt32 tid) { return NULL; }
 		BGameTable* searchTable(UInt8 &nChair, const std::string &strIp) { return NULL; }
 		BGameTable* findEmptyTable(UInt32 &nChair) { return NULL; }

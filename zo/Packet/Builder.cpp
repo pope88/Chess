@@ -3,6 +3,7 @@
 #include "Model/Object/User.h"
 #include "Worker/Tcp.h"
 #include "PacketHead.h"
+#include "../Model/Object/RoomManager.h"
 
 namespace Packet
 {

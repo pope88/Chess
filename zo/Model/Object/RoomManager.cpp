@@ -3,10 +3,11 @@
 #include "GameRoom.h"
 #include "ZoGlobal.h"
 #include "User.h"
+#include "../../Packet/Builder.h"
 
 namespace Object
 {
-	RoomManager roomManager;
+	RoomManager _roomManager;
 
 	RoomManager::~RoomManager()
 	{
@@ -84,5 +85,18 @@ namespace Object
 		{
 			(*it)->breakAllGame();
 		}
+	}
+
+	void RoomManager::sendRoomList(User *user)
+	{
+		Packet::UserRoomList url;
+
+		for (size_t i = 0; i < _vecRooms.size(); ++i)
+		{
+			Packet::RoomInfo *pRinfo = url.AddRmlist();
+			pRinfo->SetRoomId(_vecRooms[i]->roomId());
+			pRinfo->SetPalyerNum(_vecRooms[i]->roomPlayerNum());
+		}
+		url.send(user);
 	}
 }

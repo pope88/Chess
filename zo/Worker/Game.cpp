@@ -57,7 +57,7 @@ namespace Worker
 
 		tcp.start();
 
-		Object::roomManager.init();
+		Object::_roomManager.init();
 
 		UInt32 lastSec = 0;
 		while(_running)

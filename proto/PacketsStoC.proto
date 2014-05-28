@@ -44,15 +44,32 @@ message SCUserInfo_0x03
   required uint32 totalConsume = 3;
 }
 
+//房间信息
+message RoomInfo
+{
+   //房间号
+   required uint32 roomId = 1;
+   //玩家数
+   required uint32 palyerNum = 2;
+}
 //0x04
 //玩家请求房间信息
-message SCUserRoomInfo_0x04
+message SCUserRoomList_0x04
 {
+   //list
+   repeated RoomInfo rmlist = 1;
 }
 
 //0x05
+//玩家请求房间列表信息
+message SCUserRoomInfo_0x05
+{
+ 
+}
+
+//0x06
 //玩家请求进入房间
-message SCUserEnterRoom_0x05
+message SCUserEnterRoom_0x06
 {
   //玩家进入失败
   required uint32 res = 1;

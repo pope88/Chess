@@ -62,9 +62,9 @@ namespace Object
 
 	void UserManager::add(User *user)
 	{
-		UInt32 sno = user->serverNo();
+		UInt32 sno = user->serverno();
 		_users[user->id()] = user;
-		_idUsersByServer[sno][user->playerId()] = user;
+		_idUsersByServer[sno][user->playerid()] = user;
 		std::string name = user->name();
 		if (!name.empty())
 		{

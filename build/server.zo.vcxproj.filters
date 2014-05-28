@@ -49,6 +49,12 @@
     <Filter Include="zo\Packet\Handler\User">
       <UniqueIdentifier>{5a8ed75d-5492-46dc-9f6a-0908e46965f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="zo\Packet\Handler\Hall">
+      <UniqueIdentifier>{7385d11c-9353-4e99-959d-23a475434e11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zo\Packet\Handler\Game">
+      <UniqueIdentifier>{21088269-ea82-47a0-bb63-7b1cdbbd48fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\zo\Packet\Builder.inl">
@@ -221,6 +227,15 @@
     </ClInclude>
     <ClInclude Include="..\zo\Packet\Handler\User\UserRoomInfo.h">
       <Filter>zo\Packet\Handler\User</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Packet\Handler\Hall\UserEnterRoom.h">
+      <Filter>zo\Packet\Handler\Hall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Packet\Handler\Hall\UserRoomInfo.h">
+      <Filter>zo\Packet\Handler\Hall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Packet\Handler\Hall\UserRoomList.h">
+      <Filter>zo\Packet\Handler\Hall</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,10 +18,9 @@ namespace Packet
 
 	struct HandlerMsgHeader
 	{
-		Handler * handler;
+		HandlerMsgHeader():handler(NULL), size(0){}
+		Handler *handler;
 		UInt32 size;
-		int cliid;
-		int svrid;
 	};
 
 	struct HandlerMsgPlayer

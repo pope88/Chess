@@ -107,24 +107,78 @@ size_t SCUserInfo_0x03::Size() const {
   return 1 + ::ssu::Utils::SizeUInt32(_gold) + 1 + ::ssu::Utils::SizeUInt32(_totalTopup) + 1 + ::ssu::Utils::SizeUInt32(_totalConsume);
 }
 
-uint8_t * SCUserRoomInfo_0x04::PackBuffer(uint8_t * buf) {
+uint8_t * RoomInfo::PackBuffer(uint8_t * buf) {
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 1, _roomId);
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 2, _palyerNum);
   return buf;
 }
 
-bool SCUserRoomInfo_0x04::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+bool RoomInfo::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  uint32_t tag_; uint8_t type_;
+  while(leftSize > 0) {
+    if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
+    switch(tag_) {
+     case 1:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _roomId)) return false;
+      break;
+     case 2:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _palyerNum)) return false;
+      break;
+     default: break;
+    }
+  }
   return true;
 }
 
-size_t SCUserRoomInfo_0x04::Size() const {
+size_t RoomInfo::Size() const {
+  return 1 + ::ssu::Utils::SizeUInt32(_roomId) + 1 + ::ssu::Utils::SizeUInt32(_palyerNum);
+}
+
+SCUserRoomList_0x04::~SCUserRoomList_0x04() {
+  for(::ssu::RepeatedObject<RoomInfo *>::iterator iter = _rmlist.begin(); iter != _rmlist.end(); ++ iter) { delete *iter; } _rmlist.Clear();
+}
+
+uint8_t * SCUserRoomList_0x04::PackBuffer(uint8_t * buf) {
+  buf = ::ssu::Utils::PackRepeatedTag(buf, 1, _rmlist, ::ssu::Utils::PackObjectTag<RoomInfo>);
+  return buf;
+}
+
+bool SCUserRoomList_0x04::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  uint32_t tag_; uint8_t type_;
+  while(leftSize > 0) {
+    if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
+    switch(tag_) {
+     case 1:
+      if(type_ != 2 || !::ssu::Utils::UnpackRepeatedPtr(buf, leftSize, _rmlist, ::ssu::Utils::UnpackObjectPtr<RoomInfo>)) return false;
+      break;
+     default: break;
+    }
+  }
+  return true;
+}
+
+size_t SCUserRoomList_0x04::Size() const {
+  return 1 * _rmlist.Size() + ::ssu::Utils::SizeRepeated(_rmlist, ::ssu::Utils::SizeObject<RoomInfo>);
+}
+
+uint8_t * SCUserRoomInfo_0x05::PackBuffer(uint8_t * buf) {
+  return buf;
+}
+
+bool SCUserRoomInfo_0x05::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  return true;
+}
+
+size_t SCUserRoomInfo_0x05::Size() const {
   return 0;
 }
 
-uint8_t * SCUserEnterRoom_0x05::PackBuffer(uint8_t * buf) {
+uint8_t * SCUserEnterRoom_0x06::PackBuffer(uint8_t * buf) {
   buf = ::ssu::Utils::PackUInt32Tag(buf, 1, _res);
   return buf;
 }
 
-bool SCUserEnterRoom_0x05::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+bool SCUserEnterRoom_0x06::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
   uint32_t tag_; uint8_t type_;
   while(leftSize > 0) {
     if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
@@ -138,7 +192,7 @@ bool SCUserEnterRoom_0x05::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) 
   return true;
 }
 
-size_t SCUserEnterRoom_0x05::Size() const {
+size_t SCUserEnterRoom_0x06::Size() const {
   return 1 + ::ssu::Utils::SizeUInt32(_res);
 }
 

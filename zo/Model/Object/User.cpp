@@ -5,23 +5,24 @@
 #include "UserManager.h"
 #include "System/TimeUtil.h"
 //#include "Packet/Gateway.h"
+#include "RoomManager.h"
 
 namespace Object
 {
-	User::User( UInt32 id, const std::string &pid ): _id(id), _playerId(pid),  _regTime(0), _dailyCP(0),
-		_gold(0), _totalTopup(0), _totalLoseGold(0), _lastOnline(), _lockEnd(0),  _isMale(0), _serverNo(0),
-		 _level(1), _dailyProgress(0),
-		_guideStep(0), _experience(0), _avatarVer(0),_cloth(0), _athleticsRank(0), _lastbattleEnd(0), _bUnderUse(false),
+	User::User( UInt32 id, const std::string &pid ): _id(id), _playerid(pid),  _regtime(0), _dailycp(0),
+		_gold(0), _totaltopup(0), _totallosegold(0), _lastonline(), _lockend(0),  _ismale(0), _serverno(0),
+		 _level(1), _dailyprogress(0),
+		_guidestep(0), _experience(0), _avatarVer(0),_cloth(0), _athleticsRank(0), _lastbattleEnd(0), _bUnderUse(false),
 		_roleOnline(false),  _sessionId(0), _gatewayId(0), _remoteAddr(0)
 
 	{
 		memset(_buff, 0, sizeof(_buff));
 	}
 
-	User::User(const std::string &pid): _id(userManager.uniqueID()),_playerId(pid),  _regTime(0), _dailyCP(0), 
-		 _gold(0), _totalTopup(0), _totalLoseGold(0), _lastOnline(), _lockEnd(0),  _isMale(0), _serverNo(0),
-		  _level(1), _dailyProgress(0),
-		_guideStep(0), _experience(0),  _avatarVer(0),_cloth(0), _athleticsRank(0), _lastbattleEnd(0), _bUnderUse(false),
+	User::User(const std::string &pid): _id(userManager.uniqueID()),_playerid(pid),  _regtime(0), _dailycp(0), 
+		 _gold(0), _totaltopup(0), _totallosegold(0), _lastonline(), _lockend(0),  _ismale(0), _serverno(0),
+		  _level(1), _dailyprogress(0),
+		_guidestep(0), _experience(0),  _avatarVer(0),_cloth(0), _athleticsRank(0), _lastbattleEnd(0), _bUnderUse(false),
 		_roleOnline(false), _sessionId(0), _gatewayId(0), _remoteAddr(0)
 
 	{
@@ -35,7 +36,7 @@ namespace Object
 
 	void User::newObjectToDB()
 	{
-		DB_PUSH_INSERT(getTableName(), set("id", _id, "playerId", _playerId, "name", _name, "serverNo", _serverNo, "isMale", _isMale));
+		DB_PUSH_INSERT(getTableName(), set("id", _id, "playerid", _playerid, "name", _name, "serverno", _serverno, "ismale", _ismale));
 	}
 
 	bool User::updateKey(UInt32 _key)
@@ -66,7 +67,9 @@ namespace Object
 			_roleOnline = true;
 		}
 
+		userInfo();
 		sendItemList();
+		_roomManager.sendRoomList(this);
 	}
 
 	void User::logOut()
@@ -76,7 +79,7 @@ namespace Object
 
 	void User::doLogOut()
 	{
-		this->setlastOnline(TimeUtil::Now());
+		this->setlastonline(TimeUtil::Now());
 
 		if (_roleOnline)
 		{
@@ -96,7 +99,7 @@ namespace Object
 		return true;
 	}
 
-	void User::UserInfo()
+	void User::userInfo()
 	{
 		/*Packet::UserInfo info;
 		info.SetGold(this->gold());

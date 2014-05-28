@@ -17,11 +17,12 @@ namespace Object
 		bool playerLeaveRoom(UInt8 r, User *user);
 		void heartBit();
 		void breakAllGame();
+		void sendRoomList(User *user);
 	private:
 		std::vector<GameRoom*> _vecRooms;
 		std::unordered_map<UInt32, UInt8> _userInRoomMap;
 	};
-	extern RoomManager roomManager;
+	extern RoomManager _roomManager;
 }
 
 #endif

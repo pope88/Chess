@@ -13,8 +13,8 @@ HANDLER_CLASS_INIT(UserLogin, 0x02)
 
 	if(!zocfg.debugMode)
 	{
-		//if(serverNo == 0)
-		//	return;
+		if(serverNo == 0)
+			return;
 		//if(pkt.Key().length() != 56)
 		//{
 		//	Worker::tcp.close(sessionId, gatewayId);
@@ -68,12 +68,12 @@ HANDLER_CLASS_INIT(UserLogin, 0x02)
 		//ul.SetName(name);
 		ul.send(sessionId, gatewayId);
 	}
-	else if(targetP->lockEnd() > now)
+	else if(targetP->lockend() > now)
 	{
 		targetP->setOnline(false);
 		UserLogin ul;
 		ul.SetResult(2);
-		ul.SetBanTime(targetP->lockEnd() - now);
+		ul.SetBanTime(targetP->lockend() - now);
 		ul.send(sessionId, gatewayId);
 	}
 	else
@@ -117,7 +117,7 @@ HANDLER_CLASS_INIT(UserLogin, 0x02)
 
 		UserLogin ul;
 		ul.SetResult(0);
-		ul.SetUserName(targetP->playerId());
+		ul.SetUserName(targetP->playerid());
 		//ul.SetName("no name"); //targetP->name());
 		//ul.SetVipLevel(targetP->vip());
 		//ul.AddSteps(static_cast<UInt32>(targetP->guideStep() & 0xFFFFFFFFull));

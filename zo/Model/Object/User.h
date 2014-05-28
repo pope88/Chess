@@ -78,7 +78,7 @@ class User;
 	    inline UInt8 getVip() { return 0; } 
 		inline bool online() { return _roleOnline; }
 		inline void setOnline(bool ol) { _roleOnline = ol; }
-		void UserInfo();
+		void userInfo();
 	public:
 		void loginPlayer();
 	public:
