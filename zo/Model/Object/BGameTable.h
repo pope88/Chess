@@ -55,7 +55,7 @@ public:
 	virtual int getTableID() { return 0; }
 	virtual int changePlayerMoney(int nPID, int nVarMoney) { return 0; }
 	virtual void setBaseScore(int nScore) {}
-	int joinTable(User* pPlayer, int nChairID, const std::string& strPassword) {}
+	int joinTable(User* user, int nChairID, const std::string &strPassword = "");
 //	void StartClientFinished(CUserSession* pPlayer, char cChairID);
 	/**
 	   @brief 重新进入桌子，用于断线重连
@@ -66,11 +66,12 @@ public:
 	   @param pPlayer 离开玩家指针
 	*/
 	bool leaveTable(User* pPlayer) {}
-	int findEmptyChair() {}
-	bool canStartGame() {}
+	int findEmptyChair();
+	bool canStartGame();
 	void onStartGame(){}
 	void getCompleteData() {}
-	int isCanJoin(User* pPlayer, const std::string& strPassword, int& nPID, bool bVisitor = false) {}
+	bool isCanJoin(User *user, int &chairId, UInt8 &res, bool bVisitor = false);
+	int joinTable(User *user, int nChairID, const std::string &strPassword);
 	template<class T>
 		void notifyPlayer(const T& packet, User* pExceptPlayer = NULL)
 	{
@@ -86,7 +87,7 @@ public:
 		//NotifyTable(os.GetData(), os.GetLength(), pExceptPlayer);
 	}
 //	const st_tabledata& GetTableData() { return m_stTableData; }
-	//int	getStatus() { return m_stTableData.cStatus; }
+	int	getStatus() { return m_nStatus; }
 	//void setStatus(int nStatus) { m_stTableData.cStatus = (char)nStatus; }
 	//ITable* getTable() { return m_pTable; }
 	int	getBaseScore() { return m_nBaseScore; }
@@ -117,6 +118,7 @@ private:
 	std::map<int, st_vote> m_mapArrangeLeave;
 	int		m_nKickChairID;
 	int		m_nKickTimerID;
+	int     m_nStatus;
 	//int g_nSetTimerNum;
 	//int g_nRemoveTimerNum;
 	//int g_nOnTimerNum;

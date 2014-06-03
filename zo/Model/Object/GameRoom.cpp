@@ -24,4 +24,42 @@ namespace Object
 			(*it)->GMBreakGame(0);
 		}
 	}
+
+	BGameTable* GameRoom::findTable(UInt32 tid)
+	{
+		for (auto it = _arrGameTable.begin(); it != _arrGameTable.end(); ++it)
+		{
+			if (tid == (*it)->getTableID())
+			{
+				return *it;
+			}
+		}
+		return NULL;
+	}
+
+	BGameTable* GameRoom::findEmptyTable(Int8 &nChair)
+	{
+		for (size_t i = 0; i < _arrGameTable.size(); ++i)
+		{
+			if(((BGameTable*)_arrGameTable[i])->getStatus() == BGameTable::TS_EMPTY)
+			{
+				nChair = _arrGameTable[i]->findEmptyChair();
+				return _arrGameTable[i];
+			}
+		}
+		return NULL;
+	}
+
+	BGameTable* GameRoom::findWaitingTable(UInt32 &nChair)
+	{
+		for (size_t i = 0; i < _arrGameTable.size(); ++i)
+		{
+			if(((BGameTable*)_arrGameTable[i])->getStatus() == BGameTable::TS_WATING)
+			{
+				nChair = _arrGameTable[i]->findEmptyChair();
+				return _arrGameTable[i];
+			}
+		}
+		return NULL;
+	}
 }

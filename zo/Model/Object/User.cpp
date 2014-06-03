@@ -6,6 +6,7 @@
 #include "System/TimeUtil.h"
 //#include "Packet/Gateway.h"
 #include "RoomManager.h"
+#include "Packet/Builder.h"
 
 namespace Object
 {
@@ -101,25 +102,11 @@ namespace Object
 
 	void User::userInfo()
 	{
-		/*Packet::UserInfo info;
+		Packet::UserInfo info;
 		info.SetGold(this->gold());
-		info.SetTotalTopup(this->totalTopup());
-		info.SetTotalConsume(this->totalConsume());	
-		for (auto it = _rolePlayers.begin(); it != _rolePlayers.end(); ++it)
-		{
-			if (it->second == NULL)
-			{
-				continue;
-			}
-			Packet::HeroInfo *hinfo = info.AddRoles();
-
-			hinfo->SetIsMale(it->second->isMale());
-			hinfo->SetLevel(it->second->level());
-			hinfo->SetName(it->second->name());
-			hinfo->SetJob(it->second->job());
-			hinfo->SetRoleid(it->second->id());
-		}
+		info.SetTotalTopup(this->totaltopup());
+		info.SetTotalConsume(this->totallosegold());	
 		info.send(this);
-		return;*/
+		return;
 	}
 }

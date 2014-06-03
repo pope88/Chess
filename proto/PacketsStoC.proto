@@ -29,6 +29,8 @@ message SCUserLogin_0x02
   optional uint32 vipLevel = 4;
   // 封禁剩余时间
   optional uint32 banTime = 5;
+  //新手引导步骤更新
+  repeated uint32 steps = 6 [packed=true];
   
 }
 

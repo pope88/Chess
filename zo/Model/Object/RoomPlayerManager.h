@@ -1,5 +1,6 @@
 #ifndef _ROOMPLAYERMANAGER_H_
 #define _ROOMPLAYERMANAGER_H_
+#include "Packet/Builder.h"
 namespace Object
 {
 	class User;
@@ -8,11 +9,11 @@ namespace Object
 	public:
 		RoomPlayerManager() {}
 		~RoomPlayerManager() {}
-		bool insertPlayer(User *user) { return true; }
-		bool removePlayer(User *user) { return true; }
-		User* findPlayer(UInt32 pid) { return NULL; }
-		//void broadcastRoom(Packet::Builder& builder, User *pExceptPlayer = NULL);
-		UInt32 getPlayerNum() { return _roomPlayers.size(); }
+		bool insertPlayer(User *user);
+		bool removePlayer(User *user);
+		inline User* findPlayer(UInt32 pid) { _roomPlayers.find(pid)->second; }
+		inline UInt32 getPlayerNum() { return _roomPlayers.size(); }
+	    void broadcastRoom(Packet::Builder& builder, User *pExceptPlayer = NULL);
 		void onHeartBit();
 	private:
 		UInt32 _roomId;

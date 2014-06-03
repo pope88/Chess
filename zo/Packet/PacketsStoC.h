@@ -70,12 +70,21 @@ class SCUserLogin_0x02: public ::ssu::Object {
   inline void SetBanTime(uint32_t val__) { _banTime = val__; _isSetFlag[0] |= 0x08; }
   inline bool HasBanTime() const { return (_isSetFlag[0] & 0x08) > 0; }
 
+  inline uint32_t Steps(size_t index__) const { return _steps[index__]; }
+  inline void AddSteps(uint32_t val__) { _steps.Add(val__); }
+  inline void SetSteps(size_t index__, uint32_t val__) { _steps[index__] = val__; }
+  inline ::ssu::RepeatedObject<uint32_t>& MutableSteps() { return _steps; }
+  inline size_t StepsSize() const { return _steps.Size(); }
+  inline void ClearSteps() { _steps.Clear(); }
+  inline void ReserveSteps(size_t size__) { if(_steps.Size() < size__) _steps.Reserve(size__); }
+
  protected:
   uint32_t _result;
   uint32_t _userId;
   std::string _userName;
   uint32_t _vipLevel;
   uint32_t _banTime;
+  ::ssu::RepeatedObject<uint32_t> _steps;
 
   uint32_t _isSetFlag[1];
 

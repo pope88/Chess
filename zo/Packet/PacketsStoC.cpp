@@ -39,6 +39,7 @@ uint8_t * SCUserLogin_0x02::PackBuffer(uint8_t * buf) {
   if(HasUserName()) buf = ::ssu::Utils::PackStringTag(buf, 3, _userName);
   if(HasVipLevel()) buf = ::ssu::Utils::PackUInt32Tag(buf, 4, _vipLevel);
   if(HasBanTime()) buf = ::ssu::Utils::PackUInt32Tag(buf, 5, _banTime);
+  buf = ::ssu::Utils::PackRepeatedPackedTag(buf, 6, _steps, ::ssu::Utils::PackUInt32, ::ssu::Utils::SizeUInt32);
   return buf;
 }
 
@@ -66,6 +67,9 @@ bool SCUserLogin_0x02::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
       if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _banTime)) return false;
       _isSetFlag[0] |= 0x08;
       break;
+     case 6:
+      if(type_ != 2 || !::ssu::Utils::UnpackRepeatedPacked(buf, leftSize, _steps, ::ssu::Utils::UnpackUInt32)) return false;
+      break;
      default: break;
     }
   }
@@ -73,7 +77,7 @@ bool SCUserLogin_0x02::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
 }
 
 size_t SCUserLogin_0x02::Size() const {
-  return 1 + ::ssu::Utils::SizeUInt32(_result) + (HasUserId() ? (1 + ::ssu::Utils::SizeUInt32(_userId)) : 0) + (HasUserName() ? (1 + ::ssu::Utils::SizeString(_userName)) : 0) + (HasVipLevel() ? (1 + ::ssu::Utils::SizeUInt32(_vipLevel)) : 0) + (HasBanTime() ? (1 + ::ssu::Utils::SizeUInt32(_banTime)) : 0);
+  return 1 + ::ssu::Utils::SizeUInt32(_result) + (HasUserId() ? (1 + ::ssu::Utils::SizeUInt32(_userId)) : 0) + (HasUserName() ? (1 + ::ssu::Utils::SizeString(_userName)) : 0) + (HasVipLevel() ? (1 + ::ssu::Utils::SizeUInt32(_vipLevel)) : 0) + (HasBanTime() ? (1 + ::ssu::Utils::SizeUInt32(_banTime)) : 0) + 1 + ::ssu::Utils::SizeRepeatedPacked(_steps, ::ssu::Utils::SizeUInt32);
 }
 
 uint8_t * SCUserInfo_0x03::PackBuffer(uint8_t * buf) {
