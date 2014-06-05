@@ -65,14 +65,14 @@ class Mtable
 	virtual void setBaseScore(int nScore) = 0;
 };
 
-class Ptable
+class ITable
 {
 public:
-	virtual ~Ptable(){}
+	virtual ~ITable(){}
 
 	virtual void release() = 0;
 	virtual void onTimer(void* pParam) = 0;
-	virtual void onStartGame() = 0;
+	virtual void onGameStart() = 0;
 	virtual void onEndGame() = 0;
 	virtual void onUserJoinVisitor(Mplayer* pPlayer) = 0;
 	/**

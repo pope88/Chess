@@ -237,6 +237,12 @@
     <ClInclude Include="..\zo\Packet\Handler\Hall\UserRoomList.h">
       <Filter>zo\Packet\Handler\Hall</Filter>
     </ClInclude>
+    <ClInclude Include="..\zo\Game\Interface\TableCreator.h">
+      <Filter>zo\Game\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\BaseModel\ServerModule.h">
+      <Filter>zo\Model\BaseModel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\zo\ZoCfg.cpp">
@@ -374,6 +380,12 @@
     </ClCompile>
     <ClCompile Include="..\zo\Model\Object\ValidateName.cpp">
       <Filter>zo\Model\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Game\Interface\TableCreator.cpp">
+      <Filter>zo\Game\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Model\BaseModel\ServerModule.cpp">
+      <Filter>zo\Model\BaseModel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

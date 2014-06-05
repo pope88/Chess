@@ -4,8 +4,10 @@
 #include "../BaseModel/Mtable.h"
 #include "RoomManager.h"
 
+
 namespace Object
 {
+class User;
 class BGameTable : public Mtable
 {
 public:
@@ -55,7 +57,6 @@ public:
 	virtual int getTableID() { return 0; }
 	virtual int changePlayerMoney(int nPID, int nVarMoney) { return 0; }
 	virtual void setBaseScore(int nScore) {}
-	int joinTable(User* user, int nChairID, const std::string &strPassword = "");
 //	void StartClientFinished(CUserSession* pPlayer, char cChairID);
 	/**
 	   @brief 重新进入桌子，用于断线重连
@@ -68,10 +69,10 @@ public:
 	bool leaveTable(User* pPlayer) {}
 	int findEmptyChair();
 	bool canStartGame();
-	void onStartGame(){}
+	void onGameStart();
 	void getCompleteData() {}
 	bool isCanJoin(User *user, int &chairId, UInt8 &res, bool bVisitor = false);
-	int joinTable(User *user, int nChairID, const std::string &strPassword);
+	int joinTable(User *user, int nChairID, const std::string &strPassword = "");
 	template<class T>
 		void notifyPlayer(const T& packet, User* pExceptPlayer = NULL)
 	{
@@ -89,7 +90,7 @@ public:
 //	const st_tabledata& GetTableData() { return m_stTableData; }
 	int	getStatus() { return m_nStatus; }
 	//void setStatus(int nStatus) { m_stTableData.cStatus = (char)nStatus; }
-	//ITable* getTable() { return m_pTable; }
+	ITable* getTable() { return m_pTable; }
 	int	getBaseScore() { return m_nBaseScore; }
 
 	void reqLeaveGame(User* pSession, const std::string& strReason) {}
@@ -106,7 +107,7 @@ private:
 	//st_tabledata	m_stTableData;
 	UInt8     m_TableId;
 	RoomPlayerManager* pPlayerManager;
-	//ITable*	m_pTable;
+	ITable      *m_pTable;
 	UInt8		m_MaxPlyNum;
 	UInt8		m_cCurPlyNum;
 	std::vector<User*>	m_vecPlayers;

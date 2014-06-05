@@ -14,4 +14,12 @@ public:
 	virtual bool saveGameScore(int score) = 0;
 	virtual bool canWatch() = 0;
 };
+
+
+class IPlayer
+{
+public:
+	virtual ~IPlayer(){}
+};
+
 #endif

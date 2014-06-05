@@ -113,7 +113,7 @@ class User;
 		inline int getLimitScore() { return 0; }
 
 		//logic 
-		bool onStartGame() { return true; }
+		bool onGameStart() { return true; }
 		GameRoom* getTableManager() { return NULL; }
 		void onHeartBit() {}
 		void getNetDelay() {}

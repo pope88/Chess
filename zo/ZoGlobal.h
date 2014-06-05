@@ -6,9 +6,11 @@ class ZoGlobal
 public:
 	enum READYMODE
 	{
-		MODEZERO = 0, //among users full and all users hands up 
-		MODEONE = 1,  //among at lease two user hands up
-		MODETWO = 2,  //among at lease three user hands up
+		MODEZERO = 0, //satisfy users full and all users hands up 
+		MODEONE = 1,  //satisfy at lease two users and they all hands up
+		MODETWO = 2,  //satisfy at lease three users and they all hands up
+		MODETHREE = 3, //satisfy at lease four users and they all hands up
+		MODELAST = 4,  //satisfy at lease two users 
 	};
 public:
 	void init();

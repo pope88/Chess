@@ -112,12 +112,14 @@
     <ClInclude Include="..\zo\Game\Common\PlayCard.h" />
     <ClInclude Include="..\zo\Game\Common\Rule.h" />
     <ClInclude Include="..\zo\Game\Interface\PlayerCreator.h" />
+    <ClInclude Include="..\zo\Game\Interface\TableCreator.h" />
     <ClInclude Include="..\zo\Game\Logic\GameTable.h" />
     <ClInclude Include="..\zo\Game\Logic\Player.h" />
     <ClInclude Include="..\zo\Game\Logic\Poke.h" />
     <ClInclude Include="..\zo\Model\BaseModel\Mplayer.h" />
     <ClInclude Include="..\zo\Model\BaseModel\MSession.h" />
     <ClInclude Include="..\zo\Model\BaseModel\Mtable.h" />
+    <ClInclude Include="..\zo\Model\BaseModel\ServerModule.h" />
     <ClInclude Include="..\zo\Model\Data\CsvLoader.h" />
     <ClInclude Include="..\zo\Model\Data\ItemMgr.h" />
     <ClInclude Include="..\zo\Model\Data\NameGen.h" />
@@ -169,11 +171,13 @@
   <ItemGroup>
     <ClCompile Include="..\zo\Game\Common\PlayCard.cpp" />
     <ClCompile Include="..\zo\Game\Interface\PlayerCreator.cpp" />
+    <ClCompile Include="..\zo\Game\Interface\TableCreator.cpp" />
     <ClCompile Include="..\zo\Game\Logic\GameTable.cpp" />
     <ClCompile Include="..\zo\Game\Logic\Player.cpp" />
     <ClCompile Include="..\zo\Game\Logic\Poke.cpp" />
     <ClCompile Include="..\zo\Model\BaseModel\Mplayer.cpp" />
     <ClCompile Include="..\zo\Model\BaseModel\Mtable.cpp" />
+    <ClCompile Include="..\zo\Model\BaseModel\ServerModule.cpp" />
     <ClCompile Include="..\zo\Model\Data\CsvLoader.cpp" />
     <ClCompile Include="..\zo\Model\Data\ExternVariables.cpp" />
     <ClCompile Include="..\zo\Model\Data\NameGen.cpp" />

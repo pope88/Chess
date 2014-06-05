@@ -2,16 +2,17 @@
 #define _PLAYERCREATOR_H_
 #include "System/Singleton.h"
 #include "Model/BaseModel/Mplayer.h"
+#include "Model/BaseModel/ServerModule.h"
 #include "../Logic/Player.h"
-class CPlayerCreator
+class PlayerCreator : public IPlayerCreator
 {
 public:
-	CPlayerCreator(void);
-	~CPlayerCreator(void);
-	virtual Player* CreatePlayer();
+	PlayerCreator(void);
+	~PlayerCreator(void);
+	virtual IPlayer* CreatePlayer() = 0;
 };
 
-typedef System::Singleton<CPlayerCreator> _gamemanager;
+typedef System::Singleton<PlayerCreator> _playerCreator;
 
 
 #endif

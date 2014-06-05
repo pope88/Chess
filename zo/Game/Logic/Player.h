@@ -4,7 +4,7 @@
 #include "Model/Object/DBObject.h"
 #include "SsuObject.h"
 #include "../Common/PlayCard.h"
-class Player
+class Player : public IPlayer
 {
 public:
 	enum PS_GAMESTATE
