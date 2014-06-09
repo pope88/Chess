@@ -30,7 +30,6 @@ namespace Object
 	{
 		UInt8 roomNum = 0;
 		roomNum = zoGlobal.roomNum();
-		_vecRooms.resize(roomNum);
 		for (int i = 0;i < roomNum; ++i)
 		{
 			GameRoom *gr = new GameRoom(i);

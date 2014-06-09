@@ -11,8 +11,12 @@
 #include "Model/Object/DBLoader.h"
 #include "Model/Data/CsvLoader.h"
 #include "Model/Object/RoomManager.h"
+#include "Model/BaseModel/ServerModule.h"
+#include "../Game/Interface/PlayerCreator.h"
+#include "../Game/Interface/TableCreator.h"
 #include "ZoGlobal.h"
 #include "Block.h"
+
 
 namespace Worker
 {
@@ -41,7 +45,7 @@ namespace Worker
 
 		Object::DBLoader::load();
 
-		//dbMongo.start();
+		dbMongo.start();
 
 		//if(zoCfg.backendEnable)
 		//{
@@ -56,6 +60,10 @@ namespace Worker
 		//block.start();  //login
 
 		tcp.start();
+
+
+		_serverModule::instance()->setTableCreator(_tableCreator::instance());
+		_serverModule::instance()->setPlayerCreator(_playerCreator::instance());
 
 		Object::_roomManager.init();
 
@@ -84,8 +92,8 @@ namespace Worker
 		//block.join();
 		//combat.join();
 		//System::Sleep(2000);
-		//dbMongo.stop();
-		//dbMongo.join();
+		dbMongo.stop();
+		dbMongo.join();
 		//if(ktCfg.backendEnable)
 		//	dbBackend.join();
 

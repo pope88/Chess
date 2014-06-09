@@ -7,9 +7,9 @@
 class PlayerCreator : public IPlayerCreator
 {
 public:
-	PlayerCreator(void);
-	~PlayerCreator(void);
-	virtual IPlayer* CreatePlayer() = 0;
+	PlayerCreator(void) {}
+	~PlayerCreator(void) {}
+	virtual IPlayer* CreatePlayer();
 };
 
 typedef System::Singleton<PlayerCreator> _playerCreator;

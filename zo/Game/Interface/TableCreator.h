@@ -3,11 +3,11 @@
 #include "System/Singleton.h"
 #include "Model/BaseModel/Mtable.h"
 #include "Model/BaseModel/ServerModule.h"
-class TableCreator
+class TableCreator : public ITableCreator
 {
 public:
-	TableCreator(void);
-	~TableCreator(void);
+	TableCreator(void) {}
+	~TableCreator(void) {}
 	virtual ITable* CreateTable();
 };
 

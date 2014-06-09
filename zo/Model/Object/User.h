@@ -55,7 +55,7 @@ class User;
 		User(const std::string &pid);
 		virtual ~User();
 	private:
-		virtual const char* getTableName() { return "player"; }
+		virtual const char* getTableName() { return "user"; }
 	public:
 		void newObjectToDB();
 		

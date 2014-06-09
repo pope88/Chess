@@ -59,7 +59,7 @@ namespace Data
 				continue;
 			}
 			UInt32 id = atoi(row[0].c_str());
-			if (id >= 20000)
+			if (id >= 200000)
 			{
 				continue;
 			}
