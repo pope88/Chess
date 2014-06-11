@@ -5,6 +5,8 @@
 #include "Model/Item/ItemPack.h"
 #include "../BaseModel/Mplayer.h"
 #include "../BaseModel/MSession.h"
+#include "../BaseModel/Mtable.h"
+#include "GameRoom.h"
 #include "BGameTable.h"
 
 
@@ -82,6 +84,11 @@ class User;
 	public:
 		void loginPlayer();
 	public:
+		// logic
+		inline void setInTable(BGameTable *bt, UInt8 chair) { _pInTable = bt; }
+		inline void setInRoom(GameRoom *gr) { _pInRoom = gr; }
+		inline BGameTable* getInTable() { return _pInTable; }
+		inline GameRoom* getInRoom() { return _pInRoom; }
 	public:
 		//session
 		virtual void onConnnection() {}
@@ -120,6 +127,7 @@ class User;
 		const std::string& getPlayerIp() { 	static std::string empty; return empty; }
 		const BGameTable* getTheTable() { return NULL; }
 		void setPlayerStatus(UInt16 status) {}
+
 		
 	public:
 		//id same to GPlayer
@@ -144,6 +152,10 @@ class User;
 		inline UInt8 vip() { return 0; }
 	protected:
 		DB_PROP_UPDATE_COND(id, _id);
+	private:
+		GameRoom *_pInRoom;
+		BGameTable *_pInTable;
+		UInt8 _pInChair;
 	private:
 		UInt8 _avatarVer;
 		UInt8 _cloth;

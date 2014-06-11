@@ -4,3 +4,5 @@ DefBuilder(UserInfo, 0x03);
 DefBuilder(UserRoomList, 0x04);
 DefBuilder(UserRoomInfo, 0x05);
 DefBuilder(UserEnterRoom, 0x06);
+DefBuilder(UserEnterTable, 0x07);
+DefBuilder(UserPlayerNow, 0x08);

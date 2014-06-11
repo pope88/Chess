@@ -109,4 +109,51 @@ namespace Object
 		}
 		m_pTable->onGameStart();
 	}
+
+
+	bool BGameTable::onUserEnter(User *u, UInt8 &nchair)
+	{
+		if (u == NULL)
+		{
+			return false;
+		}
+
+		if (isTableFull())
+		{
+			return false;
+		}
+
+		if (nchair < zoGlobal.tableNum() && m_vecPlayers[nchair] == NULL)
+		{
+			m_vecPlayers[nchair] = u;
+			return true;
+		}
+		else if(nchair == 0xFF)
+		{
+			for (size_t i = 0; i < m_vecPlayers.size(); ++i)
+			{
+				if (m_vecPlayers[i] == NULL)
+				{
+					m_vecPlayers[i] = u;
+					nchair = i;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	bool BGameTable::isTableFull()
+	{
+		bool bfull = true;
+		for (size_t i = 0; i < m_vecPlayers.size(); ++i)
+		{
+			if (m_vecPlayers[i] == NULL)
+			{
+				bfull = false;
+				return bfull;
+			}
+		}
+		return bfull;
+	}
 }

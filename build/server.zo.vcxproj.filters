@@ -219,16 +219,22 @@
     <ClInclude Include="..\zo\Model\Object\ValidateName.h">
       <Filter>zo\Model\Object</Filter>
     </ClInclude>
-    <ClInclude Include="..\zo\Packet\Handler\User\UserEnterRoom.h">
-      <Filter>zo\Packet\Handler\User</Filter>
-    </ClInclude>
     <ClInclude Include="..\zo\Packet\Handler\User\UserInfo.h">
       <Filter>zo\Packet\Handler\User</Filter>
     </ClInclude>
     <ClInclude Include="..\zo\Packet\Handler\User\UserRoomInfo.h">
       <Filter>zo\Packet\Handler\User</Filter>
     </ClInclude>
+    <ClInclude Include="..\zo\Game\Interface\TableCreator.h">
+      <Filter>zo\Game\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\BaseModel\ServerModule.h">
+      <Filter>zo\Model\BaseModel</Filter>
+    </ClInclude>
     <ClInclude Include="..\zo\Packet\Handler\Hall\UserEnterRoom.h">
+      <Filter>zo\Packet\Handler\Hall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Packet\Handler\Hall\UserEnterTable.h">
       <Filter>zo\Packet\Handler\Hall</Filter>
     </ClInclude>
     <ClInclude Include="..\zo\Packet\Handler\Hall\UserRoomInfo.h">
@@ -237,11 +243,8 @@
     <ClInclude Include="..\zo\Packet\Handler\Hall\UserRoomList.h">
       <Filter>zo\Packet\Handler\Hall</Filter>
     </ClInclude>
-    <ClInclude Include="..\zo\Game\Interface\TableCreator.h">
-      <Filter>zo\Game\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\zo\Model\BaseModel\ServerModule.h">
-      <Filter>zo\Model\BaseModel</Filter>
+    <ClInclude Include="..\zo\Packet\Handler\Hall\UserPlayNow.h">
+      <Filter>zo\Packet\Handler\Hall</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

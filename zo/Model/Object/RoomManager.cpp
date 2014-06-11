@@ -37,7 +37,7 @@ namespace Object
 		}
 	}
 
-	bool RoomManager::playerEnterRoom(UInt8 r, User *user)
+	bool RoomManager::playerEnterRoom(User *user, UInt8 r)
 	{
 		if ((size_t)r < _vecRooms.size())
 		{
@@ -51,7 +51,7 @@ namespace Object
 		return false;
 	}
 
-	bool RoomManager::playerLeaveRoom(UInt8 r, User *user)
+	bool RoomManager::playerLeaveRoom(User *user, UInt8 r)
 	{
 		if ((size_t)r < _vecRooms.size())
 		{

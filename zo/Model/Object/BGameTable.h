@@ -41,8 +41,16 @@ public:
 	BGameTable(char cTableID, RoomPlayerManager* rpm);
 	~BGameTable(void) {}
 
+public:
+	//0xFF random chair
+	bool onUserEnter(User *u, UInt8 &nchair);
+	bool isTableFull();
+
+
+	//**********************
 	//IBDTimerModule
 	virtual void onTimer(void* pParam) {}
+
 
 	//ICoreTable
 	virtual int getGameType() { return 0;}

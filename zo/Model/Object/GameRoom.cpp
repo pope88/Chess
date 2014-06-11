@@ -62,4 +62,23 @@ namespace Object
 		}
 		return NULL;
 	}
+
+	bool GameRoom::enterTable(User *u, UInt32 tableNo, UInt8 nchair)
+	{
+		if (u == NULL)
+		{
+			return false;
+		}
+		BGameTable *pt = NULL;
+		if (tableNo < _arrGameTable.size())
+		{
+			 pt = _arrGameTable[tableNo];
+		}
+		if (pt == NULL)
+		{
+			return false;
+		}
+		pt->onUserEnter(u, nchair);
+		return true;
+	}
 }

@@ -13,8 +13,8 @@ namespace Object
 	public:
 		void init();
 		GameRoom* getGameRoom(int roomId);
-		bool playerEnterRoom(UInt8 r, User *user);
-		bool playerLeaveRoom(UInt8 r, User *user);
+		bool playerEnterRoom( User *user, UInt8 r = 0);
+		bool playerLeaveRoom( User *user, UInt8 r = 0);
 		void heartBit();
 		void breakAllGame();
 		void sendRoomList(User *user);

@@ -2,6 +2,7 @@
 #define _TABLEMANAGER_H_
 #include "BGameTable.h"
 #include "RoomPlayerManager.h"
+#include "User.h"
 
 namespace Object
 {
@@ -18,6 +19,7 @@ namespace Object
 		BGameTable* findCouldEnterTable(int &nChair) { return NULL;}
 		bool enterUser(User *u) { return _roomPlayers->insertPlayer(u);}
 		bool outUser(User *u) { return _roomPlayers->removePlayer(u); }
+		bool enterTable(User *u, UInt32 tableNo = 0xFFFFFFFF, UInt8 nchair = 0xFF);
 		void onHeartBit() { _roomPlayers->onHeartBit(); }
 		void breakAllGame();
 	private:

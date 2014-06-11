@@ -147,9 +147,10 @@
     <ClInclude Include="..\zo\Packet\Handler\Basic\UserLogout.h" />
     <ClInclude Include="..\zo\Packet\Handler\Basic\UserRegister.h" />
     <ClInclude Include="..\zo\Packet\Handler\Hall\UserEnterRoom.h" />
+    <ClInclude Include="..\zo\Packet\Handler\Hall\UserEnterTable.h" />
+    <ClInclude Include="..\zo\Packet\Handler\Hall\UserPlayNow.h" />
     <ClInclude Include="..\zo\Packet\Handler\Hall\UserRoomInfo.h" />
     <ClInclude Include="..\zo\Packet\Handler\Hall\UserRoomList.h" />
-    <ClInclude Include="..\zo\Packet\Handler\User\UserEnterRoom.h" />
     <ClInclude Include="..\zo\Packet\Handler\User\UserInfo.h" />
     <ClInclude Include="..\zo\Packet\Handler\User\UserRoomInfo.h" />
     <ClInclude Include="..\zo\Script\ActionLua.h" />
