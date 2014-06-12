@@ -9,6 +9,7 @@ namespace Object
 
 	BGameTable::BGameTable(char cTableID, RoomPlayerManager* rpm):m_TableId(cTableID), pPlayerManager(rpm), m_MaxPlyNum(zoGlobal.playerNum()), m_cCurPlyNum(0), m_nTimerID(0), m_cMasterChairID(0), m_nBaseScore(0), m_nKickChairID(0), m_nKickTimerID(0), m_nStatus(0)
 	{
+		m_MaxPlyNum = zoGlobal.playerNum();
 		m_vecPlayers.resize(m_MaxPlyNum);
 		m_vecVisitors.resize(m_MaxPlyNum);
 		for (size_t i = 0; i < m_vecPlayers.size(); ++i)
@@ -146,6 +147,11 @@ namespace Object
 	bool BGameTable::isTableFull()
 	{
 		bool bfull = true;
+		if (m_vecPlayers.empty())
+		{
+			bfull = false;
+			return bfull;
+		}
 		for (size_t i = 0; i < m_vecPlayers.size(); ++i)
 		{
 			if (m_vecPlayers[i] == NULL)

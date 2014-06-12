@@ -2,6 +2,7 @@
 #include "GameRoom.h"
 #include "ZoGlobal.h"
 #include "BGameTable.h"
+
 #include <cassert>
 namespace Object
 {
@@ -81,4 +82,16 @@ namespace Object
 		pt->onUserEnter(u, nchair);
 		return true;
 	}
+
+	bool GameRoom::enterUser(User *u)
+	{ 
+		u->setInRoom(this);
+		return _roomPlayers->insertPlayer(u);	
+	}
+
+	bool GameRoom::outUser(User *u)
+	{ 
+		return _roomPlayers->removePlayer(u); 
+		u->setInRoom(NULL);
+}
 }

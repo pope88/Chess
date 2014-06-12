@@ -17,8 +17,8 @@ namespace Object
 		BGameTable* findEmptyTable(Int8 &nChair);
 		BGameTable* findWaitingTable(UInt32 &nChair);
 		BGameTable* findCouldEnterTable(int &nChair) { return NULL;}
-		bool enterUser(User *u) { return _roomPlayers->insertPlayer(u);}
-		bool outUser(User *u) { return _roomPlayers->removePlayer(u); }
+		bool enterUser(User *u); 
+		bool outUser(User *u); 
 		bool enterTable(User *u, UInt32 tableNo = 0xFFFFFFFF, UInt8 nchair = 0xFF);
 		void onHeartBit() { _roomPlayers->onHeartBit(); }
 		void breakAllGame();

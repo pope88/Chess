@@ -6,9 +6,7 @@
 #include "../BaseModel/Mplayer.h"
 #include "../BaseModel/MSession.h"
 #include "../BaseModel/Mtable.h"
-#include "GameRoom.h"
 #include "BGameTable.h"
-
 
 namespace Object
 {
@@ -17,6 +15,7 @@ namespace Object
 		PlayerBuffNum = 1,
 	};
 
+class GameRoom;
 class User;
 #define PThisPtr static_cast< ::Object::User* >(this)
 
@@ -153,10 +152,6 @@ class User;
 	protected:
 		DB_PROP_UPDATE_COND(id, _id);
 	private:
-		GameRoom *_pInRoom;
-		BGameTable *_pInTable;
-		UInt8 _pInChair;
-	private:
 		UInt8 _avatarVer;
 		UInt8 _cloth;
 		mutable UInt32 _buff[PlayerBuffNum];
@@ -175,6 +170,10 @@ class User;
 		UInt16 _dayWinRound;      //today win round
 		UInt32 _gameStartTime;    //the round game start time
 		UInt16 _todayGameTime;    //the time count
+	private:
+		GameRoom *_pInRoom;
+		BGameTable *_pInTable;
+		UInt8 _pInChair;
 	};
 }
 
