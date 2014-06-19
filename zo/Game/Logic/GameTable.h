@@ -35,7 +35,7 @@ public:
 	//virtual void BindCoreTable2Table(ICoreTable* pTable);
 	virtual void release() {}
 	virtual void onTimer(void* pParam) {}
-	virtual void onGameStart() {}
+	virtual void onGameStart();
 	virtual void onEndGame() {}
 	virtual void onUserArrangeLeave(Mplayer* pPlayer) {}
 	virtual void onUserForceLeave(Mplayer* pPlayer) {}
@@ -49,7 +49,7 @@ public:
 	Player* getPlayer(int nChairID) {}
 
 	//发送初始17张牌
-	void Dealing() {}
+	void Dealing();
 
 	//叫分流程
 	void callScore() {}
@@ -88,7 +88,7 @@ public:
 	void RoundEnd(Player* pPlayer) {}
 	
 	//开始游戏
-	void NewRound() {}
+	void NewRound();
 
 	//获取游戏数据，旁观、断线重连用
 	void GetCompleteData(Player *pPlayer) {}

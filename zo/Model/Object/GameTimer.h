@@ -3,6 +3,7 @@
 #include "Model/Data/TimerData.h"
 #include "System/Timer.h"
 
+#define GAMETIMER (Object::gameTimer)
 namespace Object
 {
 	class GameTimer : protected System::Timer 

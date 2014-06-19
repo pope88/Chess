@@ -54,16 +54,17 @@ namespace Object
 		{
 			if (isCanJoin(user, chairId, res))
 			{
+				canStartGame();
 			}
 			else
 			{
-
 			}
 		}
 		else
 		{
 			if (isCanJoin(user, chairId, res))
 			{
+				canStartGame();
 			}
 			else
 			{
