@@ -1,6 +1,6 @@
 #include "Config.h"
 #include "GameTable.h"
-#include "../../Model/Object/GameTimer.h"
+
 
 void GameTable::onGameStart()
 {
@@ -25,6 +25,23 @@ void GameTable::NewRound()
 void GameTable::Dealing()
 {
 	//timer
-	Object::gameTimer.addPresetTimer(Data::Define::Chess, this, 1000);
-	//GAMETIMER.addPresetTimer(Data::Define::Chess, this, 1000);
+	this->addInterValTimer(eANIMATE_EVENT, 100);
+}
+
+void GameTable::onTimer()
+{
+	switch (timerId())
+	{
+	case eANIMATE_EVENT:
+		{
+			printf("eANIMATE_EVENT");
+		}
+		break;
+	case eCALLSCORE_EVENT:
+		{
+		}
+		break;
+	default:
+		break;
+	}
 }

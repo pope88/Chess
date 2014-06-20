@@ -55,8 +55,9 @@ HANDLER_CLASS_INIT(UserRegister, 0x01)
 	}
 	//Object::Hero *targetH;
 
-	targetP->sessionId(sessionId, gatewayId);
+	//targetP->sessionId(sessionId, gatewayId);
 	targetP->setRemoteAddr(remoteAddr);
+	
 	//targetP->setdailyCP(TimeUtil::ThisDay(), false);
 	//if (pkt.HasWallow())
 	//{

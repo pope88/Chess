@@ -24,7 +24,8 @@ namespace Object
 		void uninit();
 		void onDailyCheck();
 		void onTickCheck();
-		void addPresetTimer(int typeId, void * key = NULL, UInt32 = 0);
+		void addInterValTimer(int typeId, void *key, UInt32 interval, bool once = false, UInt32 param = 0, UInt8 wd = 0 );
+		void removeInterValTimer(int typeId, void *key);
 		void addPresetTimer(const Data::TimerData::SingleTimer&, void * key = NULL, UInt32 = 0);
 	protected:
 		virtual void onTimer(const void *timer, void *data);

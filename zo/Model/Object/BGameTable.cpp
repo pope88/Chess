@@ -80,7 +80,7 @@ namespace Object
 		//CheckReadyStatus();
 		UInt8 mPlayerNum = 0;
 		UInt8 mReadyNum = 0;
-		if(zoGlobal.getReadyMode() == ZoGlobal::MODETHREE)
+		if(zoGlobal.getReadyMode() == 0)
 		{
 			for(size_t i = 0; i < m_vecPlayers.size(); ++i)
 			{
@@ -89,7 +89,7 @@ namespace Object
 					++mPlayerNum;
 				}
 			}
-			if (mPlayerNum < 4)
+			if (mPlayerNum < 1)
 			{
 				return false;
 			}

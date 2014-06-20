@@ -79,7 +79,11 @@ namespace Object
 		{
 			return false;
 		}
-		pt->onUserEnter(u, nchair);
+		if (pt->onUserEnter(u, nchair))
+		{
+			pt->canStartGame();
+		}
+		
 		return true;
 	}
 
@@ -93,5 +97,6 @@ namespace Object
 	{ 
 		return _roomPlayers->removePlayer(u); 
 		u->setInRoom(NULL);
-}
+	}
+
 }

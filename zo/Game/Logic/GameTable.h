@@ -5,10 +5,11 @@
 #include "Player.h"
 #include "SsuObject.h"
 #include "Poke.h"
-class GameTable : public ITable
+#include "../../Model/Object/TimerBase.h"
+class GameTable : public ITable, public TimerBase
 {
 	public:
-	enum TIMER_EVENT
+	enum TIMER_ID
 	{
 		eANIMATE_EVENT = 1,
 		eCALLSCORE_EVENT,
@@ -34,8 +35,11 @@ public:
 	~GameTable() {}
 	//virtual void BindCoreTable2Table(ICoreTable* pTable);
 	virtual void release() {}
-	virtual void onTimer(void* pParam) {}
+	virtual void onTimer();
 	virtual void onGameStart();
+
+
+
 	virtual void onEndGame() {}
 	virtual void onUserArrangeLeave(Mplayer* pPlayer) {}
 	virtual void onUserForceLeave(Mplayer* pPlayer) {}

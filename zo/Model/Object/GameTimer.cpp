@@ -29,6 +29,16 @@ namespace Object
 		userManager.foreachOnline([](User *user)->bool { user->shutdown(); return true;});
 	}
 
+   void GameTimer::addInterValTimer(int typeId, void *key, UInt32 interval, bool once, UInt32 param, UInt8 wd )
+   {
+	   addTimer( typeId, key, interval, once, param, wd);
+   }
+
+   void GameTimer::removeInterValTimer(int typeId, void *key)
+   {
+	   removeTimer(typeId, key);
+   }
+
 	void GameTimer::addPresetTimer( const Data::TimerData::SingleTimer& st, void *key, UInt32 firstInterval)
 	{
 		if (st.param2 != 0)
@@ -145,7 +155,13 @@ namespace Object
 			//userManager.logOnline();
 			break;
 		case Chess:
-			((TimerBase*)td->key)->onTimer();
+			{
+				TimerBase *tb = dynamic_cast<TimerBase*>((TimerBase*)td->key);
+				if ( tb!= NULL)
+				{
+					((TimerBase*)tb)->onTimer();
+				}	
+			}
 			break;
 		default:
 			break;

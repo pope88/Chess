@@ -8,5 +8,6 @@ void ZoGlobal::init()
 	_roomNum = 6;
 	_tableNum = 100;
 	_playerNum = 4;
+	_readyMode = 0;
 
 }

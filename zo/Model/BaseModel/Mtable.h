@@ -71,7 +71,6 @@ public:
 	virtual ~ITable(){}
 
 	virtual void release() = 0;
-	virtual void onTimer(void* pParam) = 0;
 	virtual void onGameStart() = 0;
 	virtual void onEndGame() = 0;
 	virtual void onUserJoinVisitor(Mplayer* pPlayer) = 0;
