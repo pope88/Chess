@@ -4,6 +4,8 @@
 #include "Model/Object/DBObject.h"
 #include "SsuObject.h"
 #include "../Common/PlayCard.h"
+#include "../Common/Poker.h"
+
 class Player : public IPlayer
 {
 public:
@@ -69,15 +71,47 @@ public:
 public:
 	Mplayer* m_pCorePlayer;		//系统接口
 	//BGameTable* m_pGameTable;		//系统接口
-	CPlayCards m_PlayCard;			//牌类规则
-	int m_nStatus;					//比赛状态
-	int m_nCallScore;				//叫分情况,0:没叫,不能抢地主
-	bool m_bGiveUp;					//是否过牌
-	bool m_bShowCard;				//是否亮牌打
-	bool m_bAuto;					//是否托管
-	int m_nPutCount;				//出牌次数
-	int m_nTimeOut;					//超时出牌次数
-	std::vector<CCardsType> m_vecPutCard;//打出的牌型
-	std::vector<Card> m_vecHandCard;	//初始化的手牌
+	UInt8 m_nStatus;				//比赛状态
+	UInt8 mPlayerStatus;            //玩家状态
+public:
+	Poker mPoker;
+
 };
+
+namespace std
+{
+	template<>
+	struct less <Player>
+	{
+		bool operator()(const Player& lhs, const Player& rhs)
+		{
+			int nType = lhs.mPoker.getCardType();
+			int nRhsType = rhs.mPoker.getCardType();
+			std::vector<CCard> lhsSortVecCards;
+			std::vector<CCard> rhsSortVecCards;
+			lhs.mPoker.getSortVecCards(lhsSortVecCards);
+			rhs.mPoker.getSortVecCards(rhsSortVecCards);
+			if(nType == nRhsType)
+			{
+				if (nType == 9 || nType == 5 )
+				{
+					return lhsSortVecCards[0].m_nValue > rhsSortVecCards[0].m_nValue;
+				}
+				else
+				{
+					for (size_t i = 0; i < lhsSortVecCards.size(); ++i)
+					{
+						if (lhsSortVecCards[i].m_nValue != rhsSortVecCards[i].m_nValue)
+						{
+							return lhsSortVecCards[i].m_nValue > rhsSortVecCards[i].m_nValue;
+						}
+					}
+					return false;
+				}
+			}
+			return nType > nRhsType;
+		}
+	};
+}
+
 #endif

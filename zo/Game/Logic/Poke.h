@@ -23,16 +23,11 @@ public:
 	Card& GetCard(int nPos);
 	Card& GetCard();
 public:
-	std::vector<Card> m_AllCards;			//全副牌54张
-	std::vector<Card> m_cLordCard;			//地主补的三张牌
-	int m_nRanCardPos;					//随机牌的位置
-	Card m_cRanCard;					//随机牌
-	int m_nDefaultLord;					//默认地主
-	int m_nCurrentLord;					//当前地主
-	int m_nBombCounter;					//计算炸弹个数
-	int m_nNextPlayer;					//下一个出牌玩家
-	int m_nDecideLordRound;				//决定地主计数
-	bool m_bSendCardOK[3];				//几个玩家是否发牌完毕
+	std::vector<Card> m_AllCards;	    //全副牌54张
+	UInt8 _bigBlind;                    //大盲注
+	UInt32 _totalChips;                 //总筹码
+	UInt32 _baseChips;                  //基础筹码
+	UInt8 _finishNum;				//几个玩家是否发牌完毕
 };
 
 #endif // !

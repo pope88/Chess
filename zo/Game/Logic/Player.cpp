@@ -12,15 +12,8 @@ Player::~Player()
 
 void Player::newRound()
 {
-	m_PlayCard.New();
+	mPoker.newRound();
 	m_nStatus = PS_NONE;
-	m_nCallScore = 0;
-	m_bGiveUp = false;
-	m_bShowCard = false;
-	m_bAuto = false;
-	m_nPutCount = 0;
-	m_nTimeOut = 0;
-	m_vecPutCard.clear();
 }
 
 void Player::getCard(Card& cCard)

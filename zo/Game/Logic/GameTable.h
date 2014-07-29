@@ -70,23 +70,13 @@ public:
 	//客户端回应发牌完毕
 	void cliSendCardAck(const ::ssu::Object &ack, Player* pPlayer) {}
 
-	//客户端回应叫分结果
-	void cliCallScoreAck(const ::ssu::Object &ack, Player* pPlayer) {}
 
-	//客户端回应抢地主回应
-	void cliRobLordAck(const ::ssu::Object &ack, Player* pPlayer) {}
+	void cliPickCardAck(const ::ssu::Object &ack, Player* pPlayer) {}
 
-	//客户端回应亮牌
-	void CliShowCardAck(const ::ssu::Object &ack, Player* pPlayer) {}
-
-	//客户端回应出牌
-	void CliPlayCardAck(const ::ssu::Object &ack, Player* pPlayer){}
+	void CliOperatorAck(const ::ssu::Object &ack, Player* pPlayer) {}
 
 	//发送通用消息
 	void SendCommonCmd(int nOp, int nChairID = -1) {}
-
-	//发送倍数信息
-	void SendDoubleInfo() {}
 
 	//游戏结束
 	void RoundEnd(Player* pPlayer) {}
@@ -110,6 +100,8 @@ public:
 		os << packet;
 		NotifyRoom(os.GetData(), os.GetLength(), nType, pExceptPlayer);
 	}	
+public:
+	void showPlayerStatus();
 private:
 	//创建一个定时器
 	void StartTimer(char cChair,int nEvent) {}
@@ -146,15 +138,20 @@ private:
 public:
 	//ICoreTable* m_pCoreTable;					//系统接口
 	Poke m_Poke;								//牌
-	int m_nBaseScore;							//底分
-	int m_nWaitOpChairID;						//等待操作的用户位置号
-	int m_nSerialID;							//消息序列，确保服务器与客户端消息同步
-	bool m_bRacing;								//桌子是否是比赛状态
-	bool m_bShowCard;							//判断地主是否亮牌打
-	int m_nPutCardsPlayerID;					//当前桌面上出牌最大的玩家
-	int m_nCallScore;							//玩家叫的最大分数
-	int m_nRobDouble;							//抢地主倍数
-	int m_nDouble;								//当前倍数
+	std::vector<CCard> m_vecCommonCards;
+	std::vector<Player> m_vecPoker;
+	UInt8 m_cCurOpChair;         //当前等待操作的位置
+	UInt8 m_cCurOpcode;          //当前等待的操作
+	UInt8 m_nPlyNum;             //开局时玩家总人数
+	bool m_bNewRound;            //是否需要选庄
+	UInt32 m_baseChips;          //游戏底注
+	bool m_littleBlind;          //小盲注
+	bool m_bigBlind;             //大盲注
+	bool m_btimeOut;             //已经超时
+	UInt32 m_limitMoney;         //最低筹码限制
+	UInt8 m_nCommonNum;          //公共牌发牌步骤
+	UInt8 m_nLastBigBlind;       //上一次大盲注
+
 };
 
 #endif
