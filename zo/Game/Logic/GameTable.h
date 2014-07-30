@@ -11,25 +11,24 @@ class GameTable : public ITable, public TimerBase
 	public:
 	enum TIMER_ID
 	{
-		eANIMATE_EVENT = 1,
-		eCALLSCORE_EVENT,
-		eROBLORD_EVENT,
-		ePLAYCARD_EVENT,
-		eSHOWCARD_EVENT,
-
-		eANI_PERIOD = 10 * 1000,
-		eCALL_PERIOD = 10 * 1000,
-		eROB_PERIOD = 10 * 1000,
-		ePLAY_PERIOD = 20 * 1000,
-		eSHOW_PERIOD = 10 * 1000,
+		eBET_EVENT = 1,
+		ePICK_EVENT = 2,
+		eDEALING_EVENT = 3,
+		eCOMMONCARD_EVENT = 4,
+		eCARDFACE_EVENT = 5,
+		ePICK_PERIOD = 30 * 1000,
+		eBET_PERIOD = 15 * 1000,
+		eDEALING_PERIOD = 5 * 1000,
+		eCARDFACE_PERIOD = 2 * 1000,
 	};
 
 	enum 
 	{
-		ePLY_NUM = 3,
 		eALLUSER = 0,
 		eONLYPLAYER = 1,
+		ePLYNUM = 7,
 	};
+
 public:
 	GameTable() {}
 	~GameTable() {}
@@ -37,23 +36,39 @@ public:
 	virtual void release() {}
 	virtual void onTimer();
 	virtual void onGameStart();
+protected:
+	//开始游戏
+	void NewRound(); 
+	//创建一个定时器
+	void startTimer(int nEvent, char cChair);
+	void showPlayerStatus();
+	void deaLing();
+	inline UInt32 getBaseChips() { return m_baseChips; }
+	Player* getBeforePlayerID(UInt8 nChairID);
+	Player* getNextPlayer(UInt8 nChairID);
+	Player* getPlayer(UInt8 nChairID);
+	void SendCompleteData(Player* pPlayer);
+	//通过指定的椅子号取得当前这个椅子上的玩家指针
+	void sendPlayerCard();
+	void onFinishSendAck(Player* p);
+	void sendOperateReq(Player *player, UInt8 playrNum);
+	void autoSendSmallBlind(Player *player);
 
 
-
-	virtual void onEndGame() {}
 	virtual void onUserArrangeLeave(Mplayer* pPlayer) {}
 	virtual void onUserForceLeave(Mplayer* pPlayer) {}
+	virtual void onEndGame() {}
 	virtual void onUserDisconnection(Mplayer* pPlayer) {}
 	virtual void onUserReconnection(Mplayer* pPlayer) {}
 	virtual void onUserJoinVisitor(Mplayer* pPlayer) {}
 	virtual void onUserJoin(Mplayer* pPlayer) {}
 	virtual void onUserLeave(Mplayer* pPlayer) {}
+
+
 public:
-	//通过指定的椅子号取得当前这个椅子上的玩家指针
-	Player* getPlayer(int nChairID) {}
 
 	//发送初始17张牌
-	void Dealing();
+
 
 	//叫分流程
 	void callScore() {}
@@ -80,9 +95,6 @@ public:
 
 	//游戏结束
 	void RoundEnd(Player* pPlayer) {}
-	
-	//开始游戏
-	void NewRound();
 
 	//获取游戏数据，旁观、断线重连用
 	void GetCompleteData(Player *pPlayer) {}
@@ -101,10 +113,9 @@ public:
 		NotifyRoom(os.GetData(), os.GetLength(), nType, pExceptPlayer);
 	}	
 public:
-	void showPlayerStatus();
+	
 private:
-	//创建一个定时器
-	void StartTimer(char cChair,int nEvent) {}
+
 
 	//开始游戏广播
 	void SvrStartGameNot() {}
@@ -145,8 +156,8 @@ public:
 	UInt8 m_nPlyNum;             //开局时玩家总人数
 	bool m_bNewRound;            //是否需要选庄
 	UInt32 m_baseChips;          //游戏底注
-	bool m_littleBlind;          //小盲注
-	bool m_bigBlind;             //大盲注
+	bool m_blittleBlind;          //小盲注
+	bool m_bbigBlind;             //大盲注
 	bool m_btimeOut;             //已经超时
 	UInt32 m_limitMoney;         //最低筹码限制
 	UInt8 m_nCommonNum;          //公共牌发牌步骤

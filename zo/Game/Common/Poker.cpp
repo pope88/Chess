@@ -141,4 +141,5 @@ void Poker::setCards(const std::vector<CCard> &vecCards)
 {
 	mVecCards = vecCards;
 	mVecSortCards = vecCards;
+	sort(mVecSortCards.begin(), mVecSortCards.end(), cardCompare());
 }
