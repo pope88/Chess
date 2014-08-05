@@ -3,21 +3,31 @@
 #include "Model/BaseModel/Mplayer.h"
 #include "Model/Object/DBObject.h"
 #include "SsuObject.h"
-#include "../Common/PlayCard.h"
+//#include "../Common/PlayCard.h"
 #include "../Common/Poker.h"
 
 class Player : public IPlayer
 {
 public:
-	enum PS_GAMESTATE
+	enum PS_PLAYERSTATE
 	{
 		PS_NONE,
 		PS_PLAYER,
 		PS_VISTOR,
+		PS_GIVEUP,
+	};
+	enum DZOP
+	{
+		COMMONPLAYER = (1 << 0),
+		BANKER = (1 << 1),
+		SMALLBLIND = (1 << 2),
+		BIGBLIND = (1 << 3),
 	};
 public:
 	Player();
 	~Player();
+
+	void release();
 
 	//开始新的一轮
 	void newRound();
@@ -26,7 +36,7 @@ public:
 	void getPlayerCards(::ssu::Object &noti, bool bShow);
 
 	//给客户端发牌
-	void getCard(Card& cCard);
+	//void getCard(Card& cCard);
 	
 	//玩家出牌
 	bool doPlayCard(Player* pPutPlayer);
@@ -36,8 +46,12 @@ public:
 	int getMoney() { return m_pCorePlayer->getMoney(); }
 
 	//设置和获取玩家状态
-	int	getStatus(){ return m_nStatus; }
-	void setStatus(int nStatus) { m_nStatus = nStatus; }
+	UInt8 getStatus(){ return m_nStatus; }
+	void setStatus(UInt8 nStatus) { m_nStatus = nStatus; }
+
+	//游戏状态
+	UInt8 getPlayerStatus() { return mPlayerStatus; }
+	void setPlayerStatus(UInt8 mStatus) { mPlayerStatus = mStatus; }
 
 	//获取玩家座位号
 	int	getChairID() { return m_pCorePlayer->getChairId(); }
@@ -48,7 +62,7 @@ public:
 	//以下是系统接口函数
 	Mplayer* getCorePlayer() { return m_pCorePlayer; }
 	//void setGameTable(BGameTable* pTable) { m_pGameTable = pTable; }
-	virtual void release();
+	//virtual void release();
 	//virtual void bindCorePlayer2Player(Mplayer* pCorePlayer);
 	//virtual void ProcessPacket(const char* pData, int nLength);
 	//template<class T>
@@ -66,13 +80,16 @@ public:
 	//	if(m_pCorePlayer)
 	//		m_pCorePlayer->Send(pData, nLength);
 	//}
+	void onPacketOperate(const ::ssu::Object &ack);
+	void onPacketPickCard(const ::ssu::Object &ack);
+	void onPacketFinishSendCard(const ::ssu::Object &ack);
 public:
 	//以下是网络协议处理函数
-public:
-	Mplayer* m_pCorePlayer;		//系统接口
+private:
+	Mplayer* m_pCorePlayer;		    //系统接口
 	//BGameTable* m_pGameTable;		//系统接口
-	UInt8 m_nStatus;				//比赛状态
-	UInt8 mPlayerStatus;            //玩家状态
+	UInt8 m_nStatus;				//玩家状态
+	UInt8 mPlayerStatus;            //游戏状态
 public:
 	Poker mPoker;
 

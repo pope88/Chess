@@ -6,6 +6,7 @@
 #include "SsuObject.h"
 #include "Poke.h"
 #include "../../Model/Object/TimerBase.h"
+#include "../../Packet/Builder.h"
 class GameTable : public ITable, public TimerBase
 {
 	public:
@@ -29,13 +30,41 @@ class GameTable : public ITable, public TimerBase
 		ePLYNUM = 7,
 	};
 
+	enum DZPKOP
+	{
+		GIVEUP = (1 << 0),
+		ADDCHIPS = (1 << 1),
+		FOLLOWCHIPS = (1 << 2),
+		SMALLBLIND = (1 << 3),
+		BIGBLIND = (1 << 4),
+	};
+
 public:
 	GameTable() {}
 	~GameTable() {}
 	//virtual void BindCoreTable2Table(ICoreTable* pTable);
-	virtual void release() {}
+	virtual void release() { delete this; }
 	virtual void onTimer();
 	virtual void onGameStart();
+	/**
+	   @brief 房间内广播消息
+	   @param packet 数据包 
+	   @param nType 0全房间广播, 1玩家广播, 2全体旁观广播
+	   @param pExceptPlayer 排除不发玩家
+	*/
+	
+	void NotifyRoom(Packet::Builder& pb, int nType = 0, Player* pExceptPlayer = NULL)
+	{
+		for (UInt8 i = 0; i < ePLYNUM; ++i)
+		{
+			Mplayer *player = m_pCoreTable->getCorePlayer(i);
+			if (!player || pExceptPlayer->getCorePlayer() == player)
+			{
+				continue;
+			}
+			pb.send(player);
+		}
+	}	
 protected:
 	//开始游戏
 	void NewRound(); 
@@ -44,15 +73,17 @@ protected:
 	void showPlayerStatus();
 	void deaLing();
 	inline UInt32 getBaseChips() { return m_baseChips; }
-	Player* getBeforePlayerID(UInt8 nChairID);
+	UInt8 getBeforePlayerID(UInt8 nChairID);
 	Player* getNextPlayer(UInt8 nChairID);
 	Player* getPlayer(UInt8 nChairID);
+	Player* getAfterPlayer(UInt8 nChairID);
 	void SendCompleteData(Player* pPlayer);
 	//通过指定的椅子号取得当前这个椅子上的玩家指针
 	void sendPlayerCard();
 	void onFinishSendAck(Player* p);
-	void sendOperateReq(Player *player, UInt8 playrNum);
+	void sendOperateReq(Player *player, UInt8 nPlayerNum);
 	void autoSendSmallBlind(Player *player);
+	void autoSendBigBlind(Player *player);
 
 
 	virtual void onUserArrangeLeave(Mplayer* pPlayer) {}
@@ -99,19 +130,6 @@ public:
 	//获取游戏数据，旁观、断线重连用
 	void GetCompleteData(Player *pPlayer) {}
 
-	/**
-	   @brief 房间内广播消息
-	   @param packet 数据包 
-	   @param nType 0全房间广播, 1玩家广播, 2全体旁观广播
-	   @param pExceptPlayer 排除不发玩家
-	*/
-	template<class T>
-	void NotifyRoom(const T& packet, int nType = 0, Player* pExceptPlayer = NULL)
-	{
-		COutputStream os;
-		os << packet;
-		NotifyRoom(os.GetData(), os.GetLength(), nType, pExceptPlayer);
-	}	
 public:
 	
 private:
@@ -144,20 +162,20 @@ private:
 
 	//玩家出的牌
 	void SendPutCards(Player* pPlayer, bool bAll = false) {}
-private:
-	void NotifyRoom(const char* pData, int nLength, int nType, Player* pExceptPlayer) {}
+
 public:
-	//ICoreTable* m_pCoreTable;					//系统接口
+	Mtable* m_pCoreTable;					//系统接口
 	Poke m_Poke;								//牌
-	std::vector<CCard> m_vecCommonCards;
-	std::vector<Player> m_vecPoker;
+	bool m_bRacing;                             //比赛状态
+	std::vector<CCard> m_vecCommonCards;        //公共牌
+	std::vector<Player> m_vecPoker;             //游戏中的玩家
 	UInt8 m_cCurOpChair;         //当前等待操作的位置
 	UInt8 m_cCurOpcode;          //当前等待的操作
 	UInt8 m_nPlyNum;             //开局时玩家总人数
 	bool m_bNewRound;            //是否需要选庄
 	UInt32 m_baseChips;          //游戏底注
-	bool m_blittleBlind;          //小盲注
-	bool m_bbigBlind;             //大盲注
+	bool m_blittleBlind;         //小盲注已下
+	bool m_bbigBlind;            //大盲注已下
 	bool m_btimeOut;             //已经超时
 	UInt32 m_limitMoney;         //最低筹码限制
 	UInt8 m_nCommonNum;          //公共牌发牌步骤

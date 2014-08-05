@@ -9,11 +9,6 @@ void Poker::newRound()
 	mVecTotalCards.clear();
 }
 
-int Poker::getCardType()
-{
-	return 0;
-}
-
 void Poker::sortPlayerCards(std::vector<CCard> &vecSortCrads)
 {
 	std::vector<CCard> vecTemp = vecSortCrads;
@@ -82,7 +77,7 @@ int Poker::getCardType()
 		}
 	}
 
-	for (int i = 0; i < 16; ++i)
+	for (int i = 3; i < 16; ++i)
 	{
 		if (mScanTable[i] == 1)
 			++mFirst;

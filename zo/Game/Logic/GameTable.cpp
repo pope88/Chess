@@ -2,7 +2,7 @@
 #include "GameTable.h"
 
 
-GameTable::GameTable():m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_blittleBlind(false), m_bbigBlind(false), m_btimeOut(false), m_limitMoney(0), m_nCommonNum(0), m_nLastBigBlind(0)
+GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_blittleBlind(false), m_bbigBlind(false), m_btimeOut(false), m_limitMoney(0), m_nCommonNum(0), m_nLastBigBlind(0)
 {
 
 }
@@ -68,10 +68,72 @@ void GameTable::NewRound()
 
 }
 
+void GameTable::sendOperateReq(Player *prePlayer, UInt8 nPlayerNum)
+{
+	/*
+	Player *player = NULL;
+	if (prePlayer  == NULL)
+	{
+		return;
+	}
+	player  = prePlayer;
+	if (nPlayerNum == 1) //处理小盲注
+	{
+		autoSendSmallBlind(player);
+	}
+	else if(m_nPlyNum == 2) //处理大盲注
+	{
+		autoSendBigBlind(player);
+	}
+	else if(m_nPlyNum == 3)
+	{
+		pt_dz_operator_req req;
+		req.opcode = dz_operate_req;
+		req.cChairID = player->getChairID();
+		req.nOpcode = 0;
+		req.nCurrentChips = m_Poke.getBaseChips() - player->mPoker.getCurrentChips();
+		req.nBaseChip = m_Poke.getBaseChips();
+
+		if (player->mPoker.isGiveUp())
+		{
+			return;
+		}
+		else if (req.nCurrentChips > player->getGameMoney() - player->mPoker.getChips())
+		{
+			pt_dz_operate_ack ack;
+			ack.nOpcode = GIVEUP;
+			ack.nSerialID = m_nSerialID;
+			OnOperateAck(pPlayer, ack,true);
+		}
+		else 
+		{
+			if (player->getGameMoney() - player->mPoker.getChips() > req.nCurrentChips)
+			{
+				req.nOpcode |= ADDCHIPS;
+			}
+		}
+		req.nOpcode |= FOLLOWCHIPS;
+		req.nOpcode |= GIVEUP;
+		req.send(player);
+
+		m_cCurOpChair = player->getChairID();
+		m_cCurOpcode = req.nOpcode;
+		if (m_cCurOpcode & ADDCHIPS || m_cCurOpcode & FOLLOWCHIPS || m_cCurOpcode & GIVEUP )
+		{
+			m_cCurOpcode |= ADDCHIPS;
+			m_cCurOpcode |= FOLLOWCHIPS;
+			m_cCurOpcode |= GIVEUP;
+		}
+		m_pCoreTable->removeTimer();
+		startTimer(eBET_EVENT, m_cCurOpChair);
+	}
+	*/
+}
+
 void GameTable::showPlayerStatus()
 {
-	pt_dz_clearstatus_not noti1;  //通知清空所有玩家状态，重新刷新
-	noti1.opcode = dz_clearstatus_not;
+	//pt_dz_clearstatus_not noti1;  //通知清空所有玩家状态，重新刷新
+	//noti1.opcode = dz_clearstatus_not;
 	NotifyRoom(noti1);
 
 	int nChair = -1;
@@ -116,20 +178,20 @@ void GameTable::showPlayerStatus()
 			continue;
 		}	
 
-		pt_dz_status_not noti;
-		noti.opcode = dz_status_not;
-		noti.cChairID = nChair;
+	//	pt_dz_status_not noti;
+	//	noti.opcode = dz_status_not;
+	//	noti.cChairID = nChair;
 		if (nNum == 2)
 		{
 			if (nChair == m_Poke.m_nBanker)
 			{
 				pPlayer->setPlayStatus(BANKER|XIAOMANG);
-				noti.nStatus = (BANKER|XIAOMANG);
+			//	noti.nStatus = (BANKER|XIAOMANG);
 			}
 			else if (getBeforePlayerID(nChair) == m_Poke.m_nBanker)
 			{
 				pPlayer->setPlayStatus(DAMANG);
-				noti.nStatus = DAMANG;
+			//	noti.nStatus = DAMANG;
 			}
 		}
 		else
@@ -137,25 +199,25 @@ void GameTable::showPlayerStatus()
 			if (nChair == m_Poke.m_nBanker)
 			{
 				pPlayer->setPlayStatus(BANKER);
-				noti.nStatus = BANKER;
+				//noti.nStatus = BANKER;
 			}
 			else if (getBeforePlayerID(nChair)== m_Poke.m_nBanker)
 			{
-				noti.nStatus = XIAOMANG;
+				//noti.nStatus = XIAOMANG;
 				pPlayer->setPlayStatus(XIAOMANG);
 			}
 			else if (getBeforePlayerID(getBeforePlayerID(nChair)) == m_Poke.m_nBanker)
 			{
-				noti.nStatus = DAMANG;
+				//noti.nStatus = DAMANG;
 				pPlayer->setPlayStatus(DAMANG);
 			}
 			else
 			{
-				noti.nStatus = COMMONPLAYER;
+				//noti.nStatus = COMMONPLAYER;
 				pPlayer->setPlayStatus(COMMONPLAYER);
 			}
 		}
-		NotifyRoom(noti);
+		//NotifyRoom(noti);
 
 		++nChair;
 		nChair = (nChair)%ePLYNUM;
@@ -207,7 +269,7 @@ void GameTable::onTimer()
 	}
 }
 
-int GameTable::getBeforePlayerID(int nChairID)
+UInt8 GameTable::getBeforePlayerID(UInt8 nChairID)
 {
 	int nTemp = 0;
 	for (int i = 1; i <= ePLYNUM+1; ++i)
@@ -236,6 +298,20 @@ Player* GameTable::getNextPlayer(UInt8 nChairID)
 	return NULL;
 }
 
+
+Player* GameTable::getAfterPlayer(UInt8 nChairID)
+{
+	UInt8 chairid  = nChairID;
+	for (UInt8 i = 0; i < ePLYNUM; ++i)
+	{
+		++chairid;
+		UInt8 nNextChair = chairid % ePLYNUM;
+		Player *player = getPlayer(nNextChair);
+		if (player && (player->getStatus() == Player::PS_PLAYER || player->getStatus() == Player::PS_GIVEUP ) )
+			return player;
+	}
+	return NULL;
+}
 
 void GameTable::SendCompleteData(Player* pPlayer)
 {
@@ -284,16 +360,16 @@ void GameTable::sendPlayerCard()
 		}
 	}
 
-	int nChair = m_stMJTable.m_nBanker;
+	int nChair = m_Poke.m_nBanker;
 	--nChair;
 	nChair = (ePLYNUM + nChair)%ePLYNUM;
 	for (int i = 0; i < ePLYNUM; ++i)  //发牌
 	{
-		CPlayer* pPlayer = GetPlayer(nChair);
-		if(pPlayer && pPlayer->GetStatus() == CPlayer::PS_PLAYER)
+		Player* pPlayer = getPlayer(nChair);
+		if(pPlayer && pPlayer->getStatus() == Player::PS_PLAYER)
 		{
-			noti.vecCards = pPlayer->m_stMJUser.m_vecCards;
-			pPlayer->SendPacket(noti);
+			pPlayer->mPoker.getVecCards(noti.vecCards);
+			pPlayer->sendPacket(noti);
 			if (pPlayer->CanWatch())
 			{
 				NotifyVistor(nChair, noti);
@@ -406,6 +482,61 @@ void GameTable::autoSendSmallBlind(Player *player)
 		if (p != NULL)
 		{
 			sendOperateReq(p, 2);
+		}
+	}
+
+	void GameTable::autoSendBigBlind(Player *player)
+	{
+		if(player == NULL)
+			return;
+		bool bHavebigBlind = false;
+		if (m_bbigBlind == false)
+		{
+			if (player->getPlayerStatus() & BIGBLIND == BIGBLIND)
+			{
+				bHavebigBlind = true;
+			}
+			else
+			{
+				showPlayerStatus();
+				for (UInt8 i = 0; i < ePLYNUM; ++i)
+				{
+					Player *pp = getPlayer(i);
+					if (pp && (pp->getStatus() == Player::PS_PLAYER) && (pp->getPlayerStatus() & BIGBLIND == BIGBLIND))
+					{
+						player == pp;
+						bHavebigBlind = true;
+					}
+				}
+			}
+		}
+		else
+		{
+			player->mPoker.setChips(getBaseChips());
+			player->mPoker.setCurrentChips(player->mPoker->getChips());
+			m_Poke.setTotalChips(player->mPoker->getChips());
+			m_Poke.setBaseChips(player->mPoker->getChips());
+			player->mPoker.setPlayerChips(player->mPoker.getPlayerChips() + player->mPoker.getChips());
+			m_bbigBlind = player->mPoker.getChips();
+
+			pt_dz_operate_not noti;
+			noti.opcode = dz_operate_not;
+			noti.nChairID = player->getChairID();
+			noti.nOpcode = BIGBLIND;
+			noti.nChip = player->mPoker.getChips();
+			noti.nUserAmount = player->mPoker.getPlayerChips();
+			noti.nTableAmount = m_Poke.getTotalChips();
+			noti.mLeaveAmount = player->getGameMoney() - player->mPoker.getPlayerChips();
+			NotifyRoom(noti);
+			m_bbigBlind = true;
+
+			m_nLastBigBlind = getBaseChips();
+			
+			Player *pp  = getNextPlayer(player->getChairID());
+			if (pp != NULL)
+			{
+				sendOperateReq(pp, 3);
+			}
 		}
 	}
 

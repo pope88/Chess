@@ -2,7 +2,7 @@
 #include "Player.h"
 
 
-Player::Player() : m_pCorePlayer(NULL), /*m_pGameTable(NULL),*/ m_nStatus(PS_NONE)
+Player::Player() : m_pCorePlayer(NULL), /*m_pGameTable(NULL),*/ m_nStatus(PS_NONE), mPlayerStatus(COMMONPLAYER)
 {
 }
 
@@ -10,16 +10,22 @@ Player::~Player()
 {
 }
 
+void Player::release()
+{
+	delete this;
+}
+
 void Player::newRound()
 {
 	mPoker.newRound();
 	m_nStatus = PS_NONE;
+	mPlayerStatus = COMMONPLAYER;
 }
 
-void Player::getCard(Card& cCard)
-{
-	m_PlayCard.m_cCards.push_back(cCard);
-}
+//void Player::getCard(Card& cCard)
+//{
+//	m_PlayCard.m_cCards.push_back(cCard);
+//}
 
 void Player::getPlayerCards(::ssu::Object &noti, bool bShow)
 {
