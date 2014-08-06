@@ -25,7 +25,7 @@ public:
 	};
 public:
 	Player();
-	~Player();
+	virtual ~Player();
 
 	void release();
 
@@ -61,74 +61,57 @@ public:
 public:
 	//以下是系统接口函数
 	Mplayer* getCorePlayer() { return m_pCorePlayer; }
-	//void setGameTable(BGameTable* pTable) { m_pGameTable = pTable; }
-	//virtual void release();
-	//virtual void bindCorePlayer2Player(Mplayer* pCorePlayer);
-	//virtual void ProcessPacket(const char* pData, int nLength);
-	//template<class T>
-	//void SendPacket(const T& packet)
-	//{
-	//	if(m_pCorePlayer)
-	//	{
-	//		COutputStream os;
-	//		os << packet;
-	//		m_pCorePlayer->Send(os.GetData(), os.GetLength());
-	//	}
-	//}
-	//void Send(const char* pData, int nLength)
-	//{
-	//	if(m_pCorePlayer)
-	//		m_pCorePlayer->Send(pData, nLength);
-	//}
-	void onPacketOperate(const ::ssu::Object &ack);
-	void onPacketPickCard(const ::ssu::Object &ack);
-	void onPacketFinishSendCard(const ::ssu::Object &ack);
+
+	void onPacketOperate(const ::ssu::Object &ack) {}
+	void onPacketPickCard(const ::ssu::Object &ack) {}
+	void onPacketFinishSendCard(const ::ssu::Object &ack) {}
 public:
 	//以下是网络协议处理函数
+public:
+	Poker mPoker;
 private:
 	Mplayer* m_pCorePlayer;		    //系统接口
 	//BGameTable* m_pGameTable;		//系统接口
 	UInt8 m_nStatus;				//玩家状态
 	UInt8 mPlayerStatus;            //游戏状态
-public:
-	Poker mPoker;
+
 
 };
 
-namespace std
-{
-	template<>
-	struct less <Player>
-	{
-		bool operator()(const Player& lhs, const Player& rhs)
-		{
-			int nType = lhs.mPoker.getCardType();
-			int nRhsType = rhs.mPoker.getCardType();
-			std::vector<CCard> lhsSortVecCards;
-			std::vector<CCard> rhsSortVecCards;
-			lhs.mPoker.getSortVecCards(lhsSortVecCards);
-			rhs.mPoker.getSortVecCards(rhsSortVecCards);
-			if(nType == nRhsType)
-			{
-				if (nType == 9 || nType == 5 )
-				{
-					return lhsSortVecCards[0].m_nValue > rhsSortVecCards[0].m_nValue;
-				}
-				else
-				{
-					for (size_t i = 0; i < lhsSortVecCards.size(); ++i)
-					{
-						if (lhsSortVecCards[i].m_nValue != rhsSortVecCards[i].m_nValue)
-						{
-							return lhsSortVecCards[i].m_nValue > rhsSortVecCards[i].m_nValue;
-						}
-					}
-					return false;
-				}
-			}
-			return nType > nRhsType;
-		}
-	};
-}
+//namespace std
+//{
+//	template<>
+//	struct less <Player>
+//	{
+//		bool operator()(const Player& lhs, const Player& rhs)
+//		{
+//			int nType = lhs.mPoker.getCardType();
+//			int nRhsType = rhs.mPoker.getCardType();
+//			std::vector<CCard> lhsSortVecCards;
+//			std::vector<CCard> rhsSortVecCards;
+//			lhs.mPoker.getSortVecCards(lhsSortVecCards);
+//			rhs.mPoker.getSortVecCards(rhsSortVecCards);
+//			if(nType == nRhsType)
+//			{
+//				if (nType == 9 || nType == 5 )
+//				{
+//					return lhsSortVecCards[0].m_nValue > rhsSortVecCards[0].m_nValue;
+//				}
+//				else
+//				{
+//					for (size_t i = 0; i < lhsSortVecCards.size(); ++i)
+//					{
+//						if (lhsSortVecCards[i].m_nValue != rhsSortVecCards[i].m_nValue)
+//						{
+//							return lhsSortVecCards[i].m_nValue > rhsSortVecCards[i].m_nValue;
+//						}
+//					}
+//					return false;
+//				}
+//			}
+//			return nType > nRhsType;
+//		}
+//	};
+//}
 
 #endif

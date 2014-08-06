@@ -484,6 +484,7 @@ void GameTable::autoSendSmallBlind(Player *player)
 			sendOperateReq(p, 2);
 		}
 	}
+}
 
 	void GameTable::autoSendBigBlind(Player *player)
 	{
@@ -513,21 +514,21 @@ void GameTable::autoSendSmallBlind(Player *player)
 		else
 		{
 			player->mPoker.setChips(getBaseChips());
-			player->mPoker.setCurrentChips(player->mPoker->getChips());
-			m_Poke.setTotalChips(player->mPoker->getChips());
-			m_Poke.setBaseChips(player->mPoker->getChips());
+			player->mPoker.setCurrentChips(player->mPoker.getChips());
+			m_Poke.setTotalChips(player->mPoker.getChips());
+			m_Poke.setBaseChips(player->mPoker.getChips());
 			player->mPoker.setPlayerChips(player->mPoker.getPlayerChips() + player->mPoker.getChips());
 			m_bbigBlind = player->mPoker.getChips();
 
-			pt_dz_operate_not noti;
-			noti.opcode = dz_operate_not;
-			noti.nChairID = player->getChairID();
-			noti.nOpcode = BIGBLIND;
-			noti.nChip = player->mPoker.getChips();
-			noti.nUserAmount = player->mPoker.getPlayerChips();
-			noti.nTableAmount = m_Poke.getTotalChips();
-			noti.mLeaveAmount = player->getGameMoney() - player->mPoker.getPlayerChips();
-			NotifyRoom(noti);
+			//pt_dz_operate_not noti;
+			//noti.opcode = dz_operate_not;
+			//noti.nChairID = player->getChairID();
+			//noti.nOpcode = BIGBLIND;
+			//noti.nChip = player->mPoker.getChips();
+			//noti.nUserAmount = player->mPoker.getPlayerChips();
+			//noti.nTableAmount = m_Poke.getTotalChips();
+			//noti.mLeaveAmount = player->getGameMoney() - player->mPoker.getPlayerChips();
+			//NotifyRoom(noti);
 			m_bbigBlind = true;
 
 			m_nLastBigBlind = getBaseChips();
@@ -540,4 +541,4 @@ void GameTable::autoSendSmallBlind(Player *player)
 		}
 	}
 
-}
+

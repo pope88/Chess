@@ -1,15 +1,5 @@
-/*
-CopyRight(c)2006 by Banding,Shanghai, All Right Reserved.
-
-@Date:	        2009/4/15
-@Created:	    15:02
-@Filename: 		Poke.cpp
-@File path:		BDLeyoyoV2\DDZV2\Server 
-@Author:		leiliang
-@Description:	
-*/
-#ifndef _POKER_H_
-#define _POKER_H_
+#ifndef _POKE_H_
+#define _POKE_H_
 #include "../Common/PlayCard.h"
 class Poke
 {

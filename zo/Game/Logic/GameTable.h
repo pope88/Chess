@@ -7,6 +7,7 @@
 #include "Poke.h"
 #include "../../Model/Object/TimerBase.h"
 #include "../../Packet/Builder.h"
+#include "../Common/CCard.h"
 class GameTable : public ITable, public TimerBase
 {
 	public:
