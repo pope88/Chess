@@ -1,5 +1,5 @@
-#ifndef _PLAYER_H_
-#define _PLAYER_H_
+#ifndef _USER_H_
+#define _USER_H_
 #include "Model/Object/DBObject.h"
 #include "System/Serialize.h"
 #include "Model/Item/ItemPack.h"

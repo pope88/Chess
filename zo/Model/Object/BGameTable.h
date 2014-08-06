@@ -1,5 +1,5 @@
-#ifndef _GAMETABLE_H_
-#define _GAMETABLE_H_
+#ifndef _BGAMETABLE_H_
+#define _BGAMETABLE_H_
 #include "../BaseModel/Mplayer.h"
 #include "../BaseModel/Mtable.h"
 #include "RoomManager.h"

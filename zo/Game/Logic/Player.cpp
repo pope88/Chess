@@ -12,7 +12,15 @@ Player::~Player()
 
 void Player::release()
 {
+	m_pGameTable = NULL;
+	m_pCorePlayer = NULL;
 	delete this;
+}
+
+void Player::bindUser2Player(Object::User *user)
+{
+	m_pCorePlayer = user;
+	m_pGameTable = NULL;
 }
 
 void Player::newRound()
@@ -20,6 +28,11 @@ void Player::newRound()
 	mPoker.newRound();
 	m_nStatus = PS_NONE;
 	mPlayerStatus = COMMONPLAYER;
+}
+
+void Player::setGameTable(Object::BGameTable *bt)
+{
+	m_pGameTable = bt;
 }
 
 //void Player::getCard(Card& cCard)
@@ -45,80 +58,13 @@ void Player::getPlayerCards(::ssu::Object &noti, bool bShow)
 	//}
 }
 
-
-bool Player::doPlayCard(Player* pPutPlayer)
+void Player::onPacketOperate(const ::ssu::Object &ack)
 {
-	//此处避免bug
-	if( pPutPlayer != this )	//非首家出牌
+	//if (m_pGameTable->isRacing())
+	if(true)
 	{
-		if(pPutPlayer->m_PlayCard.m_cDiscardingType.m_nTypeNum == 222)
-		{
-			m_PlayCard.lasttype = 222;
-		}
-		else if(pPutPlayer->m_PlayCard.m_cDiscardingType.m_nTypeNum == 2222)
-		{
-			m_PlayCard.lasttype = 2222;
-		}
+		m_pGameTable->onPacketOperate(const ::ssu::Object &ack);
 	}
-
-	int nCompare = 0;
-	if( m_PlayCard.CheckChoosing() == 1 )
-	{
-		//重新给lasttype赋值0
-		m_PlayCard.lasttype = 0;
-		if( pPutPlayer == this )	//首家出牌
-		{
-			nCompare = 1;
-		}
-		else if( pPutPlayer->m_PlayCard.m_cDiscardingType.m_nTypeNum != 0 )
-		{
-			nCompare = m_PlayCard.CompareCards(pPutPlayer->m_PlayCard.m_cDiscardingType);
-			if( nCompare != 1 )
-			{
-				//glog.log("Put: Bomb=%d, num=%d, value=%d, Me: Bomb=%d, num=%d, value=%d",pPutPlayer->m_PlayCard.m_cDiscardingType.m_nTypeBomb,
-				//	pPutPlayer->m_PlayCard.m_cDiscardingType.m_nTypeNum, pPutPlayer->m_PlayCard.m_cDiscardingType.m_nTypeValue,m_PlayCard.m_cDiscardingType.m_nTypeBomb,m_PlayCard.m_cDiscardingType.m_nTypeNum, m_PlayCard.m_cDiscardingType.m_nTypeValue);
-			}
-		}
-
-		if( nCompare != 1 )
-		{
-			return false;
-		}
-	}
-	else
-	{ 
-		return false;
-	}
-
-
-	//如果出的是炸弹
-	if(m_PlayCard.m_cDiscardingType.m_nTypeNum == 4)
-	{
-		//m_pGameTable->m_Poke.m_nBombCounter++;
-		//m_pGameTable->m_nDouble *= 2;
-		//m_pGameTable->SendDoubleInfo();
-	}
-
-	//减去玩家出的牌
-	if (m_PlayCard.trueCards.size() >0 )
-	{
-		m_PlayCard.EraseCards(m_PlayCard.trueCards);      //删除确实应该删除的牌
-	}
-	else
-	{
-		m_PlayCard.EraseCards(m_PlayCard.m_cChoosingCards);
-	}
-
-
-	return true;
-}
-
-
-void Player::release()
-{
-	//m_pGameTable = NULL;
-	m_pCorePlayer = NULL;
-	delete this;
 }
 
 

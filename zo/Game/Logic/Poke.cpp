@@ -2,7 +2,7 @@
 #include "Poke.h"
 #include "GameTable.h"
 
-Poke::Poke()
+Poke::Poke(): _m_nBanker(0), _bigBlind(0), _totalChips(0), _baseChips(0), _finishNum(0)
 {
 }
 
@@ -17,9 +17,9 @@ void Poke::ShuffleCards()
 	{
 		for(int j = 0; j < 4; j++)
 		{
-			Card Card;
-			Card.m_nColor = j;
+			CCard Card;
 			Card.m_nValue = i;
+			Card.m_nColor = j;
 			m_AllCards.push_back(Card);
 		}
 	}
@@ -29,6 +29,7 @@ void Poke::ShuffleCards()
 
 void Poke::NewRound()
 {
+	_m_nBanker = 0;
 	_bigBlind = 0;
 	_totalChips = 0;            
 	_baseChips = 0;    
@@ -37,24 +38,24 @@ void Poke::NewRound()
 
 
 
-Card& Poke::GetCard(int nPos)
+CCard& Poke::GetCard(int nPos)
 {
 	if( (size_t)nPos >= 0 && (size_t)nPos < m_AllCards.size() )
 	{
 		return m_AllCards[nPos];
 	}
-	Card cCard;
+	CCard cCard;
 	return cCard;
 }
 
-Card& Poke::GetCard()
+CCard& Poke::GetCard()
 {
 	if( !m_AllCards.empty() )
 	{
-		Card& cCard = m_AllCards.back();
+		CCard& cCard = m_AllCards.back();
 		m_AllCards.pop_back();
 		return cCard;
 	}
-	Card cCard;
+	CCard cCard;
 	return cCard;
 }

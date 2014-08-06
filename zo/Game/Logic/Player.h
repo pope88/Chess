@@ -5,6 +5,8 @@
 #include "SsuObject.h"
 //#include "../Common/PlayCard.h"
 #include "../Common/Poker.h"
+#include "../../Model/Object/User.h"
+#include "../../Model/Object/BGameTable.h"
 
 class Player : public IPlayer
 {
@@ -13,7 +15,7 @@ public:
 	{
 		PS_NONE,
 		PS_PLAYER,
-		PS_VISTOR,
+		PS_CANDIDATE,
 		PS_GIVEUP,
 	};
 	enum DZOP
@@ -28,22 +30,13 @@ public:
 	virtual ~Player();
 
 	void release();
+	
+	void bindUser2Player(Object::User *user); 
 
 	//开始新的一轮
 	void newRound();
 
-	//获得玩家手上的牌
-	void getPlayerCards(::ssu::Object &noti, bool bShow);
-
-	//给客户端发牌
-	//void getCard(Card& cCard);
-	
-	//玩家出牌
-	bool doPlayCard(Player* pPutPlayer);
-
-
-	//获取玩家身上所带的游戏币
-	int getMoney() { return m_pCorePlayer->getMoney(); }
+	void setGameTable(Object::BGameTable *bt);
 
 	//设置和获取玩家状态
 	UInt8 getStatus(){ return m_nStatus; }
@@ -53,16 +46,25 @@ public:
 	UInt8 getPlayerStatus() { return mPlayerStatus; }
 	void setPlayerStatus(UInt8 mStatus) { mPlayerStatus = mStatus; }
 
+	bool isRacing() { return m_nStatus == PS_PLAYER; }
+
+	//获得玩家手上的牌
+	void getPlayerCards(::ssu::Object &noti, bool bShow);
+
+	//给客户端发牌
+	//void getCard(Card& cCard);
+
+	//获取玩家身上所带的游戏币
+	int getMoney() { return m_pCorePlayer->getMoney(); }
+
 	//获取玩家座位号
 	int	getChairID() { return m_pCorePlayer->getChairId(); }
 
-	//是否允许旁观
-	bool canWatch() { return m_pCorePlayer->canWatch(); }
 public:
 	//以下是系统接口函数
 	Mplayer* getCorePlayer() { return m_pCorePlayer; }
 
-	void onPacketOperate(const ::ssu::Object &ack) {}
+	void onPacketOperate(const ::ssu::Object &ack);
 	void onPacketPickCard(const ::ssu::Object &ack) {}
 	void onPacketFinishSendCard(const ::ssu::Object &ack) {}
 public:
@@ -71,7 +73,7 @@ public:
 	Poker mPoker;
 private:
 	Mplayer* m_pCorePlayer;		    //系统接口
-	//BGameTable* m_pGameTable;		//系统接口
+	Mtable* m_pGameTable;		    //系统接口
 	UInt8 m_nStatus;				//玩家状态
 	UInt8 mPlayerStatus;            //游戏状态
 

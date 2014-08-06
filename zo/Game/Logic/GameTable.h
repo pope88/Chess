@@ -41,12 +41,15 @@ class GameTable : public ITable, public TimerBase
 	};
 
 public:
-	GameTable() {}
-	~GameTable() {}
+	GameTable();
+	~GameTable();
 	//virtual void BindCoreTable2Table(ICoreTable* pTable);
 	virtual void release() { delete this; }
 	virtual void onTimer();
 	virtual void onGameStart();
+	void onPacketOperate(const ::ssu::Object &ack) {}
+	void onPacketPickCard(const ::ssu::Object &ack ) {}
+	void onPacketFinishSendCard(const ::ssu::Object &ack) {}
 	/**
 	   @brief 房间内广播消息
 	   @param packet 数据包 
@@ -63,7 +66,7 @@ public:
 			{
 				continue;
 			}
-			pb.send(player);
+			//pb.send(player);
 		}
 	}	
 protected:
@@ -99,17 +102,10 @@ protected:
 
 public:
 
-	//发送初始17张牌
+	//发送初始牌
+	void Dealing() {}
 
-
-	//叫分流程
-	void callScore() {}
-
-	//抢地主的流程
-	void robLord() {}
-
-	//处理地主拿底牌
-	void dealingLord() {}
+	void setGameScore() {}
 
 	//服务器发送出牌请求
 	void svrPlayCardReq(int nChairID) {}

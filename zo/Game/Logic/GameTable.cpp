@@ -18,6 +18,8 @@ void GameTable::onGameStart()
 
 	m_Poke.NewRound();
 
+	showPlayerStatus();
+
 	Dealing();
 
 	SetBaseMoney();
@@ -49,12 +51,12 @@ void GameTable::NewRound()
 	{
 		int nOtherChair = (nChair + i) % ePLYNUM;
 		Player* pPlayer = getPlayer(nOtherChair);
-		Player* pBanker = getPlayer(m_Poke.m_nBanker);
+		Player* pBanker = getPlayer(m_Poke.getBanker());
 		if(!pPlayer)
 			continue;
 		if(m_bNewRound || !pBanker)
 		{
-			m_Poke.m_nBanker = nOtherChair;
+			m_Poke.setBanker(nOtherChair);
 			m_bNewRound = false;
 		}
 		pPlayer->newRound();
@@ -134,21 +136,21 @@ void GameTable::showPlayerStatus()
 {
 	//pt_dz_clearstatus_not noti1;  //通知清空所有玩家状态，重新刷新
 	//noti1.opcode = dz_clearstatus_not;
-	NotifyRoom(noti1);
+	//NotifyRoom(noti1);
 
 	int nChair = -1;
-	Player *p = getPlayer(m_Poke.m_nBanker);
+	Player *p = getPlayer(m_Poke.getBanker());
 	if (p && (p->getStatus() == Player::PS_PLAYER || p->getStatus() == Player::PS_GIVEUP))
 	{	
-		nChair = m_Poke.m_nBanker;
+		nChair = m_Poke.getBanker();
 	}
 	else //庄家不在，既已逃跑
 	{
-		Player* pp = getAfterPlayer(m_Poke.m_nBanker);
+		Player* pp = getAfterPlayer(m_Poke.getBanker());
 		if (pp)
 		{
 			nChair = pp->getChairID();
-			m_Poke.m_nBanker = nChair;
+			m_Poke.setBanker(nChair);
 		}
 	}
 
@@ -183,38 +185,38 @@ void GameTable::showPlayerStatus()
 	//	noti.cChairID = nChair;
 		if (nNum == 2)
 		{
-			if (nChair == m_Poke.m_nBanker)
+			if (nChair == m_Poke.getBanker())
 			{
-				pPlayer->setPlayStatus(BANKER|XIAOMANG);
+				pPlayer->setPlayerStatus(Player::BANKER|SMALLBLIND);
 			//	noti.nStatus = (BANKER|XIAOMANG);
 			}
-			else if (getBeforePlayerID(nChair) == m_Poke.m_nBanker)
+			else if (getBeforePlayerID(nChair) == m_Poke.getBanker())
 			{
-				pPlayer->setPlayStatus(DAMANG);
+				pPlayer->setPlayerStatus(BIGBLIND);
 			//	noti.nStatus = DAMANG;
 			}
 		}
 		else
 		{
-			if (nChair == m_Poke.m_nBanker)
+			if (nChair == m_Poke.getBanker())
 			{
-				pPlayer->setPlayStatus(BANKER);
+				pPlayer->setPlayerStatus(Player::BANKER);
 				//noti.nStatus = BANKER;
 			}
-			else if (getBeforePlayerID(nChair)== m_Poke.m_nBanker)
+			else if (getBeforePlayerID(nChair)== m_Poke.getBanker())
 			{
 				//noti.nStatus = XIAOMANG;
-				pPlayer->setPlayStatus(XIAOMANG);
+				pPlayer->setPlayerStatus(SMALLBLIND);
 			}
-			else if (getBeforePlayerID(getBeforePlayerID(nChair)) == m_Poke.m_nBanker)
+			else if (getBeforePlayerID(getBeforePlayerID(nChair)) == m_Poke.getBanker())
 			{
 				//noti.nStatus = DAMANG;
-				pPlayer->setPlayStatus(DAMANG);
+				pPlayer->setPlayerStatus(BIGBLIND);
 			}
 			else
 			{
 				//noti.nStatus = COMMONPLAYER;
-				pPlayer->setPlayStatus(COMMONPLAYER);
+				pPlayer->setPlayerStatus(Player::COMMONPLAYER);
 			}
 		}
 		//NotifyRoom(noti);
@@ -323,11 +325,12 @@ Player* GameTable::getPlayer(UInt8 nChairID)
 	//ICorePlayer* pCorePlayer = m_pCoreTable->GetCorePlayer(nChairID);
 	//if(pCorePlayer)
 	//	return (CPlayer*)pCorePlayer->GetIPlayer();
-	//return NULL;
+	return NULL;
 }
 
 void GameTable::sendPlayerCard()
 {
+	/*
 	std::vector<CCard> vecCards;
 	//pt_dz_sendcard_not noti;
 	//noti.opcode = dz_sendcard_not;
@@ -344,23 +347,25 @@ void GameTable::sendPlayerCard()
 		}
 	}
 
-	int nBegin = noti.cBeginChair;
+	int nBegin = 0;
+	//int nBegin = noti.cBeginChair;
 	for(int i = 0; i < ePLYNUM; ++i)   //先获得所有游戏玩家座位号
 	{
 		Player* player = getPlayer((i+ nBegin)%ePLYNUM);
 		if(player && player->getStatus() == Player::PS_PLAYER)
 		{
-			noti.vecChairs.push_back((i+nBegin)%ePLYNUM);
+			//noti.vecChairs.push_back((i+nBegin)%ePLYNUM);
 			vecCards.clear();
 			for (int j = 0; j < 2; ++j)
 			{
-				vecCards.push_back(m_Poke.getPokeCard());
+				vecCards.push_back(m_Poke.GetCard());
 			}
 			player->mPoker.setCards(vecCards);
 		}
 	}
-
-	int nChair = m_Poke.m_nBanker;
+	
+	int nChair = 0;
+	//int nChair = m_Poke.m_nBanker;
 	--nChair;
 	nChair = (ePLYNUM + nChair)%ePLYNUM;
 	for (int i = 0; i < ePLYNUM; ++i)  //发牌
@@ -389,11 +394,12 @@ void GameTable::sendPlayerCard()
 		nChair = (ePLYNUM + nChair)% ePLYNUM;
 	}
 	m_pCoreTable->RemoveTimer();
-	StartTimer(eDEALING_EVENT,-1);
+	StartTimer(eDEALING_EVENT,-1);*/
 }
 
 void GameTable::onFinishSendAck(Player* p)
 {
+	/*
 	if (!p)
 	{
 		return;
@@ -424,11 +430,11 @@ void GameTable::onFinishSendAck(Player* p)
 		Player *player  = NULL;
 		if (m_nPlyNum == 2)
 		{
-			player  = getPlayer(m_Poke.m_nBanker);
+			player  = getPlayer(m_Poke.getBanker());
 		}
 		else
 		{
-			player = getNextPlayer(m_Poke.m_nBanker);
+			player = getNextPlayer(m_Poke.getBanker());
 		}
 		if (!player)
 		{
@@ -436,6 +442,7 @@ void GameTable::onFinishSendAck(Player* p)
 		}
 		sendOperateReq(player, 1);
 	}
+	*/
 }
 
 
@@ -493,7 +500,7 @@ void GameTable::autoSendSmallBlind(Player *player)
 		bool bHavebigBlind = false;
 		if (m_bbigBlind == false)
 		{
-			if (player->getPlayerStatus() & BIGBLIND == BIGBLIND)
+			if ((player->getPlayerStatus() & BIGBLIND) == BIGBLIND)
 			{
 				bHavebigBlind = true;
 			}
@@ -503,9 +510,9 @@ void GameTable::autoSendSmallBlind(Player *player)
 				for (UInt8 i = 0; i < ePLYNUM; ++i)
 				{
 					Player *pp = getPlayer(i);
-					if (pp && (pp->getStatus() == Player::PS_PLAYER) && (pp->getPlayerStatus() & BIGBLIND == BIGBLIND))
+					if (pp && (pp->getStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & BIGBLIND) == BIGBLIND))
 					{
-						player == pp;
+						player = pp;
 						bHavebigBlind = true;
 					}
 				}
