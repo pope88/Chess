@@ -43,7 +43,7 @@ class GameTable : public ITable, public TimerBase
 public:
 	GameTable();
 	~GameTable();
-	//virtual void BindCoreTable2Table(ICoreTable* pTable);
+	virtual void bindCoreTable2Table(Mtable* pTable) { m_pCoreTable = pTable; }
 	virtual void release() { delete this; }
 	virtual void onTimer();
 	virtual void onGameStart();
@@ -103,7 +103,7 @@ protected:
 public:
 
 	//发送初始牌
-	void Dealing() {}
+	void dealing();
 
 	void setGameScore() {}
 
@@ -137,9 +137,6 @@ private:
 
 	//设置底注
 	void SetBaseMoney() {}
-
-	//获得下一个出牌玩家
-	int GetNextPlayer() {}
 
 	/**
 	@brief 异常结束游戏

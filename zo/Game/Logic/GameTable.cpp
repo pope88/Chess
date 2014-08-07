@@ -1,5 +1,7 @@
 #include "Config.h"
 #include "GameTable.h"
+#include "../../Packet/Builder.h"
+#include "../../Model/Object/User.h"
 
 
 GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_blittleBlind(false), m_bbigBlind(false), m_btimeOut(false), m_limitMoney(0), m_nCommonNum(0), m_nLastBigBlind(0)
@@ -16,17 +18,13 @@ void GameTable::onGameStart()
 {
 	NewRound();
 
-	m_Poke.NewRound();
-
 	showPlayerStatus();
 
-	Dealing();
+	dealing();
 
 	SetBaseMoney();
 
 	//DealingTask();
-
-	SvrStartGameNot();
 }
 
 void GameTable::NewRound()
@@ -66,8 +64,49 @@ void GameTable::NewRound()
 
 	setGameScore();
 
-	//notify
+	SvrStartGameNot();
 
+}
+
+void GameTable::dealing()
+{
+	UInt8 beginChair = 0;
+	if (m_nPlyNum == 2)
+	{
+		beginChair = m_Poke.getBanker();
+	}
+	else
+	{
+		beginChair = getNextPlayer(m_Poke.getBanker())->getChairID();
+	}
+
+
+	for(int i = 0; i < ePLYNUM; ++i)
+	{
+		int nOtherChair = (beginChair + i) % ePLYNUM;
+		Player* pPlayer = getPlayer(nOtherChair);
+		if(pPlayer != NULL && pPlayer->getStatus() == Player::PS_PLAYER)
+		{
+		
+			Packet::PlayerHandCards ph;
+			std::vector<CCard> initCards;
+
+			CCard c = m_Poke.getCard();
+			initCards.push_back(c);
+			Packet::card *cd = ph.AddCards();
+			cd->SetCardvalue(c.m_nValue);
+			cd->SetCardcolor(c.m_nColor);
+
+			c = m_Poke.getCard();
+			initCards.push_back(c);
+			cd = ph.AddCards();
+			cd->SetCardvalue(c.m_nValue);
+			cd->SetCardcolor(c.m_nColor);
+
+			pPlayer->mPoker.setCards(initCards);
+		//	ph.send(static_cast<Object::user*>(pPlayer->getCorePlayer()));
+		}
+	}
 }
 
 void GameTable::sendOperateReq(Player *prePlayer, UInt8 nPlayerNum)
@@ -134,10 +173,6 @@ void GameTable::sendOperateReq(Player *prePlayer, UInt8 nPlayerNum)
 
 void GameTable::showPlayerStatus()
 {
-	//pt_dz_clearstatus_not noti1;  //通知清空所有玩家状态，重新刷新
-	//noti1.opcode = dz_clearstatus_not;
-	//NotifyRoom(noti1);
-
 	int nChair = -1;
 	Player *p = getPlayer(m_Poke.getBanker());
 	if (p && (p->getStatus() == Player::PS_PLAYER || p->getStatus() == Player::PS_GIVEUP))
@@ -163,7 +198,9 @@ void GameTable::showPlayerStatus()
 			++nNum; 
 		}
 	}
-
+	
+	Packet::PlayerGameStatus pgs;
+	Packet::PGStatus *ps = pgs.AddPlayerstatus();
 	for (int i = 0; i < ePLYNUM; ++i)
 	{
 		Player* pPlayer = getPlayer(nChair);
@@ -180,20 +217,19 @@ void GameTable::showPlayerStatus()
 			continue;
 		}	
 
-	//	pt_dz_status_not noti;
-	//	noti.opcode = dz_status_not;
-	//	noti.cChairID = nChair;
+		
+		ps->SetChairid(nChair);
 		if (nNum == 2)
 		{
 			if (nChair == m_Poke.getBanker())
 			{
 				pPlayer->setPlayerStatus(Player::BANKER|SMALLBLIND);
-			//	noti.nStatus = (BANKER|XIAOMANG);
+			    ps->SetStatus(Player::BANKER|Player::SMALLBLIND);
 			}
 			else if (getBeforePlayerID(nChair) == m_Poke.getBanker())
 			{
 				pPlayer->setPlayerStatus(BIGBLIND);
-			//	noti.nStatus = DAMANG;
+			    ps->SetStatus(BIGBLIND);
 			}
 		}
 		else
@@ -201,29 +237,30 @@ void GameTable::showPlayerStatus()
 			if (nChair == m_Poke.getBanker())
 			{
 				pPlayer->setPlayerStatus(Player::BANKER);
-				//noti.nStatus = BANKER;
+				ps->SetStatus(Player::BANKER);
 			}
-			else if (getBeforePlayerID(nChair)== m_Poke.getBanker())
+			else if (getBeforePlayerID(nChair) == m_Poke.getBanker())
 			{
-				//noti.nStatus = XIAOMANG;
 				pPlayer->setPlayerStatus(SMALLBLIND);
+				ps->SetStatus(Player::SMALLBLIND);
 			}
 			else if (getBeforePlayerID(getBeforePlayerID(nChair)) == m_Poke.getBanker())
 			{
-				//noti.nStatus = DAMANG;
 				pPlayer->setPlayerStatus(BIGBLIND);
+				ps->SetStatus(Player::BIGBLIND);
 			}
 			else
 			{
 				//noti.nStatus = COMMONPLAYER;
 				pPlayer->setPlayerStatus(Player::COMMONPLAYER);
+				ps->SetStatus(Player::BIGBLIND);
 			}
 		}
-		//NotifyRoom(noti);
 
 		++nChair;
 		nChair = (nChair)%ePLYNUM;
 	}
+	NotifyRoom(pgs);
 }
 void GameTable::deaLing()
 {

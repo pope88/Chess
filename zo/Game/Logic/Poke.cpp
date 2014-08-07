@@ -18,8 +18,8 @@ void Poke::ShuffleCards()
 		for(int j = 0; j < 4; j++)
 		{
 			CCard Card;
-			Card.m_nValue = i;
-			Card.m_nColor = j;
+			Card.m_nValue = (UInt8)i;
+			Card.m_nColor = (UInt8)j;
 			m_AllCards.push_back(Card);
 		}
 	}
@@ -38,17 +38,15 @@ void Poke::NewRound()
 
 
 
-CCard& Poke::GetCard(int nPos)
+CCard& Poke::getCard(int nPos)
 {
 	if( (size_t)nPos >= 0 && (size_t)nPos < m_AllCards.size() )
 	{
 		return m_AllCards[nPos];
 	}
-	CCard cCard;
-	return cCard;
 }
 
-CCard& Poke::GetCard()
+CCard& Poke::getCard()
 {
 	if( !m_AllCards.empty() )
 	{
@@ -56,6 +54,4 @@ CCard& Poke::GetCard()
 		m_AllCards.pop_back();
 		return cCard;
 	}
-	CCard cCard;
-	return cCard;
 }

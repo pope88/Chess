@@ -236,6 +236,132 @@ class SCUserPlayerNow_0x08: public ::ssu::Object {
 
 };
 
+class PGStatus: public ::ssu::Object {
+ public:
+  inline PGStatus(): _chairid(0), _status(0) { }
+
+  virtual ~PGStatus() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Chairid() const { return _chairid; }
+  inline void SetChairid(uint32_t val__) { _chairid = val__; }
+
+  inline uint32_t Status() const { return _status; }
+  inline void SetStatus(uint32_t val__) { _status = val__; }
+
+ protected:
+  uint32_t _chairid;
+  uint32_t _status;
+
+};
+
+class SCPlayerGameStatus_0x10: public ::ssu::Object {
+ public:
+  virtual ~SCPlayerGameStatus_0x10();
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline const PGStatus& Playerstatus(size_t index__) const { return *_playerstatus[index__]; }
+  inline PGStatus * NewPlayerstatus() { return new(std::nothrow) PGStatus; }
+  inline PGStatus * AddPlayerstatus() { PGStatus * val__ = new(std::nothrow) PGStatus; if(val__ == NULL) return NULL; _playerstatus.Add(val__); return val__; }
+  inline ::ssu::RepeatedObject<PGStatus *>& MutablePlayerstatus() { return _playerstatus; }
+  inline size_t PlayerstatusSize() const { return _playerstatus.Size(); }
+  inline void ClearPlayerstatus() { for(::ssu::RepeatedObject<PGStatus *>::iterator iter = _playerstatus.begin(); iter != _playerstatus.end(); ++ iter) { delete *iter; } _playerstatus.Clear(); }
+  inline void ReservePlayerstatus(size_t size__) { if(_playerstatus.Size() < size__) _playerstatus.Reserve(size__); }
+
+ protected:
+  ::ssu::RepeatedObject<PGStatus *> _playerstatus;
+
+};
+
+class card: public ::ssu::Object {
+ public:
+  inline card(): _cardvalue(0), _cardcolor(0) { }
+
+  virtual ~card() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Cardvalue() const { return _cardvalue; }
+  inline void SetCardvalue(uint32_t val__) { _cardvalue = val__; }
+
+  inline uint32_t Cardcolor() const { return _cardcolor; }
+  inline void SetCardcolor(uint32_t val__) { _cardcolor = val__; }
+
+ protected:
+  uint32_t _cardvalue;
+  uint32_t _cardcolor;
+
+};
+
+class SCPlayerHandCards_0x11: public ::ssu::Object {
+ public:
+  inline SCPlayerHandCards_0x11(): _pos(0) { }
+
+  virtual ~SCPlayerHandCards_0x11();
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Pos() const { return _pos; }
+  inline void SetPos(uint32_t val__) { _pos = val__; }
+
+  inline const card& Cards(size_t index__) const { return *_cards[index__]; }
+  inline card * NewCards() { return new(std::nothrow) card; }
+  inline card * AddCards() { card * val__ = new(std::nothrow) card; if(val__ == NULL) return NULL; _cards.Add(val__); return val__; }
+  inline ::ssu::RepeatedObject<card *>& MutableCards() { return _cards; }
+  inline size_t CardsSize() const { return _cards.Size(); }
+  inline void ClearCards() { for(::ssu::RepeatedObject<card *>::iterator iter = _cards.begin(); iter != _cards.end(); ++ iter) { delete *iter; } _cards.Clear(); }
+  inline void ReserveCards(size_t size__) { if(_cards.Size() < size__) _cards.Reserve(size__); }
+
+ protected:
+  uint32_t _pos;
+  ::ssu::RepeatedObject<card *> _cards;
+
+};
+
+class SCPlayerCommonCards_0x12: public ::ssu::Object {
+ public:
+  inline SCPlayerCommonCards_0x12(): _step(0) { }
+
+  virtual ~SCPlayerCommonCards_0x12();
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Step() const { return _step; }
+  inline void SetStep(uint32_t val__) { _step = val__; }
+
+  inline const card& Cards(size_t index__) const { return *_cards[index__]; }
+  inline card * NewCards() { return new(std::nothrow) card; }
+  inline card * AddCards() { card * val__ = new(std::nothrow) card; if(val__ == NULL) return NULL; _cards.Add(val__); return val__; }
+  inline ::ssu::RepeatedObject<card *>& MutableCards() { return _cards; }
+  inline size_t CardsSize() const { return _cards.Size(); }
+  inline void ClearCards() { for(::ssu::RepeatedObject<card *>::iterator iter = _cards.begin(); iter != _cards.end(); ++ iter) { delete *iter; } _cards.Clear(); }
+  inline void ReserveCards(size_t size__) { if(_cards.Size() < size__) _cards.Reserve(size__); }
+
+ protected:
+  uint32_t _step;
+  ::ssu::RepeatedObject<card *> _cards;
+
+};
+
 }
 }
 }

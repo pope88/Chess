@@ -1,6 +1,5 @@
-#ifndef _CCARD_H_
+#ifndef _CCARD_H_ 
 #define _CCARD_H_
-
 
 struct CCardsType
 {
@@ -26,30 +25,81 @@ public:
 class CCard
 {
 public:
-	CCard() : m_nColor(-1), m_nValue(-1) {}
-	CCard(int nColor, int nValue) : m_nColor(nColor), m_nValue(nValue) {}
-	CCard (const CCard &srcCard)
+	CCard():m_nValue(0), m_nColor(0) {}
+	CCard(UInt8 c, UInt8 v) { m_nColor = c; m_nValue = v; }
+	~CCard(){}
+public:
+	CCard(const CCard &srcCard)
+	{
+		if (this == &srcCard)
+			return;
+		m_nValue = srcCard.m_nValue;
+		m_nColor = srcCard.m_nColor;
+	}
+	CCard& operator =(CCard &srcCard)
+	{
+		if (this == &srcCard)
+			return *this;
+		m_nValue = srcCard.m_nValue;
+		m_nColor = srcCard.m_nColor;
+		return *this;
+	}
+
+	bool operator == (CCard &srcCard)
+	{
+		return (m_nColor == srcCard.m_nColor && m_nValue == srcCard.m_nValue);
+	}
+public:
+	UInt8 m_nValue;
+	UInt8 m_nColor;
+};
+
+/*
+struct CCard
+{
+public:
+	CCard():m_nValue(0), m_nColor(0) {}
+	CCard(UInt8 nColor, UInt8 nValue) : m_nColor(nColor), m_nValue(nValue) {}
+public:
+	CCard(const CCard &srcCard)
 	{
 		if(this == &srcCard)
 			return;
-		m_nColor = srcCard.m_nColor;
-		m_nValue = srcCard.m_nValue;
+		m_nColor = srcCard.color();
+		m_nValue = srcCard.cvalue();
 	}
 	CCard& operator = (const CCard &srcCard)
 	{
 		if (this == &srcCard)
 			return *this;
-		m_nColor = srcCard.m_nColor;
-		m_nValue = srcCard.m_nValue;
+		m_nColor = srcCard.color();
+		m_nValue = srcCard.cvalue();
 		return *this;
 	}
 	bool operator == (const CCard &srcCard)
 	{
-		return (m_nColor == srcCard.m_nColor && m_nValue == srcCard.m_nValue);
+		return (m_nColor == srcCard.color() && m_nValue == srcCard.cvalue());
 	}
 public:
-	char m_nColor;  //花色,-1表示没有任意花色
-	char m_nValue;  //数值,-1表示还没有牌
-};
+	UInt8 color()
+	{
+		return m_nColor;
+	}
+	void setcolor(UInt8 c)
+	{
+		m_nColor = c;
+	}
+	UInt8 cvalue()
+	{
+		return m_nValue;
+	}
+	void setcvalue(UInt8 v)
+	{
+		m_nValue = v;
+	}
+private:
+	UInt8 m_nColor;  //花色,-1表示没有任意花色
+	UInt8 m_nValue;  //数值,-1表示还没有牌
+};*/
 
 #endif

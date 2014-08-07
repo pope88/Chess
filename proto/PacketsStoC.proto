@@ -92,3 +92,48 @@ message SCUserPlayerNow_0x08
   //玩家快速比赛结果
   required uint32 res = 1;
 }
+
+message PGStatus
+{
+  //位置号
+  required uint32 chairid = 1;
+  //状态
+  required uint32 status = 2;
+}
+
+//0x10
+//通知玩家的状态
+message SCPlayerGameStatus_0x10
+{
+  //玩家状态
+  repeated PGStatus playerstatus = 1;
+}
+
+//卡牌
+message card
+{
+  //卡牌
+  required uint32 cardvalue = 1;
+  //花色
+  required uint32 cardcolor = 2;
+}
+
+//0x11
+//手牌
+message SCPlayerHandCards_0x11
+{
+  //位置
+  required uint32 pos = 1;
+  //手牌
+  repeated card cards = 2;
+}
+
+//0x12
+//公共
+message SCPlayerCommonCards_0x12
+{
+   //阶段
+   required uint32 step = 1;
+   //cards
+   repeated card cards = 2;
+}

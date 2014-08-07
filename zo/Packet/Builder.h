@@ -20,11 +20,9 @@ namespace Packet
 		inline Builder(int o): op(o), _isGateWay(true) {}
 		virtual ~Builder() {}
 		void send(Object::User *user);
-	/*	void send(Object::GPlayer *gplayer);*/
 		void send(UInt32 sid, UInt32 gid);
 		void sendMulti(void *multi);
 		void sendNolock(Object::User *user);
-		/*void sendNolock(Object::GPlayer *gplayer);*/
 		void sendNolock(UInt32 sid, UInt32 gid);
 		void sendLock();
 		void sendUnlock();

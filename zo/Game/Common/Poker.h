@@ -5,7 +5,7 @@
 class cardCompare
 {
 public:
-	bool operator()(const CCard &as, const CCard &bs)
+	bool operator()(CCard &as, CCard &bs)
 	{
 		return as.m_nValue < bs.m_nValue;
 	}
@@ -14,7 +14,7 @@ public:
 class dcardCompare
 {
 public:
-	bool operator()(const CCard &as, const CCard &bs)
+	bool operator()(CCard &as, CCard &bs)
 	{
 		return as.m_nValue > bs.m_nValue;
 	}

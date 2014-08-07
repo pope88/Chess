@@ -63,7 +63,7 @@ void Player::onPacketOperate(const ::ssu::Object &ack)
 	//if (m_pGameTable->isRacing())
 	if(true)
 	{
-		m_pGameTable->onPacketOperate(const ::ssu::Object &ack);
+		//m_pGameTable->onPacketOperate(const ::ssu::Object &ack);
 	}
 }
 
