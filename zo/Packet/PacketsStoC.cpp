@@ -246,6 +246,149 @@ size_t SCUserPlayerNow_0x08::Size() const {
   return 1 + ::ssu::Utils::SizeUInt32(_res);
 }
 
+uint8_t * PGStatus::PackBuffer(uint8_t * buf) {
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 1, _chairid);
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 2, _status);
+  return buf;
+}
+
+bool PGStatus::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  uint32_t tag_; uint8_t type_;
+  while(leftSize > 0) {
+    if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
+    switch(tag_) {
+     case 1:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _chairid)) return false;
+      break;
+     case 2:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _status)) return false;
+      break;
+     default: break;
+    }
+  }
+  return true;
+}
+
+size_t PGStatus::Size() const {
+  return 1 + ::ssu::Utils::SizeUInt32(_chairid) + 1 + ::ssu::Utils::SizeUInt32(_status);
+}
+
+SCPlayerGameStatus_0x10::~SCPlayerGameStatus_0x10() {
+  for(::ssu::RepeatedObject<PGStatus *>::iterator iter = _playerstatus.begin(); iter != _playerstatus.end(); ++ iter) { delete *iter; } _playerstatus.Clear();
+}
+
+uint8_t * SCPlayerGameStatus_0x10::PackBuffer(uint8_t * buf) {
+  buf = ::ssu::Utils::PackRepeatedTag(buf, 1, _playerstatus, ::ssu::Utils::PackObjectTag<PGStatus>);
+  return buf;
+}
+
+bool SCPlayerGameStatus_0x10::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  uint32_t tag_; uint8_t type_;
+  while(leftSize > 0) {
+    if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
+    switch(tag_) {
+     case 1:
+      if(type_ != 2 || !::ssu::Utils::UnpackRepeatedPtr(buf, leftSize, _playerstatus, ::ssu::Utils::UnpackObjectPtr<PGStatus>)) return false;
+      break;
+     default: break;
+    }
+  }
+  return true;
+}
+
+size_t SCPlayerGameStatus_0x10::Size() const {
+  return 1 * _playerstatus.Size() + ::ssu::Utils::SizeRepeated(_playerstatus, ::ssu::Utils::SizeObject<PGStatus>);
+}
+
+uint8_t * card::PackBuffer(uint8_t * buf) {
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 1, _cardvalue);
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 2, _cardcolor);
+  return buf;
+}
+
+bool card::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  uint32_t tag_; uint8_t type_;
+  while(leftSize > 0) {
+    if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
+    switch(tag_) {
+     case 1:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _cardvalue)) return false;
+      break;
+     case 2:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _cardcolor)) return false;
+      break;
+     default: break;
+    }
+  }
+  return true;
+}
+
+size_t card::Size() const {
+  return 1 + ::ssu::Utils::SizeUInt32(_cardvalue) + 1 + ::ssu::Utils::SizeUInt32(_cardcolor);
+}
+
+SCPlayerHandCards_0x11::~SCPlayerHandCards_0x11() {
+  for(::ssu::RepeatedObject<card *>::iterator iter = _cards.begin(); iter != _cards.end(); ++ iter) { delete *iter; } _cards.Clear();
+}
+
+uint8_t * SCPlayerHandCards_0x11::PackBuffer(uint8_t * buf) {
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 1, _pos);
+  buf = ::ssu::Utils::PackRepeatedTag(buf, 2, _cards, ::ssu::Utils::PackObjectTag<card>);
+  return buf;
+}
+
+bool SCPlayerHandCards_0x11::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  uint32_t tag_; uint8_t type_;
+  while(leftSize > 0) {
+    if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
+    switch(tag_) {
+     case 1:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _pos)) return false;
+      break;
+     case 2:
+      if(type_ != 2 || !::ssu::Utils::UnpackRepeatedPtr(buf, leftSize, _cards, ::ssu::Utils::UnpackObjectPtr<card>)) return false;
+      break;
+     default: break;
+    }
+  }
+  return true;
+}
+
+size_t SCPlayerHandCards_0x11::Size() const {
+  return 1 + ::ssu::Utils::SizeUInt32(_pos) + 1 * _cards.Size() + ::ssu::Utils::SizeRepeated(_cards, ::ssu::Utils::SizeObject<card>);
+}
+
+SCPlayerCommonCards_0x12::~SCPlayerCommonCards_0x12() {
+  for(::ssu::RepeatedObject<card *>::iterator iter = _cards.begin(); iter != _cards.end(); ++ iter) { delete *iter; } _cards.Clear();
+}
+
+uint8_t * SCPlayerCommonCards_0x12::PackBuffer(uint8_t * buf) {
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 1, _step);
+  buf = ::ssu::Utils::PackRepeatedTag(buf, 2, _cards, ::ssu::Utils::PackObjectTag<card>);
+  return buf;
+}
+
+bool SCPlayerCommonCards_0x12::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  uint32_t tag_; uint8_t type_;
+  while(leftSize > 0) {
+    if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
+    switch(tag_) {
+     case 1:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _step)) return false;
+      break;
+     case 2:
+      if(type_ != 2 || !::ssu::Utils::UnpackRepeatedPtr(buf, leftSize, _cards, ::ssu::Utils::UnpackObjectPtr<card>)) return false;
+      break;
+     default: break;
+    }
+  }
+  return true;
+}
+
+size_t SCPlayerCommonCards_0x12::Size() const {
+  return 1 + ::ssu::Utils::SizeUInt32(_step) + 1 * _cards.Size() + ::ssu::Utils::SizeRepeated(_cards, ::ssu::Utils::SizeObject<card>);
+}
+
 }
 }
 }
