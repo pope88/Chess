@@ -86,6 +86,7 @@ protected:
 	void sendPlayerCard();
 	void onFinishSendAck(Player* p);
 	void sendOperateReq(Player *player, UInt8 nPlayerNum);
+	void autoOperateBlind();
 	void autoSendSmallBlind(Player *player);
 	void autoSendBigBlind(Player *player);
 
@@ -168,7 +169,7 @@ public:
 	UInt8 m_nPlyNum;             //开局时玩家总人数
 	bool m_bNewRound;            //是否需要选庄
 	UInt32 m_baseChips;          //游戏底注
-	bool m_blittleBlind;         //小盲注已下
+	bool m_bSmallBlind;         //小盲注已下
 	bool m_bbigBlind;            //大盲注已下
 	bool m_btimeOut;             //已经超时
 	UInt32 m_limitMoney;         //最低筹码限制

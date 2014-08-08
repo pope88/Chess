@@ -109,6 +109,20 @@ message SCPlayerGameStatus_0x10
   repeated PGStatus playerstatus = 1;
 }
 
+//0x11
+//自动下大小盲底注
+//meesage SCPlayerBlindChips_0x11
+{
+  //small blind
+  required uint32 smallChair = 1;
+  //chips
+  required uint32 smallChips = 2;
+  //big blind
+  required uint32 bigChair = 3;
+  //big chips
+  required uint32 bigChips = 4;
+}
+
 //卡牌
 message card
 {
@@ -118,7 +132,7 @@ message card
   required uint32 cardcolor = 2;
 }
 
-//0x11
+//0x12
 //手牌
 message SCPlayerHandCards_0x11
 {
@@ -128,7 +142,7 @@ message SCPlayerHandCards_0x11
   repeated card cards = 2;
 }
 
-//0x12
+//0x13
 //公共
 message SCPlayerCommonCards_0x12
 {
