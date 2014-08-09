@@ -104,9 +104,12 @@ void GameTable::dealing()
 			cd->SetCardcolor(c.m_nColor);
 
 			pPlayer->mPoker.setCards(initCards);
-		//	ph.send(static_cast<Object::user*>(pPlayer->getCorePlayer()));
+			ph.send(static_cast<Object::User*>(pPlayer->getCorePlayer()));
 		}
 	}
+
+	//begin send card timer
+	st
 }
 
 void GameTable::sendOperateReq(Player *prePlayer, UInt8 nPlayerNum)
@@ -264,7 +267,34 @@ void GameTable::showPlayerStatus()
 }
 void GameTable::deaLing()
 {
-
+	std::vector<CCard> cards;
+	UInt8 beginChair = 0;
+	if (m_nPlyNum == 2)
+	{
+		beginChair = m_Poke.getBanker();
+	}
+	else
+	{
+		Player *pp = getNextPlayer(m_Poke.getBanker());
+		if (pp != NULL)
+		{
+			beginChair =  pp->getChairID();
+		}
+	}
+	 
+	for (int i = 0; i < ePLYNUM; ++i)
+	{
+		Player *player = getPlayer((i+beginChair) % ePLYNUM);
+		if (player && player->getStatus() == Player::PS_PLAYER)
+		{
+			for (int j = 0; j < 2; ++j)
+			{
+				cards.push_back(m_Poke.getCard());
+			}
+		}
+	}
+	startTimer(eDEALING_EVENT, -1);
+	
 }
 
 void GameTable::startTimer(int nEvent, char cChair)
@@ -300,7 +330,7 @@ void GameTable::onTimer()
 		break;
 	case eDEALING_EVENT:
 		{
-
+			
 		}
 		break;
 	default:
