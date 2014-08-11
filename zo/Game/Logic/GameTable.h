@@ -85,7 +85,8 @@ protected:
 	//通过指定的椅子号取得当前这个椅子上的玩家指针
 	void sendPlayerCard();
 	void onFinishSendAck(Player* p);
-	void sendOperateReq(Player *player, UInt8 nPlayerNum);
+	void sendOperateReq(Player *player);
+	void onOperateAck(Player *player, UInt8 opcode);
 	void autoOperateBlind();
 	void autoSendSmallBlind(Player *player);
 	void autoSendBigBlind(Player *player);

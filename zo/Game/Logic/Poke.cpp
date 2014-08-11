@@ -44,6 +44,8 @@ CCard& Poke::getCard(int nPos)
 	{
 		return m_AllCards[nPos];
 	}
+	CCard emptyCard = CCard(0, 0);
+	return emptyCard;
 }
 
 CCard& Poke::getCard()
