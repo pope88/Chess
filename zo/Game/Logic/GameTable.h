@@ -84,8 +84,9 @@ protected:
 	void SendCompleteData(Player* pPlayer);
 	//通过指定的椅子号取得当前这个椅子上的玩家指针
 	void sendPlayerCard();
-	void onFinishSendAck(Player* p);
-	void sendOperateReq(Player *player, UInt8 nPlayerNum);
+	void onFinishSendAck(Player* player);
+	void sendOperateReq(Player *player);
+	void autoOperateBlind();
 	void autoSendSmallBlind(Player *player);
 	void autoSendBigBlind(Player *player);
 
@@ -168,7 +169,7 @@ public:
 	UInt8 m_nPlyNum;             //开局时玩家总人数
 	bool m_bNewRound;            //是否需要选庄
 	UInt32 m_baseChips;          //游戏底注
-	bool m_blittleBlind;         //小盲注已下
+	bool m_bSmallBlind;         //小盲注已下
 	bool m_bbigBlind;            //大盲注已下
 	bool m_btimeOut;             //已经超时
 	UInt32 m_limitMoney;         //最低筹码限制

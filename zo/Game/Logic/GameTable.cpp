@@ -4,7 +4,7 @@
 #include "../../Model/Object/User.h"
 
 
-GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_blittleBlind(false), m_bbigBlind(false), m_btimeOut(false), m_limitMoney(0), m_nCommonNum(0), m_nLastBigBlind(0)
+GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_bSmallBlind(false), m_bbigBlind(false), m_btimeOut(false), m_limitMoney(0), m_nCommonNum(0), m_nLastBigBlind(0)
 {
 
 }
@@ -37,7 +37,7 @@ void GameTable::NewRound()
 	m_nPlyNum = 0;
 	m_bNewRound = false;
 	m_baseChips = 0;
-	m_blittleBlind = false;
+	m_bSmallBlind = false;
 	m_bbigBlind = false;
 	m_btimeOut = false;
 	m_limitMoney = 0;
@@ -108,36 +108,119 @@ void GameTable::dealing()
 		}
 	}
 
-	//begin send card timer
-	st
+	startTimer(eDEALING_EVENT, -1);
+
 }
 
-void GameTable::sendOperateReq(Player *prePlayer, UInt8 nPlayerNum)
+
+//auto small and big blind
+void GameTable::autoOperateBlind()
 {
-	/*
-	Player *player = NULL;
-	if (prePlayer  == NULL)
+
+	Player *playerSmall= NULL;
+	Player *playerBig = NULL;
+	if (m_nPlyNum == 2)
+	{
+		playerSmall  = getPlayer(m_Poke.getBanker());
+	}
+	else
+	{
+		playerSmall = getNextPlayer(m_Poke.getBanker());
+	}
+	if (playerSmall == NULL)
 	{
 		return;
 	}
-	player  = prePlayer;
-	if (nPlayerNum == 1) //处理小盲注
-	{
-		autoSendSmallBlind(player);
-	}
-	else if(m_nPlyNum == 2) //处理大盲注
-	{
-		autoSendBigBlind(player);
-	}
-	else if(m_nPlyNum == 3)
-	{
-		pt_dz_operator_req req;
-		req.opcode = dz_operate_req;
-		req.cChairID = player->getChairID();
-		req.nOpcode = 0;
-		req.nCurrentChips = m_Poke.getBaseChips() - player->mPoker.getCurrentChips();
-		req.nBaseChip = m_Poke.getBaseChips();
 
+	bool bHaveSmallBlind = false;
+	if (!m_bSmallBlind)  //小盲注未下
+	{
+		if((playerSmall->getPlayerStatus() & SMALLBLIND) == SMALLBLIND) //玩家是小盲注
+		{
+			bHaveSmallBlind = true;	
+		}
+		else  //没有小盲重新查找
+		{
+			showPlayerStatus();
+			for (int i = 0; i < ePLYNUM; ++i)
+			{
+				Player* pp = getPlayer(i);
+				if (pp && (pp->getPlayerStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & SMALLBLIND) == SMALLBLIND))
+				{
+					playerSmall = pp;
+					bHaveSmallBlind = true;
+				}
+			}
+		}
+	}
+	
+	playerBig = getNextPlayer(playerSmall->getChairID());
+	if (playerBig == NULL)
+	{
+		return;
+	}
+
+	bool bHaveBigBlind = false;
+	if (!bHaveBigBlind)  //小盲注未下
+	{
+		if((playerBig->getPlayerStatus() & BIGBLIND) == BIGBLIND) //玩家是小盲注
+		{
+			bHaveBigBlind = true;	
+		}
+		else  //没有大盲重新查找
+		{
+			showPlayerStatus();
+			for (int i = 0; i < ePLYNUM; ++i)
+			{
+				Player* pp = getPlayer(i);
+				if (pp && (pp->getPlayerStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & BIGBLIND )== BIGBLIND))
+				{
+					playerBig = pp;
+					bHaveBigBlind = true;
+				}
+			}
+		}
+	}
+
+	Player *nextPlayer = getNextPlayer(playerBig->getChairID());
+	if(bHaveSmallBlind && bHaveBigBlind)
+	{
+		sendOperateReq(nextPlayer);
+	}
+
+}
+
+void GameTable::sendOperateReq(Player *player)
+{
+	Player *player = NULL;
+	if (player  == NULL)
+	{
+		return;
+	}
+
+	//pt_dz_operator_req req;
+	//req.opcode = dz_operate_req;
+	//req.cChairID = player->getChairID();
+	//req.nOpcode = 0;
+	//req.nCurrentChips = m_Poke.getBaseChips() - player->mPoker.getCurrentChips();
+	//req.nBaseChip = m_Poke.getBaseChips();
+
+	UInt32 nCurrentChips = m_Poke.getBaseChips() - player->mPoker.getCurrentChips();
+	if (player->mPoker.isGiveUp())
+	{
+		return;
+	}
+	else if (nCurrentChips > (player->getMoney() - player->mPoker.getCurrentChips()))
+	{
+		pt_dz_operate_ack ack;
+		ack.op
+	}
+	else
+	{
+
+	}
+
+	{
 		if (player->mPoker.isGiveUp())
 		{
 			return;
@@ -172,6 +255,39 @@ void GameTable::sendOperateReq(Player *prePlayer, UInt8 nPlayerNum)
 		startTimer(eBET_EVENT, m_cCurOpChair);
 	}
 	*/
+}
+
+void GameTable::onOperateAck(Player *player, const pt_dz_operate_ack &ack, bool bForceLeave)
+{
+	if (!player)
+	{
+		glog.log("player return");
+		return;
+	}
+	pt_dz_operate_not noti;
+	noti.opcode = dz_operate_not;
+	int  nAmount = 0;
+	if (!m_bRacing)
+	{
+		return;
+	}
+	if (!bForceLeave)
+	{
+		++m_nSeialID;
+	}
+
+	if (!(ack.nOpcode &  GIVEUP))
+	{
+		if (pPlayer->getChairID() != m_cCurOpChair)
+		{
+			return;
+		}
+	}
+	if (pPlayer->getStatus() == Player::PS_GIVEUP)
+	{
+		return;
+	}
+
 }
 
 void GameTable::showPlayerStatus()
@@ -330,13 +446,15 @@ void GameTable::onTimer()
 		break;
 	case eDEALING_EVENT:
 		{
-			
+			autoOperateBlind();
 		}
 		break;
 	default:
 		break;
 	}
 }
+
+
 
 UInt8 GameTable::getBeforePlayerID(UInt8 nChairID)
 {
@@ -515,6 +633,7 @@ void GameTable::onFinishSendAck(Player* p)
 
 void GameTable::autoSendSmallBlind(Player *player)
 {
+/*
 	if (!player)
 	{
 		return;
@@ -557,12 +676,12 @@ void GameTable::autoSendSmallBlind(Player *player)
 		{
 			sendOperateReq(p, 2);
 		}
-	}
+	}*/
 }
 
 	void GameTable::autoSendBigBlind(Player *player)
 	{
-		if(player == NULL)
+		/*if(player == NULL)
 			return;
 		bool bHavebigBlind = false;
 		if (m_bbigBlind == false)
@@ -612,7 +731,7 @@ void GameTable::autoSendSmallBlind(Player *player)
 			{
 				sendOperateReq(pp, 3);
 			}
-		}
+		}*/
 	}
 
 
