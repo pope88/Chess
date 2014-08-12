@@ -282,6 +282,38 @@ class SCPlayerGameStatus_0x10: public ::ssu::Object {
 
 };
 
+class SCPlayerBlindChips_0x11: public ::ssu::Object {
+ public:
+  inline SCPlayerBlindChips_0x11(): _smallChair(0), _smallChips(0), _bigChair(0), _bigChips(0) { }
+
+  virtual ~SCPlayerBlindChips_0x11() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t SmallChair() const { return _smallChair; }
+  inline void SetSmallChair(uint32_t val__) { _smallChair = val__; }
+
+  inline uint32_t SmallChips() const { return _smallChips; }
+  inline void SetSmallChips(uint32_t val__) { _smallChips = val__; }
+
+  inline uint32_t BigChair() const { return _bigChair; }
+  inline void SetBigChair(uint32_t val__) { _bigChair = val__; }
+
+  inline uint32_t BigChips() const { return _bigChips; }
+  inline void SetBigChips(uint32_t val__) { _bigChips = val__; }
+
+ protected:
+  uint32_t _smallChair;
+  uint32_t _smallChips;
+  uint32_t _bigChair;
+  uint32_t _bigChips;
+
+};
+
 class card: public ::ssu::Object {
  public:
   inline card(): _cardvalue(0), _cardcolor(0) { }
@@ -306,11 +338,11 @@ class card: public ::ssu::Object {
 
 };
 
-class SCPlayerHandCards_0x11: public ::ssu::Object {
+class SCPlayerHandCards_0x12: public ::ssu::Object {
  public:
-  inline SCPlayerHandCards_0x11(): _pos(0) { }
+  inline SCPlayerHandCards_0x12(): _pos(0) { }
 
-  virtual ~SCPlayerHandCards_0x11();
+  virtual ~SCPlayerHandCards_0x12();
  public:
   virtual uint8_t * PackBuffer(uint8_t * buf);
   virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
@@ -334,11 +366,11 @@ class SCPlayerHandCards_0x11: public ::ssu::Object {
 
 };
 
-class SCPlayerCommonCards_0x12: public ::ssu::Object {
+class SCPlayerCommonCards_0x13: public ::ssu::Object {
  public:
-  inline SCPlayerCommonCards_0x12(): _step(0) { }
+  inline SCPlayerCommonCards_0x13(): _step(0) { }
 
-  virtual ~SCPlayerCommonCards_0x12();
+  virtual ~SCPlayerCommonCards_0x13();
  public:
   virtual uint8_t * PackBuffer(uint8_t * buf);
   virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
@@ -359,6 +391,38 @@ class SCPlayerCommonCards_0x12: public ::ssu::Object {
  protected:
   uint32_t _step;
   ::ssu::RepeatedObject<card *> _cards;
+
+};
+
+class SCPlayerOperateReq_0x14: public ::ssu::Object {
+ public:
+  inline SCPlayerOperateReq_0x14(): _opcode(0), _chairid(0), _basechips(0), _currentchips(0) { }
+
+  virtual ~SCPlayerOperateReq_0x14() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Opcode() const { return _opcode; }
+  inline void SetOpcode(uint32_t val__) { _opcode = val__; }
+
+  inline uint32_t Chairid() const { return _chairid; }
+  inline void SetChairid(uint32_t val__) { _chairid = val__; }
+
+  inline uint32_t Basechips() const { return _basechips; }
+  inline void SetBasechips(uint32_t val__) { _basechips = val__; }
+
+  inline uint32_t Currentchips() const { return _currentchips; }
+  inline void SetCurrentchips(uint32_t val__) { _currentchips = val__; }
+
+ protected:
+  uint32_t _opcode;
+  uint32_t _chairid;
+  uint32_t _basechips;
+  uint32_t _currentchips;
 
 };
 

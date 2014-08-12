@@ -111,7 +111,7 @@ message SCPlayerGameStatus_0x10
 
 //0x11
 //自动下大小盲底注
-//meesage SCPlayerBlindChips_0x11
+message SCPlayerBlindChips_0x11
 {
   //small blind
   required uint32 smallChair = 1;
@@ -143,7 +143,11 @@ message SCPlayerHandCards_0x12
 }
 
 //0x13
+<<<<<<< HEAD
 //公共牌
+=======
+//公共
+>>>>>>> origin/master
 message SCPlayerCommonCards_0x13
 {
    //阶段
@@ -153,8 +157,22 @@ message SCPlayerCommonCards_0x13
 }
 
 //0x14
+<<<<<<< HEAD
 //公共注
 message SCPlayerCommonChips_0x14
 {
 
+=======
+//下注请求
+message SCPlayerOperateReq_0x14
+{
+   //操作
+   required uint32 opcode = 1;
+   //chairId
+   required uint32 chairid = 2;
+   //基础筹码
+   required uint32 basechips = 3;
+   //当前下注
+   required uint32 currentchips = 4;
+>>>>>>> origin/master
 }

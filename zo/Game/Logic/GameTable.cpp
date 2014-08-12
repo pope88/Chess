@@ -173,7 +173,8 @@ void GameTable::autoOperateBlind()
 			for (int i = 0; i < ePLYNUM; ++i)
 			{
 				Player* pp = getPlayer(i);
-				if (pp && (pp->getPlayerStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & BIGBLIND )== BIGBLIND))
+
+				if (pp && (pp->getPlayerStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & BIGBLIND) == BIGBLIND))
 				{
 					playerBig = pp;
 					bHaveBigBlind = true;
@@ -190,105 +191,75 @@ void GameTable::autoOperateBlind()
 
 }
 
+
+void GameTable::onOperateAck(Player *player, UInt8 opcode)
+{
+
+}
+
 void GameTable::sendOperateReq(Player *player)
 {
-	Player *player = NULL;
-	if (player  == NULL)
-	{
-		return;
-	}
+	Packet::PlayerOperateReq poReq;
+	poReq.SetChairid(player->getChairID());
+	poReq.SetBasechips(m_Poke.getBaseChips());
+	poReq.SetCurrentchips(m_Poke.getBaseChips() - player->mPoker.getCurrentChips());
 
-	//pt_dz_operator_req req;
-	//req.opcode = dz_operate_req;
-	//req.cChairID = player->getChairID();
-	//req.nOpcode = 0;
-	//req.nCurrentChips = m_Poke.getBaseChips() - player->mPoker.getCurrentChips();
-	//req.nBaseChip = m_Poke.getBaseChips();
-
-	UInt32 nCurrentChips = m_Poke.getBaseChips() - player->mPoker.getCurrentChips();
-	if (player->mPoker.isGiveUp())
+	if (poReq.Currentchips() > (player->getMoney() - player->mPoker.getChips()))
 	{
-		return;
-	}
-	else if (nCurrentChips > (player->getMoney() - player->mPoker.getCurrentChips()))
-	{
-		pt_dz_operate_ack ack;
-		ack.op
+		onOperateAck(player, GIVEUP);
 	}
 	else
 	{
-
-	}
-
-	{
-		if (player->mPoker.isGiveUp())
+		UInt32 opcode = 0;
+		if ((player->getMoney() - player->mPoker.getChips()) > poReq.Currentchips())
 		{
-			return;
+			opcode |= ADDCHIPS;
+			poReq.SetOpcode(opcode);
 		}
-		else if (req.nCurrentChips > player->getGameMoney() - player->mPoker.getChips())
-		{
-			pt_dz_operate_ack ack;
-			ack.nOpcode = GIVEUP;
-			ack.nSerialID = m_nSerialID;
-			OnOperateAck(pPlayer, ack,true);
-		}
-		else 
-		{
-			if (player->getGameMoney() - player->mPoker.getChips() > req.nCurrentChips)
-			{
-				req.nOpcode |= ADDCHIPS;
-			}
-		}
-		req.nOpcode |= FOLLOWCHIPS;
-		req.nOpcode |= GIVEUP;
-		req.send(player);
+		opcode |= FOLLOWCHIPS;
+		opcode |= GIVEUP;
+		poReq.SetOpcode(opcode);
 
 		m_cCurOpChair = player->getChairID();
-		m_cCurOpcode = req.nOpcode;
-		if (m_cCurOpcode & ADDCHIPS || m_cCurOpcode & FOLLOWCHIPS || m_cCurOpcode & GIVEUP )
-		{
-			m_cCurOpcode |= ADDCHIPS;
-			m_cCurOpcode |= FOLLOWCHIPS;
-			m_cCurOpcode |= GIVEUP;
-		}
+		m_cCurOpcode = opcode;
+
 		m_pCoreTable->removeTimer();
 		startTimer(eBET_EVENT, m_cCurOpChair);
 	}
-	*/
 }
 
-void GameTable::onOperateAck(Player *player, const pt_dz_operate_ack &ack, bool bForceLeave)
-{
-	if (!player)
-	{
-		glog.log("player return");
-		return;
-	}
-	pt_dz_operate_not noti;
-	noti.opcode = dz_operate_not;
-	int  nAmount = 0;
-	if (!m_bRacing)
-	{
-		return;
-	}
-	if (!bForceLeave)
-	{
-		++m_nSeialID;
-	}
-
-	if (!(ack.nOpcode &  GIVEUP))
-	{
-		if (pPlayer->getChairID() != m_cCurOpChair)
-		{
-			return;
-		}
-	}
-	if (pPlayer->getStatus() == Player::PS_GIVEUP)
-	{
-		return;
-	}
-
-}
+//void GameTable::onOperateAck(Player *player, const pt_dz_operate_ack &ack, bool bForceLeave)
+//{
+//	if (!player)
+//	{
+//		glog.log("player return");
+//		return;
+//	}
+//	pt_dz_operate_not noti;
+//	noti.opcode = dz_operate_not;
+//	int  nAmount = 0;
+//	if (!m_bRacing)
+//	{
+//		return;
+//	}
+//	if (!bForceLeave)
+//	{
+//		++m_nSeialID;
+//	}
+//
+//	if (!(ack.nOpcode &  GIVEUP))
+//	{
+//		if (pPlayer->getChairID() != m_cCurOpChair)
+//		{
+//			return;
+//		}
+//	}
+//	if (pPlayer->getStatus() == Player::PS_GIVEUP)
+//	{
+//		return;
+//	}
+//
+//}
 
 void GameTable::showPlayerStatus()
 {
@@ -676,12 +647,15 @@ void GameTable::autoSendSmallBlind(Player *player)
 		{
 			sendOperateReq(p, 2);
 		}
-	}*/
+
+	}
+	*/
 }
 
 	void GameTable::autoSendBigBlind(Player *player)
 	{
-		/*if(player == NULL)
+		/*
+		if(player == NULL)
 			return;
 		bool bHavebigBlind = false;
 		if (m_bbigBlind == false)
