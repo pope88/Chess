@@ -194,7 +194,179 @@ void GameTable::autoOperateBlind()
 
 void GameTable::onOperateAck(Player *player, UInt8 opcode)
 {
+	if (!player)
+	{
+		return;
+	}
+	if (!m_bRacing)
+	{
+		return;
+	}
 
+	if ()
+	{
+	}
+
+	//pt_dz_operate_not noti;
+	//noti.opcode = dz_operate_not;
+	//noti.cChairID = pPlayer->GetChairID();
+
+	//noti.nOpcode = ack.nOpcode;
+	//int nAmount = 0;
+	//if(!m_bRacing)
+	//	return;
+
+	//if(ack.nSerialID != m_nSerialID)
+	//{
+	//	glog.log("serialid not the same ack serial %d m_nserialID %d", ack.nSerialID, m_nSerialID);
+	//	return;
+	//}
+
+	//if(!bForceLeave)
+	//	++m_nSerialID;
+
+	if(!(ack.nOpcode & GIVEUP))
+	{
+		if(pPlayer->GetChairID() != m_cCurOpChair)
+			return;
+	}
+	if(pPlayer->GetStatus() == CPlayer::PS_GIVEUP)
+	{
+		return;
+	}
+
+	if(!(m_nCurOpcode & ack.nOpcode))
+	{
+		glog.log("there is not the opcode requested");
+		return;
+	}
+
+	if (pPlayer->GetPlayStatus() == DAMANG && !m_bHaveRecord && !(ack.nOpcode & GIVEUP))
+	{
+		m_nLastDaMangZhu = ack.nAmount;
+		m_bHaveRecord = true;
+	}
+
+	int nLeaveMoney = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
+
+	if(ack.nOpcode & JIAZHU)	//¼Ó×¢
+	{
+		nAmount = ack.nAmount;
+		if(ack.nAmount < m_stMJTable.m_nBaseChips - pPlayer->m_stMJUser.m_nCurrentChips)
+			return;
+		if(nLeaveMoney < ack.nAmount)
+			return;
+
+		if (ack.nAmount > m_nLowestMoney - pPlayer->m_stMJUser.m_nCurrentChips)
+		{
+			nAmount = m_nLowestMoney - pPlayer->m_stMJUser.m_nCurrentChips;
+		}
+
+		pPlayer->m_stMJUser.m_nChips = nAmount;
+		pPlayer->m_stMJUser.m_nCurrentChips += pPlayer->m_stMJUser.m_nChips;
+		pPlayer->m_stMJUser.m_nPlayerChips += pPlayer->m_stMJUser.m_nChips;
+		m_stMJTable.m_nTotalChips += nAmount;
+		m_stMJTable.m_nBaseChips = pPlayer->m_stMJUser.m_nCurrentChips;
+		noti.nChip = nAmount;
+		noti.nUserAmount = pPlayer->m_stMJUser.m_nPlayerChips;
+		noti.nTableAmount = m_stMJTable.m_nTotalChips;
+		noti.nLeaveAmount = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
+		noti.bGiveUp = 0;
+
+		if (m_nLowestMoney == m_stMJTable.m_nBaseChips)
+		{
+			pPlayer->m_stMJUser.m_bShowHand = true;
+		}
+	}
+	else if(ack.nOpcode & GENZHU)	//¸ú×¢
+	{
+		if(nLeaveMoney < m_stMJTable.m_nBaseChips - pPlayer->m_stMJUser.m_nCurrentChips)
+			return;
+
+		pPlayer->m_stMJUser.m_nChips = m_stMJTable.m_nBaseChips - pPlayer->m_stMJUser.m_nCurrentChips;
+		pPlayer->m_stMJUser.m_nCurrentChips += pPlayer->m_stMJUser.m_nChips;
+		pPlayer->m_stMJUser.m_nPlayerChips += pPlayer->m_stMJUser.m_nChips;
+		m_stMJTable.m_nTotalChips += pPlayer->m_stMJUser.m_nChips;
+		noti.nChip = pPlayer->m_stMJUser.m_nChips;
+		noti.nUserAmount = pPlayer->m_stMJUser.m_nPlayerChips;
+		noti.nTableAmount = m_stMJTable.m_nTotalChips;
+		noti.nLeaveAmount = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
+		noti.bGiveUp = 0;
+
+		if (m_nLowestMoney == m_stMJTable.m_nBaseChips)
+		{
+			pPlayer->m_stMJUser.m_bShowHand = true;
+		}
+	}
+	else if (ack.nOpcode & SHOWHAND)
+	{
+		if(nLeaveMoney < (m_nLowestMoney - pPlayer->m_stMJUser.m_nCurrentChips))
+		{
+			glog.log("leavemoney %d is less than lowestmoney %d",nLeaveMoney,m_nLowestMoney);
+			return;
+		}
+
+		pPlayer->m_stMJUser.m_nChips = m_nLowestMoney - pPlayer->m_stMJUser.m_nCurrentChips;
+		pPlayer->m_stMJUser.m_nCurrentChips += pPlayer->m_stMJUser.m_nChips;
+		pPlayer->m_stMJUser.m_nPlayerChips += pPlayer->m_stMJUser.m_nChips;
+		m_stMJTable.m_nTotalChips += pPlayer->m_stMJUser.m_nChips;
+		m_stMJTable.m_nBaseChips = pPlayer->m_stMJUser.m_nCurrentChips;
+		noti.nChip = pPlayer->m_stMJUser.m_nChips;
+		noti.nUserAmount = pPlayer->m_stMJUser.m_nPlayerChips;
+		noti.nTableAmount = m_stMJTable.m_nTotalChips;
+		noti.nLeaveAmount = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
+		noti.bGiveUp = 0;
+		pPlayer->m_stMJUser.m_bShowHand = true;
+	}
+	else if(ack.nOpcode & GIVEUP)
+	{
+		pPlayer->SetStatus(CPlayer::PS_GIVEUP);
+		noti.bGiveUp = 1;
+		noti.nChip = 0;
+		noti.nUserAmount = pPlayer->m_stMJUser.m_nPlayerChips;
+		noti.nTableAmount = m_stMJTable.m_nTotalChips;
+		noti.nLeaveAmount = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
+
+		--m_nPlyNum;
+	}
+	else
+	{
+		return;
+	}
+	NotifyRoom(noti);
+
+	if (m_nPlyNum == 1)
+	{
+		GameOver();
+		return;
+	}
+
+	if (IsAllSameChips())
+	{
+		for (int i = 0; i < ePLYNUM; ++i)
+		{
+			CPlayer* pp = GetPlayer(i);
+			if (pp && pp->GetStatus() == CPlayer::PS_PLAYER)
+			{
+				m_nLowestMoney -= pp->m_stMJUser.m_nCurrentChips;
+				break;
+			}
+		}		
+		pt_dz_minmoney_not noti;
+		noti.opcode = dz_minmoney_not;
+		noti.nMinMoney = m_nLowestMoney;
+		NotifyRoom(noti);
+
+		SendCommonCards();
+	}
+	else
+	{
+		CPlayer* pp = GetNextPlayer(pPlayer->GetChairID());
+		if (pp)
+		{
+			SendOperateReq(pp);
+		}
+	}
 }
 
 void GameTable::sendOperateReq(Player *player)
