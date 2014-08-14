@@ -203,51 +203,36 @@ void GameTable::onOperateAck(Player *player, UInt8 opcode)
 		return;
 	}
 
-	if ()
+	if ((opcode &  GIVEUP) == 0)
 	{
-	}
-
-	//pt_dz_operate_not noti;
-	//noti.opcode = dz_operate_not;
-	//noti.cChairID = pPlayer->GetChairID();
-
-	//noti.nOpcode = ack.nOpcode;
-	//int nAmount = 0;
-	//if(!m_bRacing)
-	//	return;
-
-	//if(ack.nSerialID != m_nSerialID)
-	//{
-	//	glog.log("serialid not the same ack serial %d m_nserialID %d", ack.nSerialID, m_nSerialID);
-	//	return;
-	//}
-
-	//if(!bForceLeave)
-	//	++m_nSerialID;
-
-	if(!(ack.nOpcode & GIVEUP))
-	{
-		if(pPlayer->GetChairID() != m_cCurOpChair)
+		if (player->getChairID() != m_cCurOpChair)
+		{
 			return;
+		}
 	}
-	if(pPlayer->GetStatus() == CPlayer::PS_GIVEUP)
+	if (player->getStatus() == Player::PS_GIVEUP)
+	{
+		return;
+	}
+	if ((m_cCurOpcode & opcode) == 0)
 	{
 		return;
 	}
 
-	if(!(m_nCurOpcode & ack.nOpcode))
+	if(player->getStatus() == BIGBLIND)
 	{
-		glog.log("there is not the opcode requested");
-		return;
+
 	}
 
-	if (pPlayer->GetPlayStatus() == DAMANG && !m_bHaveRecord && !(ack.nOpcode & GIVEUP))
-	{
-		m_nLastDaMangZhu = ack.nAmount;
-		m_bHaveRecord = true;
-	}
+	int nLeave = player->getMoney() - player->mPoker.getPlayerChips();
 
-	int nLeaveMoney = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
+	if (opcode & ADDCHIPS)
+	{
+		int mAmount = ack.nAmout;
+		if ()
+		{
+		}
+	}
 
 	if(ack.nOpcode & JIAZHU)	//¼Ó×¢
 	{
@@ -261,22 +246,10 @@ void GameTable::onOperateAck(Player *player, UInt8 opcode)
 		{
 			nAmount = m_nLowestMoney - pPlayer->m_stMJUser.m_nCurrentChips;
 		}
-
-		pPlayer->m_stMJUser.m_nChips = nAmount;
-		pPlayer->m_stMJUser.m_nCurrentChips += pPlayer->m_stMJUser.m_nChips;
-		pPlayer->m_stMJUser.m_nPlayerChips += pPlayer->m_stMJUser.m_nChips;
-		m_stMJTable.m_nTotalChips += nAmount;
-		m_stMJTable.m_nBaseChips = pPlayer->m_stMJUser.m_nCurrentChips;
-		noti.nChip = nAmount;
-		noti.nUserAmount = pPlayer->m_stMJUser.m_nPlayerChips;
-		noti.nTableAmount = m_stMJTable.m_nTotalChips;
-		noti.nLeaveAmount = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
-		noti.bGiveUp = 0;
-
-		if (m_nLowestMoney == m_stMJTable.m_nBaseChips)
-		{
-			pPlayer->m_stMJUser.m_bShowHand = true;
-		}
+		player->mPoker.setChips(nAmount);
+		player->mPoker.setCurrentChips(player->mPoker.getCurrentChips() + player->mPoker.getChips());
+		player->mPoker.setPlayerChips(player->mPoker.getPlayerChips() + player->mPoker.getChips());
+		m_Poke.setTotalChips(m_Poke.getTotalChips() + nAmount);
 	}
 	else if(ack.nOpcode & GENZHU)	//¸ú×¢
 	{
