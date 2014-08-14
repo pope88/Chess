@@ -200,42 +200,24 @@ void GameTable::onOperateAck(Player *player, UInt8 opcode)
 		return;
 	}
 
-	if ()
+	if (!(opcode & GIVEUP))
 	{
-	}
-
-	//pt_dz_operate_not noti;
-	//noti.opcode = dz_operate_not;
-	//noti.cChairID = pPlayer->GetChairID();
-
-	//noti.nOpcode = ack.nOpcode;
-	//int nAmount = 0;
-	//if(!m_bRacing)
-	//	return;
-
-	//if(ack.nSerialID != m_nSerialID)
-	//{
-	//	glog.log("serialid not the same ack serial %d m_nserialID %d", ack.nSerialID, m_nSerialID);
-	//	return;
-	//}
-
-	//if(!bForceLeave)
-	//	++m_nSerialID;
-
-	if(!(ack.nOpcode & GIVEUP))
-	{
-		if(pPlayer->GetChairID() != m_cCurOpChair)
+		if (player->getChairID() != m_cCurOpChair)
+		{
 			return;
+		}
 	}
-	if(pPlayer->GetStatus() == CPlayer::PS_GIVEUP)
+	if (player->getStatus() == Player::PS_GIVEUP)
 	{
 		return;
 	}
 
-	if(!(m_nCurOpcode & ack.nOpcode))
+	if (!(m_cCurOpcode & opcode))
 	{
-		glog.log("there is not the opcode requested");
 		return;
+	}
+	if (player->getPlayerStatus() == BIGBLIND && )
+	{
 	}
 
 	if (pPlayer->GetPlayStatus() == DAMANG && !m_bHaveRecord && !(ack.nOpcode & GIVEUP))
