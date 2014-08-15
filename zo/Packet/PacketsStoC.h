@@ -260,6 +260,30 @@ class PGStatus: public ::ssu::Object {
 
 };
 
+class SCPlayerGameSart_0x09: public ::ssu::Object {
+ public:
+  inline SCPlayerGameSart_0x09(): _basechips(0), _lowestchips(0) { }
+
+  virtual ~SCPlayerGameSart_0x09() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Basechips() const { return _basechips; }
+  inline void SetBasechips(uint32_t val__) { _basechips = val__; }
+
+  inline uint32_t Lowestchips() const { return _lowestchips; }
+  inline void SetLowestchips(uint32_t val__) { _lowestchips = val__; }
+
+ protected:
+  uint32_t _basechips;
+  uint32_t _lowestchips;
+
+};
+
 class SCPlayerGameStatus_0x10: public ::ssu::Object {
  public:
   virtual ~SCPlayerGameStatus_0x10();

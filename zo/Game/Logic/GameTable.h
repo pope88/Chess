@@ -107,7 +107,7 @@ public:
 	//发送初始牌
 	void dealing();
 
-	void setGameScore() {}
+	void setGameScore() { m_baseChips = 100; m_lowestChips = 10000; }
 
 	//服务器发送出牌请求
 	void svrPlayCardReq(int nChairID) {}
@@ -135,7 +135,7 @@ private:
 
 
 	//开始游戏广播
-	void SvrStartGameNot() {}
+	void SvrStartGameNot();
 
 	//设置底注
 	void SetBaseMoney() {}
@@ -173,7 +173,7 @@ public:
 	bool m_bSmallBlind;         //小盲注已下
 	bool m_bbigBlind;            //大盲注已下
 	bool m_btimeOut;             //已经超时
-	UInt32 m_limitMoney;         //最低筹码限制
+	UInt32 m_lowestChips;         //最低筹码限制
 	UInt8 m_nCommonNum;          //公共牌发牌步骤
 	UInt8 m_nLastBigBlind;       //上一次大盲注
 

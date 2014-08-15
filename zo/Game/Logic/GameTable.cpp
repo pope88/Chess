@@ -4,7 +4,7 @@
 #include "../../Model/Object/User.h"
 
 
-GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_bSmallBlind(false), m_bbigBlind(false), m_btimeOut(false), m_limitMoney(0), m_nCommonNum(0), m_nLastBigBlind(0)
+GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_bSmallBlind(false), m_bbigBlind(false), m_btimeOut(false), m_lowestChips(0), m_nCommonNum(0), m_nLastBigBlind(0)
 {
 
 }
@@ -40,7 +40,7 @@ void GameTable::NewRound()
 	m_bSmallBlind = false;
 	m_bbigBlind = false;
 	m_btimeOut = false;
-	m_limitMoney = 0;
+	m_lowestChips = 0;
 	m_nCommonNum = 0;
 	m_nLastBigBlind = 0;
 
@@ -52,7 +52,7 @@ void GameTable::NewRound()
 		Player* pBanker = getPlayer(m_Poke.getBanker());
 		if(!pPlayer)
 			continue;
-		if(m_bNewRound || !pBanker)
+		if(m_bNewRound || pBanker == NULL)
 		{
 			m_Poke.setBanker(nOtherChair);
 			m_bNewRound = false;
@@ -66,6 +66,14 @@ void GameTable::NewRound()
 
 	SvrStartGameNot();
 
+}
+
+void GameTable::SvrStartGameNot()
+{
+	Packet::PlayerGameSart pgs;
+	pgs.SetBasechips(m_baseChips);
+	pgs.SetLowestchips(m_lowestChips);
+	NotifyRoom(pgs);
 }
 
 void GameTable::dealing()

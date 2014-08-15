@@ -6,6 +6,7 @@ DefBuilder(UserRoomInfo, 0x05);
 DefBuilder(UserEnterRoom, 0x06);
 DefBuilder(UserEnterTable, 0x07);
 DefBuilder(UserPlayerNow, 0x08);
+DefBuilder(PlayerGameSart, 0x09);
 DefBuilder(PlayerGameStatus, 0x10);
 DefBuilder(PlayerBlindChips, 0x11);
 DefBuilder(PlayerHandCards, 0x12);

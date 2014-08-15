@@ -101,6 +101,16 @@ message PGStatus
   required uint32 status = 2;
 }
 
+//0x09
+//游戏开始通知
+message SCPlayerGameSart_0x09
+{
+   //基础底注
+   required uint32 basechips = 1;
+   //至少带入的筹码数
+   required uint32 lowestchips = 2;
+}
+
 //0x10
 //通知玩家的状态
 message SCPlayerGameStatus_0x10

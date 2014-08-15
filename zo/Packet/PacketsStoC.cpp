@@ -273,6 +273,33 @@ size_t PGStatus::Size() const {
   return 1 + ::ssu::Utils::SizeUInt32(_chairid) + 1 + ::ssu::Utils::SizeUInt32(_status);
 }
 
+uint8_t * SCPlayerGameSart_0x09::PackBuffer(uint8_t * buf) {
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 1, _basechips);
+  buf = ::ssu::Utils::PackUInt32Tag(buf, 2, _lowestchips);
+  return buf;
+}
+
+bool SCPlayerGameSart_0x09::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+  uint32_t tag_; uint8_t type_;
+  while(leftSize > 0) {
+    if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
+    switch(tag_) {
+     case 1:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _basechips)) return false;
+      break;
+     case 2:
+      if(type_ != 0 || !::ssu::Utils::UnpackUInt32(buf, leftSize, _lowestchips)) return false;
+      break;
+     default: break;
+    }
+  }
+  return true;
+}
+
+size_t SCPlayerGameSart_0x09::Size() const {
+  return 1 + ::ssu::Utils::SizeUInt32(_basechips) + 1 + ::ssu::Utils::SizeUInt32(_lowestchips);
+}
+
 SCPlayerGameStatus_0x10::~SCPlayerGameStatus_0x10() {
   for(::ssu::RepeatedObject<PGStatus *>::iterator iter = _playerstatus.begin(); iter != _playerstatus.end(); ++ iter) { delete *iter; } _playerstatus.Clear();
 }

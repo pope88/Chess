@@ -2,7 +2,7 @@
 #include "Poke.h"
 #include "GameTable.h"
 
-Poke::Poke(): _m_nBanker(0), _bigBlind(0), _totalChips(0), _baseChips(0), _finishNum(0)
+Poke::Poke(): _m_nBanker(0), _smallBlinder(0), _bigBlinder(0), _totalChips(0), _baseChips(0), _finishNum(0)
 {
 }
 
@@ -30,7 +30,8 @@ void Poke::ShuffleCards()
 void Poke::NewRound()
 {
 	_m_nBanker = 0;
-	_bigBlind = 0;
+	_smallBlinder = 0;
+	_bigBlinder = 0;
 	_totalChips = 0;            
 	_baseChips = 0;    
 	_finishNum = 0;
