@@ -15,7 +15,7 @@ public:
 	{
 		PS_NONE,
 		PS_PLAYER,
-		PS_CANDIDATE,
+		PS_CANDIDATE, //∫Ú—°
 		PS_GIVEUP,
 	};
 	enum DZOP

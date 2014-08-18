@@ -57,40 +57,56 @@ public:
 	   @param pExceptPlayer 排除不发玩家
 	*/
 	
-	void NotifyRoom(Packet::Builder& pb, int nType = 0, Player* pExceptPlayer = NULL)
+	void NotifyTable(Packet::Builder& pb, int nType = 0, Player* pExceptPlayer = NULL)
 	{
 		for (UInt8 i = 0; i < ePLYNUM; ++i)
 		{
 			Mplayer *player = m_pCoreTable->getCorePlayer(i);
-			if (!player || pExceptPlayer->getCorePlayer() == player)
+			if ( player == NULL || pExceptPlayer->getCorePlayer() == player)
 			{
 				continue;
 			}
 			//pb.send(player);
 		}
 	}	
-protected:
+public:
 	//开始游戏
 	void NewRound(); 
 	//创建一个定时器
 	void startTimer(int nEvent, char cChair);
 	void showPlayerStatus();
-	void deaLing();
+	void dealing();
 	inline UInt32 getBaseChips() { return m_baseChips; }
 	UInt8 getBeforePlayerID(UInt8 nChairID);
 	Player* getNextPlayer(UInt8 nChairID);
 	Player* getPlayer(UInt8 nChairID);
 	Player* getAfterPlayer(UInt8 nChairID);
 	void SendCompleteData(Player* pPlayer);
-	//通过指定的椅子号取得当前这个椅子上的玩家指针
 	void sendPlayerCard();
 	void onFinishSendAck(Player* p);
 	void sendOperateReq(Player *player);
 	void onOperateAck(Player *player, UInt8 opcode);
 	void autoOperateBlind();
-	void autoSendSmallBlind(Player *player);
-	void autoSendBigBlind(Player *player);
+public:
+	void setGameScore() { m_baseChips = 100; m_lowestChips = 10000; }
 
+	//客户端回应发牌完毕
+	void cliSendCardAck(const ::ssu::Object &ack, Player* pPlayer) {}
+
+
+	void cliPickCardAck(const ::ssu::Object &ack, Player* pPlayer) {}
+
+	void CliOperatorAck(const ::ssu::Object &ack, Player* pPlayer) {}
+
+
+	//游戏结束
+	void RoundEnd(Player* pPlayer) {}
+
+	//获取游戏数据，旁观、断线重连用
+	void GetCompleteData(Player *pPlayer) {}
+
+	//发送通用消息
+	void SendCommonCmd(int nOp, int nChairID = -1) {}
 
 	virtual void onUserArrangeLeave(Mplayer* pPlayer) {}
 	virtual void onUserForceLeave(Mplayer* pPlayer) {}
@@ -101,39 +117,7 @@ protected:
 	virtual void onUserJoin(Mplayer* pPlayer) {}
 	virtual void onUserLeave(Mplayer* pPlayer) {}
 
-
-public:
-
-	//发送初始牌
-	void dealing();
-
-	void setGameScore() { m_baseChips = 100; m_lowestChips = 10000; }
-
-	//服务器发送出牌请求
-	void svrPlayCardReq(int nChairID) {}
-
-	//客户端回应发牌完毕
-	void cliSendCardAck(const ::ssu::Object &ack, Player* pPlayer) {}
-
-
-	void cliPickCardAck(const ::ssu::Object &ack, Player* pPlayer) {}
-
-	void CliOperatorAck(const ::ssu::Object &ack, Player* pPlayer) {}
-
-	//发送通用消息
-	void SendCommonCmd(int nOp, int nChairID = -1) {}
-
-	//游戏结束
-	void RoundEnd(Player* pPlayer) {}
-
-	//获取游戏数据，旁观、断线重连用
-	void GetCompleteData(Player *pPlayer) {}
-
-public:
 	
-private:
-
-
 	//开始游戏广播
 	void SvrStartGameNot();
 
@@ -156,10 +140,7 @@ private:
 	*/
 	void RefreshCards(Player* pPlayer, Player* pExceptPlayer = NULL, bool bPlyShow = false, bool bShowAll = false) {}
 
-	//玩家出的牌
-	void SendPutCards(Player* pPlayer, bool bAll = false) {}
-
-public:
+private:
 	Mtable* m_pCoreTable;					//系统接口
 	Poke m_Poke;								//牌
 	bool m_bRacing;                             //比赛状态
@@ -175,7 +156,7 @@ public:
 	bool m_btimeOut;             //已经超时
 	UInt32 m_lowestChips;         //最低筹码限制
 	UInt8 m_nCommonNum;          //公共牌发牌步骤
-	UInt8 m_nLastBigBlind;       //上一次大盲注
+	UInt8 m_nLastBigBlind;       //上一次大盲注chairid
 
 };
 

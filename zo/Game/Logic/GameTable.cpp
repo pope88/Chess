@@ -24,7 +24,6 @@ void GameTable::onGameStart()
 
 	SetBaseMoney();
 
-	//DealingTask();
 }
 
 void GameTable::NewRound()
@@ -50,7 +49,7 @@ void GameTable::NewRound()
 		int nOtherChair = (nChair + i) % ePLYNUM;
 		Player* pPlayer = getPlayer(nOtherChair);
 		Player* pBanker = getPlayer(m_Poke.getBanker());
-		if(!pPlayer)
+		if(pPlayer == NULL)
 			continue;
 		if(m_bNewRound || pBanker == NULL)
 		{
@@ -73,7 +72,7 @@ void GameTable::SvrStartGameNot()
 	Packet::PlayerGameSart pgs;
 	pgs.SetBasechips(m_baseChips);
 	pgs.SetLowestchips(m_lowestChips);
-	NotifyRoom(pgs);
+	NotifyTable(pgs);
 }
 
 void GameTable::dealing()
@@ -181,7 +180,7 @@ void GameTable::autoOperateBlind()
 			for (int i = 0; i < ePLYNUM; ++i)
 			{
 				Player* pp = getPlayer(i);
-				if (pp && (pp->getPlayerStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & BIGBLIND) == BIGBLIND))
+				if ((pp != NULL) && (pp->getPlayerStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & BIGBLIND) == BIGBLIND))
 				{
 					playerBig = pp;
 					bHaveBigBlind = true;
@@ -193,13 +192,32 @@ void GameTable::autoOperateBlind()
 	Player *nextPlayer = getNextPlayer(playerBig->getChairID());
 	if(bHaveSmallBlind && bHaveBigBlind)
 	{
+		Packet::PlayerBlindChips pbc;
+		pbc.SetTableamount(m_Poke.getBaseChips() * 3);
+
+		playerSmall->mPoker.setCurrentChips(m_Poke.getBaseChips());
+		playerSmall->mPoker.setChips(m_Poke.getBaseChips());
+		Packet::PlayerBlindChips::blindInfo *pb = pbc.AddBlindinfos();
+		pb->SetChairid(playerSmall->getChairID());
+		pb->SetChips(m_Poke.getBaseChips());
+		pb->SetRemainchips(playerSmall->mPoker.getPlayerChips()-m_Poke.getBaseChips());
+
+		playerBig->mPoker.setCurrentChips(m_Poke.getBaseChips() * 2);
+		playerBig->mPoker.setChips(m_Poke.getBaseChips() * 2);
+		pb = pbc.AddBlindinfos();
+		pb->SetChairid(playerSmall->getChairID());
+		pb->SetChips(m_Poke.getBaseChips() * 2);
+		pb->SetRemainchips(playerSmall->mPoker.getPlayerChips()-m_Poke.getBaseChips() * 2 );
+
+		NotifyTable(pbc);  //noitfy table
+
 		sendOperateReq(nextPlayer);
 	}
 }
 
 void GameTable::onOperateAck(Player *player, UInt8 opcode)
 {
-	if (!player)
+	/*if (!player)
 	{
 		return;
 	}
@@ -353,7 +371,7 @@ void GameTable::onOperateAck(Player *player, UInt8 opcode)
 		{
 			SendOperateReq(pp);
 		}
-	}
+	}*/
 }
 
 void GameTable::sendOperateReq(Player *player)
@@ -391,14 +409,14 @@ void GameTable::showPlayerStatus()
 {
 	int nChair = -1;
 	Player *p = getPlayer(m_Poke.getBanker());
-	if (p && (p->getStatus() == Player::PS_PLAYER || p->getStatus() == Player::PS_GIVEUP))
+	if (p != NULL && (p->getStatus() == Player::PS_PLAYER || p->getStatus() == Player::PS_GIVEUP))
 	{	
 		nChair = m_Poke.getBanker();
 	}
-	else //庄家不在，既已逃跑
+	else
 	{
 		Player* pp = getAfterPlayer(m_Poke.getBanker());
-		if (pp)
+		if (pp != NULL)
 		{
 			nChair = pp->getChairID();
 			m_Poke.setBanker(nChair);
@@ -409,7 +427,7 @@ void GameTable::showPlayerStatus()
 	for (int i = 0; i < ePLYNUM; ++i)
 	{
 		Player *pp = getPlayer(i);
-		if (pp && (pp->getStatus() == Player::PS_PLAYER || pp->getStatus() == Player::PS_GIVEUP))
+		if ((pp != NULL) && (pp->getStatus() == Player::PS_PLAYER || pp->getStatus() == Player::PS_GIVEUP))
 		{
 			++nNum; 
 		}
@@ -420,7 +438,7 @@ void GameTable::showPlayerStatus()
 	for (int i = 0; i < ePLYNUM; ++i)
 	{
 		Player* pPlayer = getPlayer(nChair);
-		if (!pPlayer)
+		if (pPlayer== NULL)
 		{
 			++nChair;
 			nChair = (nChair)%ePLYNUM;
@@ -467,21 +485,17 @@ void GameTable::showPlayerStatus()
 			}
 			else
 			{
-				//noti.nStatus = COMMONPLAYER;
 				pPlayer->setPlayerStatus(Player::COMMONPLAYER);
-				ps->SetStatus(Player::BIGBLIND);
+				ps->SetStatus(Player::COMMONPLAYER);
 			}
 		}
 
 		++nChair;
 		nChair = (nChair)%ePLYNUM;
 	}
-	NotifyRoom(pgs);
+	NotifyTable(pgs);
 }
-void GameTable::deaLing()
-{
 
-}
 
 void GameTable::startTimer(int nEvent, char cChair)
 {
@@ -698,111 +712,5 @@ void GameTable::onFinishSendAck(Player* p)
 	}
 	*/
 }
-
-
-void GameTable::autoSendSmallBlind(Player *player)
-{
-/*
-	if (!player)
-	{
-		return;
-	}
-	bool bhaveSmallBlind = false;
-	if (!m_blittleBlind)
-	{
-		if ((player->getStatus() & Player::SMALLBLIND) == Player::SMALLBLIND)
-		{
-			bhaveSmallBlind = true;
-		}
-		else
-		{
-			showPlayerStatus();
-			for (int i = 0; i < ePLYNUM; ++i)
-			{
-				Player *p = getPlayer(i);
-				if (p && (p->getStatus() == Player::PS_PLAYER) && (p->getStatus() & Player::SMALLBLIND) == Player::SMALLBLIND )
-				{
-					player = p;
-					bhaveSmallBlind = true;
-				}
-			}
-		}
-	}
-	else
-	{
-
-	}
-
-	if (bhaveSmallBlind)
-	{
-		player->mPoker.setChips(getBaseChips()/2);
-		player->mPoker.setCurrentChips(getBaseChips()/2);
-		m_Poke.setTotalChips(m_Poke.getTotalChips() + getBaseChips()/2);
-		m_Poke.setBaseChips(getBaseChips()/2);
-
-		Player *p = getNextPlayer(player->getChairID());
-		if (p != NULL)
-		{
-			sendOperateReq(p, 2);
-		}
-	}
-	*/
-}
-
-	void GameTable::autoSendBigBlind(Player *player)
-	{
-		/*
-		if(player == NULL)
-			return;
-		bool bHavebigBlind = false;
-		if (m_bbigBlind == false)
-		{
-			if ((player->getPlayerStatus() & BIGBLIND) == BIGBLIND)
-			{
-				bHavebigBlind = true;
-			}
-			else
-			{
-				showPlayerStatus();
-				for (UInt8 i = 0; i < ePLYNUM; ++i)
-				{
-					Player *pp = getPlayer(i);
-					if (pp && (pp->getStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & BIGBLIND) == BIGBLIND))
-					{
-						player = pp;
-						bHavebigBlind = true;
-					}
-				}
-			}
-		}
-		else
-		{
-			player->mPoker.setChips(getBaseChips());
-			player->mPoker.setCurrentChips(player->mPoker.getChips());
-			m_Poke.setTotalChips(player->mPoker.getChips());
-			m_Poke.setBaseChips(player->mPoker.getChips());
-			player->mPoker.setPlayerChips(player->mPoker.getPlayerChips() + player->mPoker.getChips());
-			m_bbigBlind = player->mPoker.getChips();
-
-			//pt_dz_operate_not noti;
-			//noti.opcode = dz_operate_not;
-			//noti.nChairID = player->getChairID();
-			//noti.nOpcode = BIGBLIND;
-			//noti.nChip = player->mPoker.getChips();
-			//noti.nUserAmount = player->mPoker.getPlayerChips();
-			//noti.nTableAmount = m_Poke.getTotalChips();
-			//noti.mLeaveAmount = player->getGameMoney() - player->mPoker.getPlayerChips();
-			//NotifyRoom(noti);
-			m_bbigBlind = true;
-
-			m_nLastBigBlind = getBaseChips();
-			
-			Player *pp  = getNextPlayer(player->getChairID());
-			if (pp != NULL)
-			{
-				sendOperateReq(pp, 3);
-			}
-		}*/
-	}
 
 

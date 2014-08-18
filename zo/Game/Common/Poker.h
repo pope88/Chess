@@ -61,9 +61,9 @@ private:
 
 	bool m_bGiveUp;
 	bool m_bPickCard;
-	int	m_nChips;
-	int	m_nPlayerChips;
-	int	m_nCurrentChips;
+	int	m_nChips;        //此局下注
+	int	m_nPlayerChips;  //带入桌子筹码
+	int	m_nCurrentChips; //此回合下注
 	bool bfinishSendCard;
 };
 #endif

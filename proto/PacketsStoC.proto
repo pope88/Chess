@@ -123,14 +123,18 @@ message SCPlayerGameStatus_0x10
 //自动下大小盲底注
 message SCPlayerBlindChips_0x11
 {
-  //small blind
-  required uint32 smallChair = 1;
-  //chips
-  required uint32 smallChips = 2;
-  //big blind
-  required uint32 bigChair = 3;
-  //big chips
-  required uint32 bigChips = 4;
+  message blindInfo
+  {
+    //blind chairid
+	required uint32 chairid;
+	//blind chips
+	required uint32 chips;
+	//remain chips
+	required uint32 remainchips;
+	
+  }
+  required uint32 tableamount = 1;
+  repeated blindInfo blindinfos = 2;
 }
 
 //卡牌
