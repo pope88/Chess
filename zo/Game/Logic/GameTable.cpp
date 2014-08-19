@@ -203,7 +203,11 @@ void GameTable::onOperateAck(Player *player, UInt8 opcode)
 		return;
 	}
 
+<<<<<<< HEAD
 	if ((opcode &  GIVEUP) == 0)
+=======
+	if (!(opcode & GIVEUP))
+>>>>>>> origin/master
 	{
 		if (player->getChairID() != m_cCurOpChair)
 		{
@@ -214,9 +218,13 @@ void GameTable::onOperateAck(Player *player, UInt8 opcode)
 	{
 		return;
 	}
-	if ((m_cCurOpcode & opcode) == 0)
+
+	if (!(m_cCurOpcode & opcode))
 	{
 		return;
+	}
+	if (player->getPlayerStatus() == BIGBLIND && )
+	{
 	}
 
 	if(player->getStatus() == BIGBLIND)

@@ -143,11 +143,7 @@ message SCPlayerHandCards_0x12
 }
 
 //0x13
-<<<<<<< HEAD
-//公共牌
-=======
 //公共
->>>>>>> origin/master
 message SCPlayerCommonCards_0x13
 {
    //阶段
@@ -157,14 +153,8 @@ message SCPlayerCommonCards_0x13
 }
 
 //0x14
-<<<<<<< HEAD
-//公共注
-message SCPlayerCommonChips_0x14
-{
-
-=======
 //下注请求
-message SCPlayerOperateReq_0x14
+message SCPlayerOperate_0x14
 {
    //操作
    required uint32 opcode = 1;
@@ -174,5 +164,22 @@ message SCPlayerOperateReq_0x14
    required uint32 basechips = 3;
    //当前下注
    required uint32 currentchips = 4;
->>>>>>> origin/master
+}
+
+//0x15 
+//操作通知
+message SCPlayerOperateNot_0x15
+{
+   //操作玩家椅子号
+   required uint32 chairid = 1;
+   //操作玩家opcode
+   required uint32 opcode = 2;
+   //玩家下注
+   required uint32 chips = 3;
+   //用户下注总数
+   required uint32 useramount = 4;
+   //桌面总数
+   required uint32 tableamount = 5;
+   //玩家剩余chips
+   required uint32 leavechips = 6;
 }

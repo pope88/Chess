@@ -83,7 +83,7 @@ message CSUserPlayNow_0x08
 
 //0x14
 //回应下注
-message CSPlayerOperateAck_0x14
+message CSPlayerOperate_0x14
 {
   //操作(弃牌，跟注)
   required uint32 opcode = 1;
