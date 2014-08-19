@@ -260,6 +260,30 @@ class PGStatus: public ::ssu::Object {
 
 };
 
+class SCPlayerGameSart_0x09: public ::ssu::Object {
+ public:
+  inline SCPlayerGameSart_0x09(): _basechips(0), _lowestchips(0) { }
+
+  virtual ~SCPlayerGameSart_0x09() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Basechips() const { return _basechips; }
+  inline void SetBasechips(uint32_t val__) { _basechips = val__; }
+
+  inline uint32_t Lowestchips() const { return _lowestchips; }
+  inline void SetLowestchips(uint32_t val__) { _lowestchips = val__; }
+
+ protected:
+  uint32_t _basechips;
+  uint32_t _lowestchips;
+
+};
+
 class SCPlayerGameStatus_0x10: public ::ssu::Object {
  public:
   virtual ~SCPlayerGameStatus_0x10();
@@ -284,33 +308,58 @@ class SCPlayerGameStatus_0x10: public ::ssu::Object {
 
 class SCPlayerBlindChips_0x11: public ::ssu::Object {
  public:
-  inline SCPlayerBlindChips_0x11(): _smallChair(0), _smallChips(0), _bigChair(0), _bigChips(0) { }
+  class blindInfo: public ::ssu::Object {
+   public:
+    inline blindInfo(): _chairid(0), _chips(0), _remainchips(0) { }
 
-  virtual ~SCPlayerBlindChips_0x11() { }
+    virtual ~blindInfo() { }
 
+   public:
+    virtual uint8_t * PackBuffer(uint8_t * buf);
+    virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+    virtual size_t Size() const;
+
+   public:
+    inline uint32_t Chairid() const { return _chairid; }
+    inline void SetChairid(uint32_t val__) { _chairid = val__; }
+
+    inline uint32_t Chips() const { return _chips; }
+    inline void SetChips(uint32_t val__) { _chips = val__; }
+
+    inline uint32_t Remainchips() const { return _remainchips; }
+    inline void SetRemainchips(uint32_t val__) { _remainchips = val__; }
+
+   protected:
+    uint32_t _chairid;
+    uint32_t _chips;
+    uint32_t _remainchips;
+
+  };
+
+ public:
+  inline SCPlayerBlindChips_0x11(): _tableamount(0) { }
+
+  virtual ~SCPlayerBlindChips_0x11();
  public:
   virtual uint8_t * PackBuffer(uint8_t * buf);
   virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
   virtual size_t Size() const;
 
  public:
-  inline uint32_t SmallChair() const { return _smallChair; }
-  inline void SetSmallChair(uint32_t val__) { _smallChair = val__; }
+  inline uint32_t Tableamount() const { return _tableamount; }
+  inline void SetTableamount(uint32_t val__) { _tableamount = val__; }
 
-  inline uint32_t SmallChips() const { return _smallChips; }
-  inline void SetSmallChips(uint32_t val__) { _smallChips = val__; }
-
-  inline uint32_t BigChair() const { return _bigChair; }
-  inline void SetBigChair(uint32_t val__) { _bigChair = val__; }
-
-  inline uint32_t BigChips() const { return _bigChips; }
-  inline void SetBigChips(uint32_t val__) { _bigChips = val__; }
+  inline const blindInfo& Blindinfos(size_t index__) const { return *_blindinfos[index__]; }
+  inline blindInfo * NewBlindinfos() { return new(std::nothrow) blindInfo; }
+  inline blindInfo * AddBlindinfos() { blindInfo * val__ = new(std::nothrow) blindInfo; if(val__ == NULL) return NULL; _blindinfos.Add(val__); return val__; }
+  inline ::ssu::RepeatedObject<blindInfo *>& MutableBlindinfos() { return _blindinfos; }
+  inline size_t BlindinfosSize() const { return _blindinfos.Size(); }
+  inline void ClearBlindinfos() { for(::ssu::RepeatedObject<blindInfo *>::iterator iter = _blindinfos.begin(); iter != _blindinfos.end(); ++ iter) { delete *iter; } _blindinfos.Clear(); }
+  inline void ReserveBlindinfos(size_t size__) { if(_blindinfos.Size() < size__) _blindinfos.Reserve(size__); }
 
  protected:
-  uint32_t _smallChair;
-  uint32_t _smallChips;
-  uint32_t _bigChair;
-  uint32_t _bigChips;
+  uint32_t _tableamount;
+  ::ssu::RepeatedObject<blindInfo *> _blindinfos;
 
 };
 
@@ -423,6 +472,42 @@ class SCPlayerOperateReq_0x14: public ::ssu::Object {
   uint32_t _chairid;
   uint32_t _basechips;
   uint32_t _currentchips;
+
+};
+
+class SCPlayerOperateNot_0x15: public ::ssu::Object {
+ public:
+  inline SCPlayerOperateNot_0x15(): _opcode(0), _chairid(0), _currentchips(0), _leavechips(0), _totalchips(0) { }
+
+  virtual ~SCPlayerOperateNot_0x15() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Opcode() const { return _opcode; }
+  inline void SetOpcode(uint32_t val__) { _opcode = val__; }
+
+  inline uint32_t Chairid() const { return _chairid; }
+  inline void SetChairid(uint32_t val__) { _chairid = val__; }
+
+  inline uint32_t Currentchips() const { return _currentchips; }
+  inline void SetCurrentchips(uint32_t val__) { _currentchips = val__; }
+
+  inline uint32_t Leavechips() const { return _leavechips; }
+  inline void SetLeavechips(uint32_t val__) { _leavechips = val__; }
+
+  inline uint32_t Totalchips() const { return _totalchips; }
+  inline void SetTotalchips(uint32_t val__) { _totalchips = val__; }
+
+ protected:
+  uint32_t _opcode;
+  uint32_t _chairid;
+  uint32_t _currentchips;
+  uint32_t _leavechips;
+  uint32_t _totalchips;
 
 };
 

@@ -101,6 +101,16 @@ message PGStatus
   required uint32 status = 2;
 }
 
+//0x09
+//游戏开始通知
+message SCPlayerGameSart_0x09
+{
+   //基础底注
+   required uint32 basechips = 1;
+   //至少带入的筹码数
+   required uint32 lowestchips = 2;
+}
+
 //0x10
 //通知玩家的状态
 message SCPlayerGameStatus_0x10
@@ -113,14 +123,18 @@ message SCPlayerGameStatus_0x10
 //自动下大小盲底注
 message SCPlayerBlindChips_0x11
 {
-  //small blind
-  required uint32 smallChair = 1;
-  //chips
-  required uint32 smallChips = 2;
-  //big blind
-  required uint32 bigChair = 3;
-  //big chips
-  required uint32 bigChips = 4;
+  message blindInfo
+  {
+    //blind chairid
+	required uint32 chairid;
+	//blind chips
+	required uint32 chips;
+	//remain chips
+	required uint32 remainchips;
+	
+  }
+  required uint32 tableamount = 1;
+  repeated blindInfo blindinfos = 2;
 }
 
 //卡牌
@@ -153,8 +167,8 @@ message SCPlayerCommonCards_0x13
 }
 
 //0x14
-//下注请求
-message SCPlayerOperate_0x14
+//操作请求
+message SCPlayerOperateReq_0x14
 {
    //操作
    required uint32 opcode = 1;
@@ -166,20 +180,18 @@ message SCPlayerOperate_0x14
    required uint32 currentchips = 4;
 }
 
-//0x15 
+//0x15
 //操作通知
 message SCPlayerOperateNot_0x15
 {
-   //操作玩家椅子号
-   required uint32 chairid = 1;
-   //操作玩家opcode
-   required uint32 opcode = 2;
-   //玩家下注
-   required uint32 chips = 3;
-   //用户下注总数
-   required uint32 useramount = 4;
-   //桌面总数
-   required uint32 tableamount = 5;
-   //玩家剩余chips
-   required uint32 leavechips = 6;
+   //操作
+   required uint32 opcode = 1;
+   //chairId
+   required uint32 chairid = 2;
+   //当前下注
+   required uint32 currentchips = 3;
+   //当前剩余筹码
+   required uint32 leavechips = 4;
+   //总筹码
+   required uint32 totalchips = 5;
 }
