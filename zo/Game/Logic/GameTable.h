@@ -85,8 +85,12 @@ public:
 	void sendPlayerCard();
 	void onFinishSendAck(Player* p);
 	void sendOperateReq(Player *player);
-	void onOperateAck(Player *player, UInt8 opcode);
+	void onOperateAck(Player *player, UInt8 opcode, int mchips = 0);
 	void autoOperateBlind();
+	//游戏结束
+	void roundEnd() {}
+	void sendCommonCards();
+
 public:
 	void setGameScore() { m_baseChips = 100; m_lowestChips = 10000; }
 
@@ -98,9 +102,6 @@ public:
 
 	void CliOperatorAck(const ::ssu::Object &ack, Player* pPlayer) {}
 
-
-	//游戏结束
-	void RoundEnd(Player* pPlayer) {}
 
 	//获取游戏数据，旁观、断线重连用
 	void GetCompleteData(Player *pPlayer) {}

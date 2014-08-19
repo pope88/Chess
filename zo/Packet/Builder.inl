@@ -12,3 +12,4 @@ DefBuilder(PlayerBlindChips, 0x11);
 DefBuilder(PlayerHandCards, 0x12);
 DefBuilder(PlayerCommonCards, 0x13);
 DefBuilder(PlayerOperateReq, 0x14);
+DefBuilder(PlayerOperateNot, 0x15);

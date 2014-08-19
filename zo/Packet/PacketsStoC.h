@@ -475,6 +475,42 @@ class SCPlayerOperateReq_0x14: public ::ssu::Object {
 
 };
 
+class SCPlayerOperateNot_0x15: public ::ssu::Object {
+ public:
+  inline SCPlayerOperateNot_0x15(): _opcode(0), _chairid(0), _currentchips(0), _leavechips(0), _totalchips(0) { }
+
+  virtual ~SCPlayerOperateNot_0x15() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Opcode() const { return _opcode; }
+  inline void SetOpcode(uint32_t val__) { _opcode = val__; }
+
+  inline uint32_t Chairid() const { return _chairid; }
+  inline void SetChairid(uint32_t val__) { _chairid = val__; }
+
+  inline uint32_t Currentchips() const { return _currentchips; }
+  inline void SetCurrentchips(uint32_t val__) { _currentchips = val__; }
+
+  inline uint32_t Leavechips() const { return _leavechips; }
+  inline void SetLeavechips(uint32_t val__) { _leavechips = val__; }
+
+  inline uint32_t Totalchips() const { return _totalchips; }
+  inline void SetTotalchips(uint32_t val__) { _totalchips = val__; }
+
+ protected:
+  uint32_t _opcode;
+  uint32_t _chairid;
+  uint32_t _currentchips;
+  uint32_t _leavechips;
+  uint32_t _totalchips;
+
+};
+
 }
 }
 }

@@ -215,18 +215,15 @@ void GameTable::autoOperateBlind()
 	}
 }
 
-void GameTable::onOperateAck(Player *player, UInt8 opcode)
+void GameTable::onOperateAck(Player *player, UInt8 opcode, int mchips)
 {
-	/*if (!player)
-	{
-		return;
-	}
 	if (!m_bRacing)
-	{
 		return;
-	}
 
-	if (!(opcode & GIVEUP))
+	if (player == NULL)
+		return;
+
+	if ((opcode & GIVEUP) == 0)
 	{
 		if (player->getChairID() != m_cCurOpChair)
 		{
@@ -238,140 +235,84 @@ void GameTable::onOperateAck(Player *player, UInt8 opcode)
 		return;
 	}
 
-	if (!(m_cCurOpcode & opcode))
+	if ((m_cCurOpcode & opcode) == 0)
 	{
 		return;
 	}
-	if (player->getPlayerStatus() == BIGBLIND && )
-	{
-	}
 
-	if (pPlayer->GetPlayStatus() == DAMANG && !m_bHaveRecord && !(ack.nOpcode & GIVEUP))
+	Packet::PlayerOperateNot ponot;
+	int mLeaveChips = player->mPoker.getPlayerChips() - player->mPoker.getChips();
+	if ((opcode & ADDCHIPS) == ADDCHIPS)
 	{
-		m_nLastDaMangZhu = ack.nAmount;
-		m_bHaveRecord = true;
-	}
-
-	int nLeaveMoney = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
-
-	if(ack.nOpcode & JIAZHU)	//¼Ó×¢
-	{
-		nAmount = ack.nAmount;
-		if(ack.nAmount < m_stMJTable.m_nBaseChips - pPlayer->m_stMJUser.m_nCurrentChips)
+		if (mchips < int(m_Poke.getBaseChips() - player->mPoker.getCurrentChips()) )
 			return;
-		if(nLeaveMoney < ack.nAmount)
+		if (mLeaveChips < mchips)
 			return;
-
-		if (ack.nAmount > m_nLowestMoney - pPlayer->m_stMJUser.m_nCurrentChips)
+		if (mchips > int(m_lowestChips - player->mPoker.getCurrentChips()))
 		{
-			nAmount = m_nLowestMoney - pPlayer->m_stMJUser.m_nCurrentChips;
+			mchips = m_lowestChips - player->mPoker.getCurrentChips();
 		}
+		player->mPoker.setCurrentChips(mchips);
+		player->mPoker.setChips(player->mPoker.getChips() + mchips);
+		m_Poke.setTotalChips(m_Poke.getTotalChips() + mchips);
 
-		pPlayer->m_stMJUser.m_nChips = nAmount;
-		pPlayer->m_stMJUser.m_nCurrentChips += pPlayer->m_stMJUser.m_nChips;
-		pPlayer->m_stMJUser.m_nPlayerChips += pPlayer->m_stMJUser.m_nChips;
-		m_stMJTable.m_nTotalChips += nAmount;
-		m_stMJTable.m_nBaseChips = pPlayer->m_stMJUser.m_nCurrentChips;
-		noti.nChip = nAmount;
-		noti.nUserAmount = pPlayer->m_stMJUser.m_nPlayerChips;
-		noti.nTableAmount = m_stMJTable.m_nTotalChips;
-		noti.nLeaveAmount = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
-		noti.bGiveUp = 0;
-
-		if (m_nLowestMoney == m_stMJTable.m_nBaseChips)
-		{
-			pPlayer->m_stMJUser.m_bShowHand = true;
-		}
+		ponot.SetChairid(player->getChairID());
+		ponot.SetOpcode(opcode);
+		ponot.SetCurrentchips(player->mPoker.getCurrentChips());
+		ponot.SetLeavechips(mLeaveChips);
+		ponot.SetTotalchips(m_Poke.getTotalChips());
 	}
-	else if(ack.nOpcode & GENZHU)	//¸ú×¢
+	else if ((opcode & FOLLOWCHIPS) == FOLLOWCHIPS)
 	{
-		if(nLeaveMoney < m_stMJTable.m_nBaseChips - pPlayer->m_stMJUser.m_nCurrentChips)
+		if (mchips < int(m_Poke.getBaseChips() - player->mPoker.getCurrentChips()) )
 			return;
 
-		pPlayer->m_stMJUser.m_nChips = m_stMJTable.m_nBaseChips - pPlayer->m_stMJUser.m_nCurrentChips;
-		pPlayer->m_stMJUser.m_nCurrentChips += pPlayer->m_stMJUser.m_nChips;
-		pPlayer->m_stMJUser.m_nPlayerChips += pPlayer->m_stMJUser.m_nChips;
-		m_stMJTable.m_nTotalChips += pPlayer->m_stMJUser.m_nChips;
-		noti.nChip = pPlayer->m_stMJUser.m_nChips;
-		noti.nUserAmount = pPlayer->m_stMJUser.m_nPlayerChips;
-		noti.nTableAmount = m_stMJTable.m_nTotalChips;
-		noti.nLeaveAmount = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
-		noti.bGiveUp = 0;
-
-		if (m_nLowestMoney == m_stMJTable.m_nBaseChips)
-		{
-			pPlayer->m_stMJUser.m_bShowHand = true;
-		}
+		player->mPoker.setCurrentChips(mchips);
+		player->mPoker.setChips(player->mPoker.getChips() + mchips);
+		m_Poke.setTotalChips(m_Poke.getTotalChips() + mchips);
+		
+		ponot.SetChairid(player->getChairID());
+		ponot.SetOpcode(opcode);
+		ponot.SetCurrentchips(player->mPoker.getCurrentChips());
+		ponot.SetLeavechips(mLeaveChips);
+		ponot.SetTotalchips(m_Poke.getTotalChips());
+		NotifyTable(ponot);
 	}
-	else if (ack.nOpcode & SHOWHAND)
+	else if ((opcode & GIVEUP) == GIVEUP)
 	{
-		if(nLeaveMoney < (m_nLowestMoney - pPlayer->m_stMJUser.m_nCurrentChips))
-		{
-			glog.log("leavemoney %d is less than lowestmoney %d",nLeaveMoney,m_nLowestMoney);
-			return;
-		}
+		player->setStatus(Player::PS_GIVEUP);
 
-		pPlayer->m_stMJUser.m_nChips = m_nLowestMoney - pPlayer->m_stMJUser.m_nCurrentChips;
-		pPlayer->m_stMJUser.m_nCurrentChips += pPlayer->m_stMJUser.m_nChips;
-		pPlayer->m_stMJUser.m_nPlayerChips += pPlayer->m_stMJUser.m_nChips;
-		m_stMJTable.m_nTotalChips += pPlayer->m_stMJUser.m_nChips;
-		m_stMJTable.m_nBaseChips = pPlayer->m_stMJUser.m_nCurrentChips;
-		noti.nChip = pPlayer->m_stMJUser.m_nChips;
-		noti.nUserAmount = pPlayer->m_stMJUser.m_nPlayerChips;
-		noti.nTableAmount = m_stMJTable.m_nTotalChips;
-		noti.nLeaveAmount = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
-		noti.bGiveUp = 0;
-		pPlayer->m_stMJUser.m_bShowHand = true;
-	}
-	else if(ack.nOpcode & GIVEUP)
-	{
-		pPlayer->SetStatus(CPlayer::PS_GIVEUP);
-		noti.bGiveUp = 1;
-		noti.nChip = 0;
-		noti.nUserAmount = pPlayer->m_stMJUser.m_nPlayerChips;
-		noti.nTableAmount = m_stMJTable.m_nTotalChips;
-		noti.nLeaveAmount = pPlayer->GetGameMoney() - pPlayer->m_stMJUser.m_nPlayerChips;
-
+		ponot.SetChairid(player->getChairID());
+		ponot.SetOpcode(opcode);
+		ponot.SetCurrentchips(0);
+		ponot.SetLeavechips(mLeaveChips);
+		ponot.SetTotalchips(m_Poke.getTotalChips());
+		NotifyTable(ponot);
 		--m_nPlyNum;
 	}
 	else
 	{
 		return;
 	}
-	NotifyRoom(noti);
+	NotifyTable(ponot);
 
 	if (m_nPlyNum == 1)
 	{
-		GameOver();
-		return;
+		roundEnd();
 	}
 
-	if (IsAllSameChips())
+	if (true)
 	{
-		for (int i = 0; i < ePLYNUM; ++i)
-		{
-			CPlayer* pp = GetPlayer(i);
-			if (pp && pp->GetStatus() == CPlayer::PS_PLAYER)
-			{
-				m_nLowestMoney -= pp->m_stMJUser.m_nCurrentChips;
-				break;
-			}
-		}		
-		pt_dz_minmoney_not noti;
-		noti.opcode = dz_minmoney_not;
-		noti.nMinMoney = m_nLowestMoney;
-		NotifyRoom(noti);
-
-		SendCommonCards();
+		sendCommonCards();
 	}
 	else
 	{
-		CPlayer* pp = GetNextPlayer(pPlayer->GetChairID());
-		if (pp)
+		Player *pp = getNextPlayer(player->getChairID());
+		if (pp != NULL)
 		{
-			SendOperateReq(pp);
+			sendOperateReq(pp);
 		}
-	}*/
+	}
 }
 
 void GameTable::sendOperateReq(Player *player)
@@ -381,14 +322,14 @@ void GameTable::sendOperateReq(Player *player)
 	poReq.SetBasechips(m_Poke.getBaseChips());
 	poReq.SetCurrentchips(m_Poke.getBaseChips() - player->mPoker.getCurrentChips());
 
-	if (poReq.Currentchips() > (player->getMoney() - player->mPoker.getChips()))
+	if (poReq.Currentchips() > (player->mPoker.getPlayerChips() - player->mPoker.getChips()))
 	{
 		onOperateAck(player, GIVEUP);
 	}
 	else
 	{
 		UInt32 opcode = 0;
-		if ((player->getMoney() - player->mPoker.getChips()) > poReq.Currentchips())
+		if ((player->mPoker.getPlayerChips() - player->mPoker.getChips()) > poReq.Currentchips())
 		{
 			opcode |= ADDCHIPS;
 			poReq.SetOpcode(opcode);
@@ -397,6 +338,7 @@ void GameTable::sendOperateReq(Player *player)
 		opcode |= GIVEUP;
 		poReq.SetOpcode(opcode);
 
+		player->mPoker.setCurrentChips(0);
 		m_cCurOpChair = player->getChairID();
 		m_cCurOpcode = opcode;
 
@@ -496,6 +438,35 @@ void GameTable::showPlayerStatus()
 	NotifyTable(pgs);
 }
 
+
+void GameTable::sendCommonCards()
+{
+	std::vector<CCard> cards;
+	++m_nCommonNum;
+	if (m_nCommonNum == 1)
+	{
+		for (size_t i = 0; i < 3; ++i)
+		{
+			m_vecCommonCards.push_back(m_Poke.getCard());
+		}
+		cards = m_vecCommonCards;
+	}
+	else if (m_nCommonNum == 2 || m_nCommonNum == 3)
+	{
+		cards.push_back(m_Poke.getCard());
+	}
+
+	Packet::PlayerCommonCards pcc;
+	pcc.SetStep(m_nCommonNum);
+	for (size_t i = 0; i < cards.size(); ++i)
+	{
+		Packet::card *pc;
+		pc = pcc.AddCards();
+		pc->SetCardvalue(cards[i].m_nValue);
+		pc->SetCardcolor(cards[i].m_nColor);
+	}
+	NotifyTable(pcc);
+}
 
 void GameTable::startTimer(int nEvent, char cChair)
 {
