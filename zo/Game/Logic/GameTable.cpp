@@ -98,13 +98,14 @@ void GameTable::dealing()
 			Packet::PlayerHandCards ph;
 			std::vector<CCard> initCards;
 
-			CCard c = m_Poke.getCard();
+			CCard c;
+			m_Poke.getCard(c);
 			initCards.push_back(c);
 			Packet::card *cd = ph.AddCards();
 			cd->SetCardvalue(c.m_nValue);
 			cd->SetCardcolor(c.m_nColor);
 
-			c = m_Poke.getCard();
+			m_Poke.getCard(c);
 			initCards.push_back(c);
 			cd = ph.AddCards();
 			cd->SetCardvalue(c.m_nValue);
@@ -482,13 +483,17 @@ void GameTable::sendCommonCards()
 	{
 		for (size_t i = 0; i < 3; ++i)
 		{
-			m_vecCommonCards.push_back(m_Poke.getCard());
+			CCard c;
+			m_Poke.getCard(c);
+			m_vecCommonCards.push_back(c);
 		}
 		cards = m_vecCommonCards;
 	}
 	else if (m_nCommonNum == 2 || m_nCommonNum == 3)
 	{
-		cards.push_back(m_Poke.getCard());
+		CCard c;
+		m_Poke.getCard(c);
+		cards.push_back(c);
 	}
 
 	Packet::PlayerCommonCards pcc;

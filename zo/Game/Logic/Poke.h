@@ -11,7 +11,7 @@ public:
 	void NewRound();
 	void SetDefaultLord();
 	CCard& getCard(int nPos);
-	CCard& getCard();
+	void getCard(CCard&);
 	inline UInt32 getTotalChips() { return _totalChips; }
 	inline void setTotalChips(UInt32 c) {_totalChips = c;}
 	inline UInt32 getBaseChips() { return _baseChips; }

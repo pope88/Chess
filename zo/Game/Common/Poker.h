@@ -2,6 +2,19 @@
 #define _POKER_H_
 #include "CCard.h"
 
+struct CardType //when they type is same,wich bigger is compare by the keyvalue
+{
+	//10-0
+	UInt8 type;
+	//key value
+	UInt8 keyvalue;
+	void clear()
+	{
+		type = 0;
+		keyvalue = 0;
+	}
+};
+
 class cardCompare
 {
 public:
@@ -52,18 +65,6 @@ public:
 	}
 };
 
-struct CardType //when they type is same,wich bigger is compare by the keyvalue
-{
-	//10-0
-	UInt8 type;
-	//key value
-	UInt8 keyvalue;
-	void clear()
-	{
-		type = 0;
-		keyvalue = 0;
-	}
-};
 class Poker
 {
 public:

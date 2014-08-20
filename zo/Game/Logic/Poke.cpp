@@ -49,12 +49,11 @@ CCard& Poke::getCard(int nPos)
 	return emptyCard;
 }
 
-CCard& Poke::getCard()
+void Poke::getCard(CCard& cCard)
 {
 	if( !m_AllCards.empty() )
 	{
-		CCard& cCard = m_AllCards.back();
+		cCard = m_AllCards.back();
 		m_AllCards.pop_back();
-		return cCard;
 	}
 }
