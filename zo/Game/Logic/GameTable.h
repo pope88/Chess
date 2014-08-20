@@ -83,9 +83,12 @@ public:
 	Player* getAfterPlayer(UInt8 nChairID);
 	void SendCompleteData(Player* pPlayer);
 	void sendPlayerCard();
+
 	void onFinishSendAck(Player* p);
 	void sendOperateReq(Player *player);
+
 	void onOperateAck(Player *player, UInt8 opcode, int mchips = 0);
+
 	void autoOperateBlind();
 	//”Œœ∑Ω· ¯
 	void roundEnd() {}

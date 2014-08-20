@@ -180,6 +180,7 @@ void GameTable::autoOperateBlind()
 			for (int i = 0; i < ePLYNUM; ++i)
 			{
 				Player* pp = getPlayer(i);
+
 				if ((pp != NULL) && (pp->getPlayerStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & BIGBLIND) == BIGBLIND))
 				{
 					playerBig = pp;
@@ -213,14 +214,13 @@ void GameTable::autoOperateBlind()
 
 		sendOperateReq(nextPlayer);
 	}
+
 }
+
 
 void GameTable::onOperateAck(Player *player, UInt8 opcode, int mchips)
 {
 	if (!m_bRacing)
-		return;
-
-	if (player == NULL)
 		return;
 
 	if ((opcode & GIVEUP) == 0)
@@ -248,6 +248,7 @@ void GameTable::onOperateAck(Player *player, UInt8 opcode, int mchips)
 			return;
 		if (mLeaveChips < mchips)
 			return;
+
 		if (mchips > int(m_lowestChips - player->mPoker.getCurrentChips()))
 		{
 			mchips = m_lowestChips - player->mPoker.getCurrentChips();
@@ -347,6 +348,39 @@ void GameTable::sendOperateReq(Player *player)
 	}
 }
 
+//void GameTable::onOperateAck(Player *player, const pt_dz_operate_ack &ack, bool bForceLeave)
+//{
+//	if (!player)
+//	{
+//		glog.log("player return");
+//		return;
+//	}
+//	pt_dz_operate_not noti;
+//	noti.opcode = dz_operate_not;
+//	int  nAmount = 0;
+//	if (!m_bRacing)
+//	{
+//		return;
+//	}
+//	if (!bForceLeave)
+//	{
+//		++m_nSeialID;
+//	}
+//
+//	if (!(ack.nOpcode &  GIVEUP))
+//	{
+//		if (pPlayer->getChairID() != m_cCurOpChair)
+//		{
+//			return;
+//		}
+//	}
+//	if (pPlayer->getStatus() == Player::PS_GIVEUP)
+//	{
+//		return;
+//	}
+//
+//}
+
 void GameTable::showPlayerStatus()
 {
 	int nChair = -1;
@@ -442,6 +476,7 @@ void GameTable::showPlayerStatus()
 void GameTable::sendCommonCards()
 {
 	std::vector<CCard> cards;
+
 	++m_nCommonNum;
 	if (m_nCommonNum == 1)
 	{
@@ -508,6 +543,7 @@ void GameTable::onTimer()
 		break;
 	}
 }
+
 
 
 UInt8 GameTable::getBeforePlayerID(UInt8 nChairID)
@@ -683,5 +719,4 @@ void GameTable::onFinishSendAck(Player* p)
 	}
 	*/
 }
-
 
