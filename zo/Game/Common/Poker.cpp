@@ -4,32 +4,23 @@
 void Poker::newRound()
 {
 	mVecCards.clear();
-	mVecSortCards.clear();
-	mVecPicCards.clear();
-	mVecTotalCards.clear();
+	mVecCommonCards.clear();
+	m_ctype.clear();
 }
 
 void Poker::sortPlayerCards(std::vector<CCard> &vecSortCrads)
 {
 	std::vector<CCard> vecTemp = vecSortCrads;
 	sort(vecTemp.begin(), vecTemp.end(), dcardCompare());
-	UInt8 nScanTable[16];
-	memset(nScanTable, 0, sizeof(nScanTable));
-	for (size_t i = 0; i < vecTemp.size(); ++i)
-	{
-		if (vecTemp[i].m_nValue >= 3 && vecTemp[i].m_nValue <= 15)
-		{
-			nScanTable[vecTemp[i].m_nValue]++;
-		}
-	}
 }
+
 
 bool Poker::isStraight(std::vector<CCard> &vecSortCards) const
 {
 	bool isStraight = true;
 	for (size_t i = 0; i < vecSortCards.size(); ++i)
 	{
-		if (vecSortCards[0].m_nValue + i != vecSortCards[i].m_nValue)
+		if (vecSortCards[0].m_nValue - i != vecSortCards[i].m_nValue)
 		{
 			isStraight = false;
 			break;
@@ -53,12 +44,13 @@ bool Poker::isFlush(std::vector<CCard> &vecSortCards)
 	return isflush;
 }
 
-int Poker::getCardType()
+void Poker::getCardType(std::vector<CCard> &mVecSortCards, CardType &ct)
 {
 	if (mVecSortCards.size() != 5)
 	{
-		return 0;
+		return;
 	}
+	ct.clear();
 	bool isflush = false;
 	bool isstraight = false;
 	isflush = isFlush(mVecSortCards);
@@ -68,6 +60,8 @@ int Poker::getCardType()
 	UInt8 mThird = 0;
 	UInt8 mFourth = 0;
 	UInt8 mScanTable[16];
+	UInt8 keyvalue = 0;
+	UInt8 type = 0;
 	memset(mScanTable, 0, sizeof(mScanTable));
 	for (size_t i = 0; i < mVecSortCards.size(); ++i)
 	{
@@ -77,7 +71,7 @@ int Poker::getCardType()
 		}
 	}
 
-	for (int i = 3; i < 16; ++i)
+	for (int i = 2; i < 14; ++i)
 	{
 		if (mScanTable[i] == 1)
 			++mFirst;
@@ -89,52 +83,128 @@ int Poker::getCardType()
 			++mFourth;
 	}
 
-	if (mVecSortCards[0].m_nValue == 10 && isflush && isstraight)
+	for (int i = 2; i < 14; ++i)
 	{
-		return 10;  
+		if (mScanTable[i] == 1)
+			keyvalue = i;
+		else if (mScanTable[i] == 2)
+			++mSecond;
+		else if (mScanTable[i] == 3)
+			++mThird;
+		else if (mScanTable[i] == 4)
+			++mFourth;
 	}
-	else if (mVecSortCards[0].m_nValue != 10 && isflush && isstraight)
+
+	if (mVecSortCards[0].m_nValue == 14 && isflush && isstraight)
 	{
-		return 9;
+		type = 10;
+		keyvalue = 14;
+		return;
+	}
+	else if (mVecSortCards[0].m_nValue != 14 && isflush && isstraight)
+	{
+		type = 9;
+		keyvalue = mVecSortCards[0].m_nValue;
+		return;
 	}
 	else if(mFourth == 1 && mFirst == 1)
 	{
-		return 8;
+		type = 8;
 	}
 	else if (mThird == 1 && mSecond == 1)
 	{
-		return 7;
+		type = 7;
 	}
 	else if (isflush)
 	{
-		return 6;
+		type = 6;
 	}
 	else if (isstraight)
 	{
-		return 5;
+		type = 5;
 	}
 	else if (mThird == 1 && mFirst == 2)
 	{
-		return 4;
+		type = 4;
 	}
 	else if (mSecond == 2 && mFirst == 1)
 	{
-		return 3;
+		type = 3;
 	}
 	else if (mSecond == 1 && mFirst == 3)
 	{
-		return 2;
+		type = 2;
 	}
 	else if (mFirst == 5)
 	{
-		return 1;
+		type = 1;
 	}
-	return 0;
+	type = 0;
+
+	for (int i = 2; i < 14; ++i)
+	{
+		if (mScanTable[i] == 1 && type == 1)
+		{
+			keyvalue = i;
+		}
+		else if (mScanTable[i] == 2 && (type == 2 || type == 3) )
+		{
+			keyvalue = i;
+		}
+		else if (mScanTable[i] == 3 && (type == 4 || type == 7))
+		{
+			keyvalue = i;
+			break;
+		}
+		else if (mScanTable[i] == 4)
+		{
+			keyvalue = i;
+		}
+	}
 }
 
 void Poker::setCards(const std::vector<CCard> &vecCards)
 {
 	mVecCards = vecCards;
-	mVecSortCards = vecCards;
-	sort(mVecSortCards.begin(), mVecSortCards.end(), cardCompare());
+}
+
+void Poker::setCommonCards(const std::vector<CCard> &vecCards)
+{
+	mVecCommonCards = vecCards;
+}
+
+bool Poker::getBiggestCards()
+{
+	std::vector<std::vector<CCard> > allcards;
+	std::vector<CardType> allcardtypes;
+	if (mVecCommonCards.size() != 5)
+	{
+		return false;
+	}
+
+	for (size_t i = 0; i < mVecCommonCards.size()-2; ++i)
+	{
+		for (size_t j = i+1; j < mVecCommonCards.size()-1; ++j)
+		{
+			std::vector<CCard> cvec;
+			cvec.push_back(mVecCards[0]);
+			cvec.push_back(mVecCards[1]);
+			cvec.push_back(mVecCommonCards[i]);
+			cvec.push_back(mVecCommonCards[j]);
+			cvec.push_back(mVecCommonCards[j+1]);
+			sortPlayerCards(cvec);
+			allcards.push_back(cvec);
+		}
+	}
+	
+	for (size_t i = 0; i < allcards.size(); ++i)
+	{
+		CardType ct;
+		getCardType(allcards[i], ct);
+		allcardtypes.push_back(ct);
+	}
+	
+	sort(allcardtypes.begin(), allcardtypes.end(), typeCompare());
+	m_ctype = allcardtypes[0];
+	return true;
 }

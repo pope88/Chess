@@ -19,6 +19,51 @@ public:
 		return as.m_nValue > bs.m_nValue;
 	}
 };
+
+class typeCompare
+{
+public:
+	bool operator()(CardType &at, CardType &bt)
+	{
+		if (at.type != bt.type)
+		{
+			return at.type < bt.type;
+		}
+		else
+		{
+			return at.keyvalue < bt.keyvalue;
+		}
+	}
+};
+
+class dtypeCompare
+{
+public:
+	bool operator()(CardType &at, CardType &bt)
+	{
+		if (at.type != bt.type)
+		{
+			return at.type > bt.type;
+		}
+		else
+		{
+			return at.keyvalue > bt.keyvalue;
+		}
+	}
+};
+
+struct CardType //when they type is same,wich bigger is compare by the keyvalue
+{
+	//10-0
+	UInt8 type;
+	//key value
+	UInt8 keyvalue;
+	void clear()
+	{
+		type = 0;
+		keyvalue = 0;
+	}
+};
 class Poker
 {
 public:
@@ -26,8 +71,8 @@ public:
 	~Poker() {}
 public:
 	void newRound();
-	int getCardType() const;
 	void setCards(const std::vector<CCard> &vecCards);
+	void setCommonCards(const std::vector<CCard> &vecCards);
 	void sortPlayerCards(std::vector<CCard> &vecSortCards);
 	bool isStraight (std::vector<CCard> &vecSortCards) const;
 	bool isFlush(std::vector<CCard> &vecSortCards);
@@ -44,21 +89,17 @@ public:
 	inline UInt32 getPlayerChips() { return m_nPlayerChips; }
 	inline void setPlayerChips(UInt32 c) { m_nPlayerChips = c; } 
 
-	int getCardType();
-	inline void getSortVecCards(std::vector<CCard> &cards)
-	{
-		cards = mVecSortCards;
-	}
+	void getCardType(std::vector<CCard> &mVecSortCards, CardType &ct);
+
 	inline void getVecCards(std::vector<CCard> &cards)
 	{
 		cards = mVecCards;
 	}
+	bool getBiggestCards();
 private:
-	std::vector<CCard> mVecCards;
-	std::vector<CCard> mVecSortCards;
-	std::vector<CCard> mVecPicCards;
-	std::vector<CCard> mVecTotalCards;
-
+	std::vector<CCard> mVecCards;      //2 cards init in hands
+	std::vector<CCard> mVecCommonCards; //5 common cards
+	CardType m_ctype;
 	bool m_bGiveUp;
 	bool m_bPickCard;
 	int	m_nChips;        //´Ë¾ÖÏÂ×¢
