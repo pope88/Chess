@@ -60,6 +60,15 @@ public:
 	//获取玩家座位号
 	int	getChairID() { return m_pCorePlayer->getChairId(); }
 
+	bool operator > (const Player *pb)
+	{
+		return this->mPoker > pb->mPoker;
+	}
+	bool operator == (const Player *pb)
+	{
+		return this->mPoker == this->mPoker;
+	}
+
 public:
 	//以下是系统接口函数
 	Mplayer* getCorePlayer() { return m_pCorePlayer; }
@@ -80,40 +89,16 @@ private:
 
 };
 
-//namespace std
-//{
-//	template<>
-//	struct less <Player>
-//	{
-//		bool operator()(const Player& lhs, const Player& rhs)
-//		{
-//			int nType = lhs.mPoker.getCardType();
-//			int nRhsType = rhs.mPoker.getCardType();
-//			std::vector<CCard> lhsSortVecCards;
-//			std::vector<CCard> rhsSortVecCards;
-//			lhs.mPoker.getSortVecCards(lhsSortVecCards);
-//			rhs.mPoker.getSortVecCards(rhsSortVecCards);
-//			if(nType == nRhsType)
-//			{
-//				if (nType == 9 || nType == 5 )
-//				{
-//					return lhsSortVecCards[0].m_nValue > rhsSortVecCards[0].m_nValue;
-//				}
-//				else
-//				{
-//					for (size_t i = 0; i < lhsSortVecCards.size(); ++i)
-//					{
-//						if (lhsSortVecCards[i].m_nValue != rhsSortVecCards[i].m_nValue)
-//						{
-//							return lhsSortVecCards[i].m_nValue > rhsSortVecCards[i].m_nValue;
-//						}
-//					}
-//					return false;
-//				}
-//			}
-//			return nType > nRhsType;
-//		}
-//	};
-//}
+namespace std
+{
+	template<>
+	struct less <Player>
+	{
+		bool operator()(const Player& lhs, const Player& rhs)
+		{
+			return true;
+		}
+	};
+}
 
 #endif

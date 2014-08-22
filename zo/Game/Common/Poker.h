@@ -8,17 +8,33 @@ struct CardType //when they type is same,wich bigger is compare by the keyvalue
 	UInt8 type;
 	//key value
 	UInt8 keyvalue;
+	CardType():type(0), keyvalue(0)
+	{
+	}
 	void clear()
 	{
 		type = 0;
 		keyvalue = 0;
+	}
+	bool operator>(const CardType &b)
+	{
+		if(type > b.type)
+			return true;
+		else if((type == b.type) && (keyvalue > b.keyvalue))
+			return true;
+		else 
+			return false;
+	}
+	bool operator==(const CardType &b)
+	{
+		return (type == b.type) && (keyvalue == b.keyvalue);
 	}
 };
 
 class cardCompare
 {
 public:
-	bool operator()(CCard &as, CCard &bs)
+	bool operator()(const CCard &as,const CCard &bs)
 	{
 		return as.m_nValue < bs.m_nValue;
 	}
@@ -27,7 +43,7 @@ public:
 class dcardCompare
 {
 public:
-	bool operator()(CCard &as, CCard &bs)
+	bool operator()(const CCard &as, const CCard &bs)
 	{
 		return as.m_nValue > bs.m_nValue;
 	}
@@ -36,7 +52,7 @@ public:
 class typeCompare
 {
 public:
-	bool operator()(CardType &at, CardType &bt)
+	bool operator()(const CardType &at, const CardType &bt)
 	{
 		if (at.type != bt.type)
 		{
@@ -52,7 +68,7 @@ public:
 class dtypeCompare
 {
 public:
-	bool operator()(CardType &at, CardType &bt)
+	bool operator()(const CardType &at, const CardType &bt)
 	{
 		if (at.type != bt.type)
 		{
@@ -97,6 +113,8 @@ public:
 		cards = mVecCards;
 	}
 	bool getBiggestCards();
+	bool operator>(const Poker &b) { return m_ctype > b.m_ctype; }
+	bool operator==(const Poker &b) { return m_ctype == b.m_ctype;}
 private:
 	std::vector<CCard> mVecCards;      //2 cards init in hands
 	std::vector<CCard> mVecCommonCards; //5 common cards

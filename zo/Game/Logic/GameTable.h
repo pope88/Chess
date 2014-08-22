@@ -91,7 +91,7 @@ public:
 
 	void autoOperateBlind();
 	//游戏结束
-	void roundEnd() {}
+	void roundEnd();
 	void sendCommonCards();
 
 public:
@@ -149,7 +149,7 @@ private:
 	Poke m_Poke;								//牌
 	bool m_bRacing;                             //比赛状态
 	std::vector<CCard> m_vecCommonCards;        //公共牌
-	std::vector<Player> m_vecPoker;             //游戏中的玩家
+	std::vector<Player*> m_vecPoker;            //players
 	UInt8 m_cCurOpChair;         //当前等待操作的位置
 	UInt8 m_cCurOpcode;          //当前等待的操作
 	UInt8 m_nPlyNum;             //开局时玩家总人数

@@ -595,6 +595,23 @@ Player* GameTable::getAfterPlayer(UInt8 nChairID)
 	return NULL;
 }
 
+
+void GameTable::roundEnd()
+{
+	m_bRacing = false;
+	for (int i = 0; i < ePLYNUM; ++i)
+	{
+		Player* pp = getPlayer(i);
+		if ((pp != NULL) && (pp->getStatus() == Player::PS_PLAYER))
+		{
+			m_vecPoker.push_back(pp);
+		}
+	}
+
+	sort(m_vecPoker.begin(), m_vecPoker.end(); l);
+}
+
+
 void GameTable::SendCompleteData(Player* pPlayer)
 {
 	//pt_dz_completedata_not noti;
