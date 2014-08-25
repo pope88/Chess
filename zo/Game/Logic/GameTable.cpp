@@ -608,7 +608,7 @@ void GameTable::roundEnd()
 		}
 	}
 
-	sort(m_vecPoker.begin(), m_vecPoker.end(); l);
+	sort(m_vecPoker.begin(), m_vecPoker.end(), lessPlayer());
 }
 
 

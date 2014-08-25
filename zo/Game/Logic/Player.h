@@ -89,16 +89,12 @@ private:
 
 };
 
-namespace std
+struct lessPlayer 
 {
-	template<>
-	struct less <Player>
+	bool operator()(const Player *lhs, const Player *rhs)
 	{
-		bool operator()(const Player& lhs, const Player& rhs)
-		{
-			return true;
-		}
-	};
-}
+		return lhs > rhs;
+	}
+};
 
 #endif
