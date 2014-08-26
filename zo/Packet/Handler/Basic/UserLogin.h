@@ -95,10 +95,7 @@ HANDLER_CLASS_INIT(UserLogin, 0x02)
 				return;
 			}
 
-			//if (targetP->lastOp() != 0x01)  //when last cmd is register ,do not tick client
-			//{
-			//	targetP->kick();
-			//}
+			targetP->kick();
 			targetP->sessionId(sessionId, gatewayId);
 		}
 		else
