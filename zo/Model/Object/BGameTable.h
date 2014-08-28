@@ -44,6 +44,7 @@ public:
 public:
 	//0xFF random chair
 	bool onUserEnter(User *u, UInt8 &nchair);
+	bool autoUserEnter(User *u);
 	bool isTableFull();
 
 

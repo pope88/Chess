@@ -98,4 +98,55 @@ namespace Object
 		}
 		url.send(user);
 	}
+
+	void RoomManager::playerQuikPlay(User *user)
+	{
+		UInt32 chips = user->gold();
+		UInt32 roomId = 0;
+		roomId = autoRoom(chips);
+		if (roomId < zoGlobal.roomNum())
+		{
+			playerEnterRoom(user, roomId);
+		}
+	}
+
+	UInt32 RoomManager::autoRoom(UInt32 chips)
+	{
+		if (chips < 1000)
+		{
+			return 0;
+		}
+		else if (chips < 2000)
+		{
+			return 1;
+		}
+		else if (chips < 5000)
+		{
+			return 2;
+		}
+		else if (chips < 10000)
+		{
+			return 3;
+		}
+		else if (chips < 50000)
+		{
+			return 4;
+		}
+		else if (chips < 100000)
+		{
+			return 5;
+		}
+		else if (chips < 500000)
+		{
+			return 6;
+		}
+		else if (chips < 1000000)
+		{
+			return 7;
+		}
+		else
+		{
+			return 8;
+		}
+	}
 }

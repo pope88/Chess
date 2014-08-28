@@ -77,6 +77,10 @@ message SCUserEnterRoom_0x06
   required uint32 res = 1;
 }
 
+message UserInfo
+{
+}
+
 //0x07
 //玩家请求进入桌子
 message SCUserEnterTable_0x07

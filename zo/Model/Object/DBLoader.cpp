@@ -284,7 +284,6 @@ namespace Object
 				user->setguidestep(dbpl.guidestep, false);
 				user->setexperience(dbpl.experience, false);
 				userManager.add(user);
-
 			}
 
 			if (buip)

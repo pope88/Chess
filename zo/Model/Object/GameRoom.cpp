@@ -87,6 +87,22 @@ namespace Object
 		return true;
 	}
 
+	bool GameRoom::autoEnterTable(User *u)
+	{
+		for(auto it = _arrGameTable.begin(); it != _arrGameTable.end(); ++it)
+		{
+			if (!(*it)->isTableFull())
+			{
+				if((*it)->autoUserEnter(u))
+				{
+					(*it)->canStartGame();
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	bool GameRoom::enterUser(User *u)
 	{ 
 		u->setInRoom(this);

@@ -20,6 +20,7 @@ namespace Object
 		bool enterUser(User *u); 
 		bool outUser(User *u); 
 		bool enterTable(User *u, UInt32 tableNo = 0xFFFFFFFF, UInt8 nchair = 0xFF);
+		bool autoEnterTable(User *u);
 		void onHeartBit() { _roomPlayers->onHeartBit(); }
 		void breakAllGame();
 	private:

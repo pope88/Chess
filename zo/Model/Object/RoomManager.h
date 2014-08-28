@@ -18,6 +18,8 @@ namespace Object
 		void heartBit();
 		void breakAllGame();
 		void sendRoomList(User *user);
+		void playerQuikPlay(User *user);
+		static UInt32 autoRoom(UInt32 chips);
 	private:
 		std::vector<GameRoom*> _vecRooms;
 		std::unordered_map<UInt32, UInt8> _userInRoomMap;

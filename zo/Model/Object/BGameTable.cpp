@@ -97,7 +97,10 @@ namespace Object
 		}
 
 		//可以开始游戏了
-		onGameStart();
+		if (mPlayerNum == 2)
+		{
+			onGameStart();
+		}
 		return true;
 	}
 
@@ -143,6 +146,13 @@ namespace Object
 			}
 		}
 		return false;
+	}
+
+
+	bool BGameTable::autoUserEnter(User *u)
+	{
+		UInt8 chairId = 0;
+		return onUserEnter(u, chairId);
 	}
 
 	bool BGameTable::isTableFull()
