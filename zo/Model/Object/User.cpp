@@ -8,6 +8,7 @@
 #include "RoomManager.h"
 #include "Packet/Builder.h"
 #include "GameRoom.h"
+#include "../BaseModel/ServerModule.h"
 
 namespace Object
 {
@@ -19,6 +20,7 @@ namespace Object
 
 	{
 		memset(_buff, 0, sizeof(_buff));
+		_serverModule::instance()->createPlayer();
 	}
 
 	User::User(const std::string &pid): _id(userManager.uniqueID()),_playerid(pid),  _regtime(0), _dailycp(0), 
@@ -29,6 +31,7 @@ namespace Object
 
 	{
 		memset(_buff, 0, sizeof(_buff));
+		_serverModule::instance()->createPlayer();
 	}
 
 	User::~User()

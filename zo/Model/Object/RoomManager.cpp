@@ -108,6 +108,7 @@ namespace Object
 		{
 			playerEnterRoom(user, roomId);
 		}
+		this->getGameRoom(roomId)->autoEnterTable(user);
 	}
 
 	UInt32 RoomManager::autoRoom(UInt32 chips)

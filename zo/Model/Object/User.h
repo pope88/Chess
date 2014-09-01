@@ -173,6 +173,7 @@ class User;
 	private:
 		GameRoom *_pInRoom;
 		BGameTable *_pInTable;
+		IPlayer *m_pPlayer;
 		UInt8 _pInChair;
 	};
 }

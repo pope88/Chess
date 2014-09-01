@@ -56,7 +56,10 @@ public:
 	//ICoreTable
 	virtual int getGameType() { return 0;}
 	virtual Mplayer* getCorePlayer(int nChairID) {return NULL;}
-	virtual void endGame() {}
+	virtual void endGame()
+	{
+		m_nStatus = TS_WATING;
+	}
 	virtual int getCurPlyNum() { return m_cCurPlyNum; }
 	virtual void setTimer(int nPeriod, void* pParam) {}
 	virtual void removeTimer() {}
@@ -119,6 +122,7 @@ private:
 	ITable      *m_pTable;
 	UInt8		m_MaxPlyNum;
 	UInt8		m_cCurPlyNum;
+	UInt8       m_PlyNum;
 	std::vector<User*>	m_vecPlayers;
 	std::vector<User*>	m_vecVisitors;
 	UInt32		m_nTimerID;

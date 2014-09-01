@@ -70,6 +70,7 @@ class ITable
 public:
 	virtual ~ITable(){}
 
+	virtual void bindCoreTable2Table(Mtable* pTable) = 0;
 	virtual void release() = 0;
 	virtual void onGameStart() = 0;
 	virtual void onEndGame() = 0;

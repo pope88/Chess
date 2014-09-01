@@ -7,7 +7,7 @@
 namespace Object
 {
 
-	BGameTable::BGameTable(char cTableID, RoomPlayerManager* rpm):m_TableId(cTableID), pPlayerManager(rpm), m_MaxPlyNum(zoGlobal.playerNum()), m_cCurPlyNum(0), m_nTimerID(0), m_cMasterChairID(0), m_nBaseScore(0), m_nKickChairID(0), m_nKickTimerID(0), m_nStatus(0)
+	BGameTable::BGameTable(char cTableID, RoomPlayerManager* rpm):m_TableId(cTableID), pPlayerManager(rpm), m_MaxPlyNum(zoGlobal.playerNum()), m_cCurPlyNum(0), m_PlyNum(0), m_nTimerID(0), m_cMasterChairID(0), m_nBaseScore(0), m_nKickChairID(0), m_nKickTimerID(0), m_nStatus(0)
 	{
 		m_MaxPlyNum = zoGlobal.playerNum();
 		m_vecPlayers.resize(m_MaxPlyNum);
@@ -23,6 +23,7 @@ namespace Object
 		}
 
 		m_pTable = _serverModule::instance()->createTable();
+		m_pTable->bindCoreTable2Table(this);
 	}
 
 	int BGameTable::findEmptyChair()
@@ -97,7 +98,7 @@ namespace Object
 		}
 
 		//可以开始游戏了
-		if (mPlayerNum == 2)
+		if (mPlayerNum >= 2 && (m_nStatus == TS_WATING || m_nStatus == TS_EMPTY)) 
 		{
 			onGameStart();
 		}
@@ -110,9 +111,14 @@ namespace Object
 		for (size_t i = 0; i < m_vecPlayers.size(); ++i)
 		{
 			pUser = m_vecPlayers[i];
-			pUser->onGameStart();	
+			if (pUser != NULL)
+			{
+				pUser->onGameStart();	
+			}
 		}
 		m_pTable->onGameStart();
+
+		m_nStatus = TS_RACING;
 	}
 
 
@@ -141,6 +147,11 @@ namespace Object
 				{
 					m_vecPlayers[i] = u;
 					nchair = i;
+					++m_PlyNum;
+					if (m_nStatus == TS_EMPTY)
+					{
+						m_nStatus = TS_WATING;
+					}
 					return true;
 				}
 			}
@@ -151,7 +162,19 @@ namespace Object
 
 	bool BGameTable::autoUserEnter(User *u)
 	{
+		if (this->isTableFull())
+		{
+			return false;
+		}
 		UInt8 chairId = 0;
+		for (size_t i = 0; i < m_vecPlayers.size(); ++i)
+		{
+			if (m_vecPlayers[i] == NULL)
+			{
+				chairId = i;
+				break;
+			}
+		}
 		return onUserEnter(u, chairId);
 	}
 
