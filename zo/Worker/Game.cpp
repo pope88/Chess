@@ -31,6 +31,10 @@ namespace Worker
 		Object::serverManager.init();
 		Object::userManager.init();
 
+
+		_serverModule::instance()->setTableCreator(_tableCreator::instance());
+		_serverModule::instance()->setPlayerCreator(_playerCreator::instance());
+
 		//Script::gAction.doFile((ktCfg.scriptPath + "main.lua").c_str());
 
 		zoGlobal.init();
@@ -60,10 +64,6 @@ namespace Worker
 		//block.start();  //login
 
 		tcp.start();
-
-
-		_serverModule::instance()->setTableCreator(_tableCreator::instance());
-		_serverModule::instance()->setPlayerCreator(_playerCreator::instance());
 
 		Object::_roomManager.init();
 

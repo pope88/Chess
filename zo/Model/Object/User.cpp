@@ -20,7 +20,8 @@ namespace Object
 
 	{
 		memset(_buff, 0, sizeof(_buff));
-		_serverModule::instance()->createPlayer();
+		IPlayer *iplayer = _serverModule::instance()->createPlayer();
+		//iplayer->bindUser2Player(this);
 	}
 
 	User::User(const std::string &pid): _id(userManager.uniqueID()),_playerid(pid),  _regtime(0), _dailycp(0), 
@@ -31,7 +32,8 @@ namespace Object
 
 	{
 		memset(_buff, 0, sizeof(_buff));
-		_serverModule::instance()->createPlayer();
+		IPlayer *iplayer = _serverModule::instance()->createPlayer();
+		//iplayer->bindUser2Player(this);
 	}
 
 	User::~User()

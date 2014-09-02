@@ -1,6 +1,9 @@
 #ifndef _MPLAYER_H_
 #define _MPLAYER_H_
-
+namespace Object
+{
+	class User;
+}
 class Mplayer
 {
 public:
@@ -20,6 +23,7 @@ class IPlayer
 {
 public:
 	virtual ~IPlayer(){}
+	virtual void bindUser2Player(Object::User *user) = 0;
 };
 
 #endif
