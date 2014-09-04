@@ -16,24 +16,26 @@ namespace Object
 		_gold(0), _totaltopup(0), _totallosegold(0), _lastonline(), _lockend(0),  _ismale(0), _serverno(0),
 		 _level(1), _dailyprogress(0),
 		_guidestep(0), _experience(0), _avatarVer(0),_cloth(0), _athleticsRank(0), _lastbattleEnd(0), _bUnderUse(false),
-		_roleOnline(false),  _sessionId(0), _gatewayId(0), _remoteAddr(0), _pInRoom(NULL), _pInTable(NULL), _pInChair(0)
+		_roleOnline(false),  _sessionId(0), _gatewayId(0), _remoteAddr(0), _pInRoom(NULL), _pInTable(NULL), _pInChair(-1)
 
 	{
 		memset(_buff, 0, sizeof(_buff));
 		IPlayer *iplayer = _serverModule::instance()->createPlayer();
-		//iplayer->bindUser2Player(this);
+		this->m_pPlayer = iplayer;
+		iplayer->bindUser2Player(this);
 	}
 
 	User::User(const std::string &pid): _id(userManager.uniqueID()),_playerid(pid),  _regtime(0), _dailycp(0), 
 		 _gold(0), _totaltopup(0), _totallosegold(0), _lastonline(), _lockend(0),  _ismale(0), _serverno(0),
 		  _level(1), _dailyprogress(0),
 		_guidestep(0), _experience(0),  _avatarVer(0),_cloth(0), _athleticsRank(0), _lastbattleEnd(0), _bUnderUse(false),
-		_roleOnline(false), _sessionId(0), _gatewayId(0), _remoteAddr(0), _pInRoom(NULL), _pInTable(NULL), _pInChair(0)
+		_roleOnline(false), _sessionId(0), _gatewayId(0), _remoteAddr(0), _pInRoom(NULL), _pInTable(NULL), _pInChair(-1)
 
 	{
 		memset(_buff, 0, sizeof(_buff));
 		IPlayer *iplayer = _serverModule::instance()->createPlayer();
-		//iplayer->bindUser2Player(this);
+		this->m_pPlayer = iplayer;
+		iplayer->bindUser2Player(this);
 	}
 
 	User::~User()
@@ -91,6 +93,12 @@ namespace Object
 		if (_roleOnline)
 		{
 			_roleOnline = false;
+		}
+
+		if (_pInTable != NULL)
+		{
+			_pInTable->onUserOut(this);
+			_pInTable = NULL;
 		}
 	}
 

@@ -84,7 +84,7 @@ class User;
 		void loginPlayer();
 	public:
 		// logic
-		inline void setInTable(BGameTable *bt, UInt8 chair) { _pInTable = bt; }
+		inline void setInTable(BGameTable *bt) { _pInTable = bt; }
 		inline void setInRoom(GameRoom *gr) { _pInRoom = gr; }
 		inline BGameTable* getInTable() { return _pInTable; }
 		inline GameRoom* getInRoom() { return _pInRoom; }
@@ -101,8 +101,10 @@ class User;
 
 		//mplayer
 		virtual int getTableId() { return 0; }
-		virtual int getChairId() { return 0; }
+		virtual int getChairId() { return _pInChair; }
+		virtual void setChairId(int chairid) { _pInChair = chairid; }
 		virtual int getMoney() { return 0; }
+		virtual void setTableId(int tableid) {  }
 		virtual bool saveGameMoney(int money) { return true; }
 		virtual bool saveGameScore(int score) { return true; }
 		virtual bool canWatch() { return true; }
@@ -124,7 +126,8 @@ class User;
 		void onHeartBit() {}
 		void getNetDelay() {}
 		const std::string& getPlayerIp() { 	static std::string empty; return empty; }
-		const BGameTable* getTheTable() { return NULL; }
+		const BGameTable* getTheTable() { return _pInTable; }
+		const IPlayer* getThePlayer() { return m_pPlayer; }
 		void setPlayerStatus(UInt16 status) {}
 
 		
@@ -150,7 +153,7 @@ class User;
 	public:
 		inline UInt8 vip() { return 0; }
 	protected:
-		DB_PROP_UPDATE_COND(id, _id);
+		DB_PROP_UPDATE_COND2(id, _id, playerid, _playerid);
 	private:
 		UInt8 _avatarVer;
 		UInt8 _cloth;

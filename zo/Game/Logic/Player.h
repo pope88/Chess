@@ -58,7 +58,11 @@ public:
 	int getMoney() { return m_pCorePlayer->getMoney(); }
 
 	//获取玩家座位号
-	int	getChairID() { return m_pCorePlayer->getChairId(); }
+	int	getChairID()
+	{
+		m_pCorePlayer;
+		return m_pCorePlayer->getChairId(); 
+	}
 
 	bool operator > (const Player *pb)
 	{

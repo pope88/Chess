@@ -619,9 +619,9 @@ void GameTable::SendCompleteData(Player* pPlayer)
 
 Player* GameTable::getPlayer(UInt8 nChairID)
 {
-	//ICorePlayer* pCorePlayer = m_pCoreTable->GetCorePlayer(nChairID);
-	//if(pCorePlayer)
-	//	return (CPlayer*)pCorePlayer->GetIPlayer();
+    Mplayer* pCorePlayer = m_pCoreTable->getCorePlayer(nChairID);
+	if(pCorePlayer != NULL)
+		return (Player*)((Object::User*)pCorePlayer)->getThePlayer();
 	return NULL;
 }
 

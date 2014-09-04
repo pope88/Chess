@@ -44,6 +44,7 @@ public:
 public:
 	//0xFF random chair
 	bool onUserEnter(User *u, UInt8 &nchair);
+	void onUserOut(User *u);
 	bool autoUserEnter(User *u);
 	bool isTableFull();
 
@@ -55,7 +56,14 @@ public:
 
 	//ICoreTable
 	virtual int getGameType() { return 0;}
-	virtual Mplayer* getCorePlayer(int nChairID) {return NULL;}
+	virtual Mplayer* getCorePlayer(int nChairID) 
+	{
+		if (nChairID < m_vecUsers.size())
+			return m_vecUsers[nChairID];
+		else 
+			return NULL;
+	}
+
 	virtual void endGame()
 	{
 		m_nStatus = TS_WATING;
@@ -108,7 +116,6 @@ public:
 	void reqLeaveGame(User* pSession, const std::string& strReason) {}
 	void reqLeaveGameAck(int nPID, char cRet) {}
 	void GMBreakGame(int nPID) {}
-	User* getPlayer(int nChair) {}
 private:
 	void notifyPlayer(const char* pData, int nLength, User* pExceptPlayer) {}
 	void notifyTable(const char* pData, int nLength, User* pExceptPlayer) {}
@@ -123,8 +130,8 @@ private:
 	UInt8		m_MaxPlyNum;
 	UInt8		m_cCurPlyNum;
 	UInt8       m_PlyNum;
-	std::vector<User*>	m_vecPlayers;
-	std::vector<User*>	m_vecVisitors;
+	std::vector<Mplayer*>	m_vecUsers;
+	std::vector<Mplayer*>	m_vecVisitors;
 	UInt32		m_nTimerID;
 	UInt8		m_cMasterChairID;
 	UInt32		m_nBaseScore;

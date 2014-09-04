@@ -62,11 +62,11 @@ public:
 		for (UInt8 i = 0; i < ePLYNUM; ++i)
 		{
 			Mplayer *player = m_pCoreTable->getCorePlayer(i);
-			if ( player == NULL || pExceptPlayer->getCorePlayer() == player)
+			if ( player == NULL || (pExceptPlayer != NULL && pExceptPlayer->getCorePlayer() == player))
 			{
 				continue;
 			}
-			//pb.send(player);
+			pb.send((Object::User*)player);
 		}
 	}	
 public:

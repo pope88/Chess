@@ -10,11 +10,11 @@ namespace Object
 	BGameTable::BGameTable(char cTableID, RoomPlayerManager* rpm):m_TableId(cTableID), pPlayerManager(rpm), m_MaxPlyNum(zoGlobal.playerNum()), m_cCurPlyNum(0), m_PlyNum(0), m_nTimerID(0), m_cMasterChairID(0), m_nBaseScore(0), m_nKickChairID(0), m_nKickTimerID(0), m_nStatus(0)
 	{
 		m_MaxPlyNum = zoGlobal.playerNum();
-		m_vecPlayers.resize(m_MaxPlyNum);
+		m_vecUsers.resize(m_MaxPlyNum);
 		m_vecVisitors.resize(m_MaxPlyNum);
-		for (size_t i = 0; i < m_vecPlayers.size(); ++i)
+		for (size_t i = 0; i < m_vecUsers.size(); ++i)
 		{
-			m_vecPlayers[i] = NULL;
+			m_vecUsers[i] = NULL;
 		}
 
 		for (size_t i = 0; i < m_vecVisitors.size(); ++i)
@@ -28,9 +28,9 @@ namespace Object
 
 	int BGameTable::findEmptyChair()
 	{
-		for (size_t i = 0; i < m_vecPlayers.size(); ++i)
+		for (size_t i = 0; i < m_vecUsers.size(); ++i)
 		{
-			if (m_vecPlayers[i] == NULL)
+			if (m_vecUsers[i] == NULL)
 			{
 				return i;
 			}
@@ -51,7 +51,7 @@ namespace Object
 	{
 
 		UInt8 res = 0;
-		if(m_vecPlayers[chairId] == NULL)
+		if(m_vecUsers[chairId] == NULL)
 		{
 			if (isCanJoin(user, chairId, res))
 			{
@@ -83,9 +83,9 @@ namespace Object
 		UInt8 mReadyNum = 0;
 		if(zoGlobal.getReadyMode() == 0)
 		{
-			for(size_t i = 0; i < m_vecPlayers.size(); ++i)
+			for(size_t i = 0; i < m_vecUsers.size(); ++i)
 			{
-				if (m_vecPlayers[i] != NULL)
+				if (m_vecUsers[i] != NULL)
 				{
 					++mPlayerNum;
 				}
@@ -108,9 +108,9 @@ namespace Object
 	void BGameTable::onGameStart()
 	{
 		User *pUser = NULL;
-		for (size_t i = 0; i < m_vecPlayers.size(); ++i)
+		for (size_t i = 0; i < m_vecUsers.size(); ++i)
 		{
-			pUser = m_vecPlayers[i];
+			pUser = static_cast<User*>(m_vecUsers[i]);
 			if (pUser != NULL)
 			{
 				pUser->onGameStart();	
@@ -134,20 +134,23 @@ namespace Object
 			return false;
 		}
 
-		if (nchair < zoGlobal.tableNum() && m_vecPlayers[nchair] == NULL)
+		if (nchair < zoGlobal.tableNum() && m_vecUsers[nchair] == NULL)
 		{
-			m_vecPlayers[nchair] = u;
+			m_vecUsers[nchair] = u;
+			u->setChairId(nchair);
 			return true;
 		}
 		else if(nchair == 0xFF)
 		{
-			for (size_t i = 0; i < m_vecPlayers.size(); ++i)
+			for (size_t i = 0; i < m_vecUsers.size(); ++i)
 			{
-				if (m_vecPlayers[i] == NULL)
+				if (m_vecUsers[i] == NULL)
 				{
-					m_vecPlayers[i] = u;
+					m_vecUsers[i] = u;
 					nchair = i;
 					++m_PlyNum;
+					u->setChairId(nchair);
+					u->setInTable(this);
 					if (m_nStatus == TS_EMPTY)
 					{
 						m_nStatus = TS_WATING;
@@ -159,6 +162,25 @@ namespace Object
 		return false;
 	}
 
+	void BGameTable::onUserOut(User *u)
+	{
+		if (u == NULL)
+		{
+			return;
+		}
+
+		for (size_t i = 0; i < m_vecUsers.size(); ++i)
+		{
+			if (m_vecUsers[i] == u)
+			{
+				m_vecUsers[i] = NULL;
+				u->setChairId(-1);
+                u->setInTable(NULL);
+				return;
+			}
+		}
+	}
+
 
 	bool BGameTable::autoUserEnter(User *u)
 	{
@@ -167,9 +189,9 @@ namespace Object
 			return false;
 		}
 		UInt8 chairId = 0;
-		for (size_t i = 0; i < m_vecPlayers.size(); ++i)
+		for (size_t i = 0; i < m_vecUsers.size(); ++i)
 		{
-			if (m_vecPlayers[i] == NULL)
+			if (m_vecUsers[i] == NULL)
 			{
 				chairId = i;
 				break;
@@ -181,14 +203,14 @@ namespace Object
 	bool BGameTable::isTableFull()
 	{
 		bool bfull = true;
-		if (m_vecPlayers.empty())
+		if (m_vecUsers.empty())
 		{
 			bfull = false;
 			return bfull;
 		}
-		for (size_t i = 0; i < m_vecPlayers.size(); ++i)
+		for (size_t i = 0; i < m_vecUsers.size(); ++i)
 		{
-			if (m_vecPlayers[i] == NULL)
+			if (m_vecUsers[i] == NULL)
 			{
 				bfull = false;
 				return bfull;

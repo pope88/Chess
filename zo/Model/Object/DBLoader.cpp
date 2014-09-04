@@ -249,8 +249,7 @@ namespace Object
 
 		finder->ensureIndex("user", "id", true);
 		finder->ensureIndex("user", "serverNo", "name", true);
-		finder->ensureIndex("user", "serverNo", "playerId", true);
-		//finder->ensureIndex("user", "serverNo", "playerId", "roleId", true);
+		finder->ensureIndex("user", "serverNo", "playerid", true);
 		Database::DBUser dbpl;
 		UInt32 maxId = 0;
 		if (finder->findPrepare(Database::MongoActionBson("user").finish(), dbpl) == Database::OK)
