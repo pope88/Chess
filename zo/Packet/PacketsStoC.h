@@ -196,6 +196,18 @@ class SCUserEnterRoom_0x06: public ::ssu::Object {
 
 };
 
+class UserInfo: public ::ssu::Object {
+ public:
+  virtual ~UserInfo() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+
+};
+
 class SCUserEnterTable_0x07: public ::ssu::Object {
  public:
   inline SCUserEnterTable_0x07(): _res(0) { }
@@ -260,12 +272,40 @@ class PGStatus: public ::ssu::Object {
 
 };
 
+class PlayerBaseInfo: public ::ssu::Object {
+ public:
+  inline PlayerBaseInfo(): _chairid(0), _allchips(0) { }
+
+  virtual ~PlayerBaseInfo() { }
+
+ public:
+  virtual uint8_t * PackBuffer(uint8_t * buf);
+  virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
+  virtual size_t Size() const;
+
+ public:
+  inline uint32_t Chairid() const { return _chairid; }
+  inline void SetChairid(uint32_t val__) { _chairid = val__; }
+
+  inline const std::string& Nickname() const { return _nickname; }
+  inline void SetNickname(const std::string& val__) { _nickname = val__; }
+  inline std::string& MutableNickname() { return _nickname; }
+
+  inline uint32_t Allchips() const { return _allchips; }
+  inline void SetAllchips(uint32_t val__) { _allchips = val__; }
+
+ protected:
+  uint32_t _chairid;
+  std::string _nickname;
+  uint32_t _allchips;
+
+};
+
 class SCPlayerGameSart_0x09: public ::ssu::Object {
  public:
   inline SCPlayerGameSart_0x09(): _basechips(0), _lowestchips(0) { }
 
-  virtual ~SCPlayerGameSart_0x09() { }
-
+  virtual ~SCPlayerGameSart_0x09();
  public:
   virtual uint8_t * PackBuffer(uint8_t * buf);
   virtual bool UnpackBuffer(const uint8_t *& buf, size_t& leftSize);
@@ -278,9 +318,18 @@ class SCPlayerGameSart_0x09: public ::ssu::Object {
   inline uint32_t Lowestchips() const { return _lowestchips; }
   inline void SetLowestchips(uint32_t val__) { _lowestchips = val__; }
 
+  inline const PlayerBaseInfo& Playerinfos(size_t index__) const { return *_playerinfos[index__]; }
+  inline PlayerBaseInfo * NewPlayerinfos() { return new(std::nothrow) PlayerBaseInfo; }
+  inline PlayerBaseInfo * AddPlayerinfos() { PlayerBaseInfo * val__ = new(std::nothrow) PlayerBaseInfo; if(val__ == NULL) return NULL; _playerinfos.Add(val__); return val__; }
+  inline ::ssu::RepeatedObject<PlayerBaseInfo *>& MutablePlayerinfos() { return _playerinfos; }
+  inline size_t PlayerinfosSize() const { return _playerinfos.Size(); }
+  inline void ClearPlayerinfos() { for(::ssu::RepeatedObject<PlayerBaseInfo *>::iterator iter = _playerinfos.begin(); iter != _playerinfos.end(); ++ iter) { delete *iter; } _playerinfos.Clear(); }
+  inline void ReservePlayerinfos(size_t size__) { if(_playerinfos.Size() < size__) _playerinfos.Reserve(size__); }
+
  protected:
   uint32_t _basechips;
   uint32_t _lowestchips;
+  ::ssu::RepeatedObject<PlayerBaseInfo *> _playerinfos;
 
 };
 

@@ -192,11 +192,11 @@ class CSUserPlayNow_0x08: public ::ssu::Object {
 
 };
 
-class CSPlayerOperateAck_0x14: public ::ssu::Object {
+class CSPlayerOperate_0x14: public ::ssu::Object {
  public:
-  inline CSPlayerOperateAck_0x14(): _opcode(0) { }
+  inline CSPlayerOperate_0x14(): _opcode(0) { }
 
-  virtual ~CSPlayerOperateAck_0x14() { }
+  virtual ~CSPlayerOperate_0x14() { }
 
  public:
   virtual uint8_t * PackBuffer(uint8_t * buf);

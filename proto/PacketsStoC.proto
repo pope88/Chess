@@ -105,6 +105,16 @@ message PGStatus
   required uint32 status = 2;
 }
 
+message PlayerBaseInfo
+{
+  //位置号 
+  required uint32 chairid = 1;
+  //昵称
+  required string nickname = 2;
+  //所带筹码
+  required uint32 allchips = 3;
+}
+
 //0x09
 //游戏开始通知
 message SCPlayerGameSart_0x09
@@ -113,6 +123,8 @@ message SCPlayerGameSart_0x09
    required uint32 basechips = 1;
    //至少带入的筹码数
    required uint32 lowestchips = 2;
+   //玩家信息
+   repeated PlayerBaseInfo playerinfos = 3;
 }
 
 //0x10

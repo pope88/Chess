@@ -51,6 +51,7 @@ void GameTable::NewRound()
 		Player* pBanker = getPlayer(m_Poke.getBanker());
 		if(pPlayer == NULL)
 			continue;
+		m_vecPoker.push_back(pPlayer);
 		if(m_bNewRound || pBanker == NULL)
 		{
 			m_Poke.setBanker(nOtherChair);
@@ -72,6 +73,17 @@ void GameTable::SvrStartGameNot()
 	Packet::PlayerGameSart pgs;
 	pgs.SetBasechips(m_baseChips);
 	pgs.SetLowestchips(m_lowestChips);
+	for (auto it = m_vecPoker.begin(); it != m_vecPoker.end(); ++it)
+	{
+		Player *player = *it;
+		if (player != NULL)
+		{
+			Packet::PlayerBaseInfo *pbi = pgs.AddPlayerinfos();
+			pbi->SetChairid(player->getChairID());
+			pbi->SetNickname(static_cast<Object::User*>(player->getCorePlayer())->name());
+			pbi->SetAllchips(player->getMoney());
+		}
+	}
 	NotifyTable(pgs);
 }
 

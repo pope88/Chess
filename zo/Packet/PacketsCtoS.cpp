@@ -198,12 +198,12 @@ size_t CSUserPlayNow_0x08::Size() const {
   return 0;
 }
 
-uint8_t * CSPlayerOperateAck_0x14::PackBuffer(uint8_t * buf) {
+uint8_t * CSPlayerOperate_0x14::PackBuffer(uint8_t * buf) {
   buf = ::ssu::Utils::PackUInt32Tag(buf, 1, _opcode);
   return buf;
 }
 
-bool CSPlayerOperateAck_0x14::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
+bool CSPlayerOperate_0x14::UnpackBuffer(const uint8_t *& buf, size_t& leftSize) {
   uint32_t tag_; uint8_t type_;
   while(leftSize > 0) {
     if(!::ssu::Utils::UnpackTag(buf, leftSize, tag_, type_)) return false;
@@ -217,7 +217,7 @@ bool CSPlayerOperateAck_0x14::UnpackBuffer(const uint8_t *& buf, size_t& leftSiz
   return true;
 }
 
-size_t CSPlayerOperateAck_0x14::Size() const {
+size_t CSPlayerOperate_0x14::Size() const {
   return 1 + ::ssu::Utils::SizeUInt32(_opcode);
 }
 

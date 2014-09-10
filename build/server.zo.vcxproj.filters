@@ -249,6 +249,9 @@
     <ClInclude Include="..\zo\Game\Common\CCard.h">
       <Filter>zo\Game\Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\zo\Packet\Handler\Game\PlayerOperateAck.h">
+      <Filter>zo\Packet\Handler\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\zo\ZoCfg.cpp">
