@@ -73,7 +73,7 @@ void GameTable::SvrStartGameNot()
 	Packet::PlayerGameSart pgs;
 	pgs.SetBasechips(m_baseChips);
 	pgs.SetLowestchips(m_lowestChips);
-	for (auto it = m_vecPoker.begin(); it != m_vecPoker.end(); ++it)
+	/*for (auto it = m_vecPoker.begin(); it != m_vecPoker.end(); ++it)
 	{
 		Player *player = *it;
 		if (player != NULL)
@@ -83,7 +83,7 @@ void GameTable::SvrStartGameNot()
 			pbi->SetNickname(static_cast<Object::User*>(player->getCorePlayer())->name());
 			pbi->SetAllchips(player->getMoney());
 		}
-	}
+	}*/
 	NotifyTable(pgs);
 }
 

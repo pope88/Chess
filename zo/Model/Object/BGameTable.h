@@ -94,18 +94,23 @@ public:
 	bool isCanJoin(User *user, int &chairId, UInt8 &res, bool bVisitor = false);
 	int joinTable(User *user, int nChairID, const std::string &strPassword = "");
 	template<class T>
-		void notifyPlayer(const T& packet, User* pExceptPlayer = NULL)
+	void notifyPlayer(const T& packet, User* pExceptPlayer = NULL)
 	{
-		//COutputStream os;
-		//os << packet;
-		//NotifyPlayer(os.GetData(), os.GetLength(), pExceptPlayer);
+
 	}
 	template<class T>
-		void notifyTable(const T& packet, User* pExceptPlayer = NULL)
+	void notifyTable(const T& packet, User* pExceptPlayer = NULL)
 	{
-		//COutputStream os;
-		//os << packet;
-		//NotifyTable(os.GetData(), os.GetLength(), pExceptPlayer);
+		User *pUser = NULL;
+		for (size_t i = 0; i < m_vecUsers.size(); ++i)
+		{
+			pUser = m_vecUsers[i];
+			if (pUser == NULL || pUser == pExceptPlayer)
+			{
+				continue;
+			}
+			packet.send(pUser);
+		}
 	}
 //	const st_tabledata& GetTableData() { return m_stTableData; }
 	int	getStatus() { return m_nStatus; }

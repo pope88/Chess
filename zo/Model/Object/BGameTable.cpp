@@ -3,6 +3,7 @@
 #include "ZoGlobal.h"
 #include "User.h"
 #include "Model/BaseModel/ServerModule.h"
+#include "../../Packet/Builder.h"
 
 namespace Object
 {
@@ -197,7 +198,35 @@ namespace Object
 				break;
 			}
 		}
-		return onUserEnter(u, chairId);
+		if(onUserEnter(u, chairId))
+		{
+			Packet::UserEnterTable  ue;
+			Packet::PlayerBaseInfo *pbi;
+			pbi = ue.AddPlayerinfos();
+			pbi->SetChairid(chairId);
+			pbi->SetNickname(u->name());
+			pbi->SetAllchips(u->getMoney());
+			notifyTable(ue, u);
+
+			for (size_t i = 0; i < m_vecUsers.size(); ++i)
+			{
+				User *pUser = m_vecUsers[i];
+				if (pUser == NULL || pUser == pExceptPlayer)
+				{
+					continue;
+				}
+				packet.send(pUser);
+			}
+			return true;
+		}
+		else 
+		{
+			Packet::UserEnterTable  ue;
+			ue.SetRes(1);
+			ue.send(u);
+			return false;
+		}
+		return false;
 	}
 
 	bool BGameTable::isTableFull()
