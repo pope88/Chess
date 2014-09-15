@@ -201,22 +201,28 @@ namespace Object
 		if(onUserEnter(u, chairId))
 		{
 			Packet::UserEnterTable  ue;
-			Packet::PlayerBaseInfo *pbi;
+			Packet::PlayerBaseInfo *pbi = NULL;
 			pbi = ue.AddPlayerinfos();
 			pbi->SetChairid(chairId);
 			pbi->SetNickname(u->name());
 			pbi->SetAllchips(u->getMoney());
 			notifyTable(ue, u);
 
+			Packet::UserEnterTable  ueo;
+			Packet::PlayerBaseInfo *pbio = NULL;
 			for (size_t i = 0; i < m_vecUsers.size(); ++i)
 			{
-				User *pUser = m_vecUsers[i];
-				if (pUser == NULL || pUser == pExceptPlayer)
+				User *pUser = static_cast<User*>(m_vecUsers[i]);
+				if (pUser == NULL || pUser == u)
 				{
 					continue;
 				}
-				packet.send(pUser);
+				pbio = ueo.AddPlayerinfos();
+				pbio->SetChairid(pUser->getChairId());
+				pbio->SetNickname(pUser->name());
+				pbio->SetAllchips(pUser->getMoney());
 			}
+			ueo.send(u);
 			return true;
 		}
 		else 

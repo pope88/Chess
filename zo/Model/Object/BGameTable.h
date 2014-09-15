@@ -99,12 +99,12 @@ public:
 
 	}
 	template<class T>
-	void notifyTable(const T& packet, User* pExceptPlayer = NULL)
+	void notifyTable(T& packet, User* pExceptPlayer = NULL)
 	{
 		User *pUser = NULL;
 		for (size_t i = 0; i < m_vecUsers.size(); ++i)
 		{
-			pUser = m_vecUsers[i];
+			pUser = static_cast<User*>(m_vecUsers[i]);
 			if (pUser == NULL || pUser == pExceptPlayer)
 			{
 				continue;
