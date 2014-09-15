@@ -210,12 +210,12 @@ namespace Object
 
 			for (size_t i = 0; i < m_vecUsers.size(); ++i)
 			{
-				User *pUser = m_vecUsers[i];
-				if (pUser == NULL || pUser == pExceptPlayer)
+				User *pUser = static_cast<User*>(m_vecUsers[i]);
+				if (pUser == NULL || pUser == u)
 				{
 					continue;
 				}
-				packet.send(pUser);
+				ue.send(pUser);
 			}
 			return true;
 		}
