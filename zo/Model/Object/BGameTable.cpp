@@ -217,6 +217,7 @@ namespace Object
 				{
 					continue;
 				}
+
 				pbio = ueo.AddPlayerinfos();
 				pbio->SetChairid(pUser->getChairId());
 				pbio->SetNickname(pUser->name());
