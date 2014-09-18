@@ -8,3 +8,4 @@
 #include "Hall/UserRoomInfo.h"
 #include "Hall/UserRoomList.h"
 #include "User/UserInfo.h"
+#include "UserLeaveTable.h"

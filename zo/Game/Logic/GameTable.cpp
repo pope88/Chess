@@ -73,17 +73,9 @@ void GameTable::SvrStartGameNot()
 	Packet::PlayerGameSart pgs;
 	pgs.SetBasechips(m_baseChips);
 	pgs.SetLowestchips(m_lowestChips);
-	/*for (auto it = m_vecPoker.begin(); it != m_vecPoker.end(); ++it)
-	{
-		Player *player = *it;
-		if (player != NULL)
-		{
-			Packet::PlayerBaseInfo *pbi = pgs.AddPlayerinfos();
-			pbi->SetChairid(player->getChairID());
-			pbi->SetNickname(static_cast<Object::User*>(player->getCorePlayer())->name());
-			pbi->SetAllchips(player->getMoney());
-		}
-	}*/
+	pgs.SetBosschairpos(m_Poke.getBanker());
+	pgs.SetBigblindpos(m_Poke.getBigBlinder());
+	pgs.SetSmallblindpos(m_Poke.getSmallBlinder());
 	NotifyTable(pgs);
 }
 
