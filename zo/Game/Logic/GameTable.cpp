@@ -20,6 +20,8 @@ void GameTable::onGameStart()
 
 	showPlayerStatus();
 
+	autoOperateBlind();
+
 	dealing();
 
 	SetBaseMoney();
@@ -157,7 +159,7 @@ void GameTable::autoOperateBlind()
 			for (int i = 0; i < ePLYNUM; ++i)
 			{
 				Player* pp = getPlayer(i);
-				if (pp && (pp->getPlayerStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & SMALLBLIND) == SMALLBLIND))
+				if ((pp != NULL) && (pp->getPlayerStatus() == Player::PS_PLAYER) && ((pp->getPlayerStatus() & SMALLBLIND) == SMALLBLIND))
 				{
 					playerSmall = pp;
 					bHaveSmallBlind = true;
@@ -545,7 +547,6 @@ void GameTable::onTimer()
 		break;
 	case eDEALING_EVENT:
 		{
-			autoOperateBlind();
 		}
 		break;
 	default:
