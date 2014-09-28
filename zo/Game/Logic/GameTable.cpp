@@ -4,7 +4,7 @@
 #include "../../Model/Object/User.h"
 
 
-GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_bSmallBlind(false), m_bbigBlind(false), m_btimeOut(false), m_lowestChips(0), m_nCommonNum(0), m_nLastBigBlind(0)
+GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_bSmallBlind(false), m_bbigBlind(false), m_btimeOut(false), m_lowestChips(0), m_nCommonStage(0), m_nLastBigBlind(0)
 {
 
 }
@@ -42,7 +42,7 @@ void GameTable::NewRound()
 	m_bbigBlind = false;
 	m_btimeOut = false;
 	m_lowestChips = 0;
-	m_nCommonNum = 0;
+	m_nCommonStage = 0;
 	m_nLastBigBlind = 0;
 
 	int nChair = rand() % ePLYNUM;   //Ñ¡×¯¼Ò
@@ -249,33 +249,41 @@ void GameTable::onOperateAck(Player *player, UInt8 opcode, int mchips)
 
 	Packet::PlayerOperateNot ponot;
 	int mLeaveChips = player->mPoker.getPlayerChips() - player->mPoker.getChips();
+	int requireChips = m_Poke.getCallChips() - player->mPoker.getCurrentChips();
+	if (requireChips < 0)
+		return;
 	if ((opcode & ADDCHIPS) == ADDCHIPS)
 	{
-		if (mchips < int(m_Poke.getBaseChips() - player->mPoker.getCurrentChips()) )
+		if ((mchips < requireChips) && (mLeaveChips >= requireChips))
 			return;
 		if (mLeaveChips < mchips)
 			return;
 
-		if (mchips > int(m_lowestChips - player->mPoker.getCurrentChips()))
+		if (mchips > requireChips)
 		{
-			mchips = m_lowestChips - player->mPoker.getCurrentChips();
+			m_Poke.setCallChips(mchips);
 		}
-		player->mPoker.setCurrentChips(mchips);
+		UInt32 curChips = player->mPoker.getCurrentChips();
+		player->mPoker.setCurrentChips(mchips + curChips);
 		player->mPoker.setChips(player->mPoker.getChips() + mchips);
 		m_Poke.setTotalChips(m_Poke.getTotalChips() + mchips);
+
 
 		ponot.SetChairid(player->getChairID());
 		ponot.SetOpcode(opcode);
 		ponot.SetCurrentchips(player->mPoker.getCurrentChips());
 		ponot.SetLeavechips(mLeaveChips);
 		ponot.SetTotalchips(m_Poke.getTotalChips());
+		NotifyTable(ponot);
 	}
-	else if ((opcode & FOLLOWCHIPS) == FOLLOWCHIPS)
+	else if ((opcode & CALL) == CALL)
 	{
-		if (mchips < int(m_Poke.getBaseChips() - player->mPoker.getCurrentChips()) )
+		int requireChips = m_Poke.getCallChips() - player->mPoker.getCurrentChips();
+		int curChips = player->mPoker.getCurrentChips();
+		if (mchips < requireChips)
 			return;
 
-		player->mPoker.setCurrentChips(mchips);
+		player->mPoker.setCurrentChips(mchips + curChips);
 		player->mPoker.setChips(player->mPoker.getChips() + mchips);
 		m_Poke.setTotalChips(m_Poke.getTotalChips() + mchips);
 		
@@ -302,24 +310,24 @@ void GameTable::onOperateAck(Player *player, UInt8 opcode, int mchips)
 	{
 		return;
 	}
-	NotifyTable(ponot);
 
 	if (m_nPlyNum == 1)
 	{
 		roundEnd();
 	}
 
-	if (true)
+	if ( (player->getChairID() == m_Poke.getBanker() 
+		|| (isBossGiveUp() && player == getNextPlayer(m_Poke.getBanker()) ) )
+		&& isCanSendCommonCard())
 	{
 		sendCommonCards();
+		m_Poke.setCallChips(0);
 	}
-	else
+
+	Player *pp = getNextPlayer(player->getChairID());
+	if (pp != NULL)
 	{
-		Player *pp = getNextPlayer(player->getChairID());
-		if (pp != NULL)
-		{
-			sendOperateReq(pp);
-		}
+		sendOperateReq(pp);
 	}
 }
 
@@ -328,7 +336,7 @@ void GameTable::sendOperateReq(Player *player)
 	Packet::PlayerOperateReq poReq;
 	poReq.SetChairid(player->getChairID());
 	poReq.SetBasechips(m_Poke.getBaseChips());
-	poReq.SetCurrentchips(m_Poke.getBaseChips() - player->mPoker.getCurrentChips());
+	poReq.SetCurrentchips(m_Poke.getCallChips() - player->mPoker.getCurrentChips());
 
 	if (poReq.Currentchips() > (player->mPoker.getPlayerChips() - player->mPoker.getChips()))
 	{
@@ -337,16 +345,20 @@ void GameTable::sendOperateReq(Player *player)
 	else
 	{
 		UInt32 opcode = 0;
-		if ((player->mPoker.getPlayerChips() - player->mPoker.getChips()) > poReq.Currentchips())
+		if (m_Poke.getCallChips() > 0)
 		{
+			opcode |= GIVEUP;
+			opcode |= CALL;
 			opcode |= ADDCHIPS;
 			poReq.SetOpcode(opcode);
 		}
-		opcode |= FOLLOWCHIPS;
-		opcode |= GIVEUP;
+		else
+		{
+			opcode |= CHECK;
+			opcode |= ADDCHIPS;
+		}
 		poReq.SetOpcode(opcode);
 
-		player->mPoker.setCurrentChips(0);
 		m_cCurOpChair = player->getChairID();
 		m_cCurOpcode = opcode;
 
@@ -355,38 +367,6 @@ void GameTable::sendOperateReq(Player *player)
 	}
 }
 
-//void GameTable::onOperateAck(Player *player, const pt_dz_operate_ack &ack, bool bForceLeave)
-//{
-//	if (!player)
-//	{
-//		glog.log("player return");
-//		return;
-//	}
-//	pt_dz_operate_not noti;
-//	noti.opcode = dz_operate_not;
-//	int  nAmount = 0;
-//	if (!m_bRacing)
-//	{
-//		return;
-//	}
-//	if (!bForceLeave)
-//	{
-//		++m_nSeialID;
-//	}
-//
-//	if (!(ack.nOpcode &  GIVEUP))
-//	{
-//		if (pPlayer->getChairID() != m_cCurOpChair)
-//		{
-//			return;
-//		}
-//	}
-//	if (pPlayer->getStatus() == Player::PS_GIVEUP)
-//	{
-//		return;
-//	}
-//
-//}
 
 void GameTable::showPlayerStatus()
 {
@@ -484,8 +464,8 @@ void GameTable::sendCommonCards()
 {
 	std::vector<CCard> cards;
 
-	++m_nCommonNum;
-	if (m_nCommonNum == 1)
+	++m_nCommonStage;
+	if (m_nCommonStage == 1)
 	{
 		for (size_t i = 0; i < 3; ++i)
 		{
@@ -495,7 +475,7 @@ void GameTable::sendCommonCards()
 		}
 		cards = m_vecCommonCards;
 	}
-	else if (m_nCommonNum == 2 || m_nCommonNum == 3)
+	else if (m_nCommonStage == 2 || m_nCommonStage == 3)
 	{
 		CCard c;
 		m_Poke.getCard(c);
@@ -503,7 +483,7 @@ void GameTable::sendCommonCards()
 	}
 
 	Packet::PlayerCommonCards pcc;
-	pcc.SetStep(m_nCommonNum);
+	pcc.SetStep(m_nCommonStage);
 	for (size_t i = 0; i < cards.size(); ++i)
 	{
 		Packet::card *pc;
@@ -594,12 +574,37 @@ Player* GameTable::getAfterPlayer(UInt8 nChairID)
 		++chairid;
 		UInt8 nNextChair = chairid % ePLYNUM;
 		Player *player = getPlayer(nNextChair);
-		if (player && (player->getStatus() == Player::PS_PLAYER || player->getStatus() == Player::PS_GIVEUP ) )
+		if (player != NULL && (player->getStatus() == Player::PS_PLAYER || player->getStatus() == Player::PS_GIVEUP ) )
 			return player;
 	}
 	return NULL;
 }
 
+bool GameTable::isBossGiveUp()
+{
+	Player *player = getPlayer(m_Poke.getBanker());
+	if (player == NULL || player->getStatus() == Player::PS_GIVEUP)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool GameTable::isCanSendCommonCard()
+{
+	for (int i = 0; i < ePLYNUM; ++i)
+	{
+		Player* p = getPlayer(i);
+		if (p != NULL && p->getStatus() == Player::PS_PLAYER)
+		{
+			if (p->mPoker.getCurrentChips() != m_Poke.getCallChips() && p->mPoker.getChips() > 0)
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
 
 void GameTable::roundEnd()
 {

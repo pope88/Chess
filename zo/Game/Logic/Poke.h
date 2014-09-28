@@ -22,6 +22,8 @@ public:
 	inline UInt8 getSmallBlinder() { return _smallBlinder; }
 	inline void setBigBlinder(UInt8 c) { _bigBlinder = c; }
 	inline UInt8 getBigBlinder() { return _bigBlinder;  }
+	inline void setCallChips(UInt32 chips) { _callChips = chips; }
+	inline UInt32 getCallChips() { return _callChips; }
 public:
 	std::vector<CCard> m_AllCards;	    //全副牌54张
 	UInt8  _m_nBanker;			        //庄家
@@ -29,6 +31,7 @@ public:
 	UInt8 _bigBlinder;                  //大盲注
 	UInt32 _totalChips;                 //总筹码
 	UInt32 _baseChips;                  //盲注
+	UInt32 _callChips;                  //call chips
 	UInt8 _finishNum;				    //几个玩家是否发牌完毕
 };
 

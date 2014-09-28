@@ -33,11 +33,12 @@ class GameTable : public ITable, public TimerBase
 
 	enum DZPKOP
 	{
-		GIVEUP = (1 << 0),
-		ADDCHIPS = (1 << 1),
-		FOLLOWCHIPS = (1 << 2),
-		SMALLBLIND = (1 << 3),
-		BIGBLIND = (1 << 4),
+		GIVEUP =     (1 << 0),
+		CALL =       (1 << 1),
+		CHECK =      (1 << 2),
+		ADDCHIPS =   (1 << 3),
+		SMALLBLIND = (1 << 4),
+		BIGBLIND =   (1 << 5),
 	};
 
 public:
@@ -81,6 +82,8 @@ public:
 	Player* getNextPlayer(UInt8 nChairID);
 	Player* getPlayer(UInt8 nChairID);
 	Player* getAfterPlayer(UInt8 nChairID);
+	bool isBossGiveUp();
+	bool isCanSendCommonCard();
 	void SendCompleteData(Player* pPlayer);
 	void sendPlayerCard();
 
@@ -95,7 +98,7 @@ public:
 	void sendCommonCards();
 
 public:
-	void setGameScore() { m_baseChips = 100; m_lowestChips = 10000; }
+	void setGameScore() { m_baseChips = 100; m_lowestChips = 10000; m_Poke.setCallChips(m_baseChips * 2 ); }
 
 	//客户端回应发牌完毕
 	void cliSendCardAck(const ::ssu::Object &ack, Player* pPlayer) {}
@@ -159,10 +162,8 @@ private:
 	bool m_bbigBlind;            //大盲注已下
 	bool m_btimeOut;             //已经超时
 	UInt32 m_lowestChips;         //最低筹码限制
-	UInt8 m_nCommonNum;          //公共牌发牌步骤
+	UInt8 m_nCommonStage;          //公共牌发牌步骤
 	UInt8 m_nLastBigBlind;       //上一次大盲注chairid
-	UInt8 m_maxPNum;             //人数限制
-
 
 };
 
