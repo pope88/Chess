@@ -100,6 +100,11 @@ namespace Object
 			_pInTable->onUserOut(this);
 			_pInTable = NULL;
 		}
+		if (_pInRoom != NULL)
+		{
+			_pInRoom->outUser(this);
+			_pInRoom = NULL;
+		}
 	}
 
 	bool User::loseGameGold(UInt32 g, UInt32 tipType)

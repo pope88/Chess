@@ -139,6 +139,7 @@ namespace Object
 		{
 			m_vecUsers[nchair] = u;
 			u->setChairId(nchair);
+			u->setInTable(this);
 			return true;
 		}
 		else if(nchair == 0xFF)
@@ -201,6 +202,7 @@ namespace Object
 		if(onUserEnter(u, chairId))
 		{
 			Packet::UserEnterTable  ue;
+			ue.SetRes(0);
 			Packet::PlayerBaseInfo *pbi = NULL;
 			pbi = ue.AddPlayerinfos();
 			pbi->SetChairid(chairId);
@@ -210,6 +212,11 @@ namespace Object
 
 			Packet::UserEnterTable  ueo;
 			Packet::PlayerBaseInfo *pbio = NULL;
+			pbio = ueo.AddPlayerinfos(); //me
+			pbio->SetChairid(u->getChairId());
+			pbio->SetNickname(u->name());
+			pbio->SetAllchips(u->getMoney());
+
 			for (size_t i = 0; i < m_vecUsers.size(); ++i)
 			{
 				User *pUser = static_cast<User*>(m_vecUsers[i]);

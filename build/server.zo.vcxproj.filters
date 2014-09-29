@@ -147,9 +147,6 @@
     <ClInclude Include="..\zo\Game\Common\Rule.h">
       <Filter>zo\Game\Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\zo\Game\Logic\GameTable.h">
-      <Filter>zo\Game\Logic</Filter>
-    </ClInclude>
     <ClInclude Include="..\zo\Game\Logic\Poke.h">
       <Filter>zo\Game\Logic</Filter>
     </ClInclude>
@@ -249,6 +246,9 @@
     <ClInclude Include="..\zo\Game\Common\CCard.h">
       <Filter>zo\Game\Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\zo\Game\Logic\GameTable.h">
+      <Filter>zo\Game\Logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\zo\ZoCfg.cpp">
@@ -327,9 +327,6 @@
     <ClCompile Include="..\zo\Game\Logic\Player.cpp">
       <Filter>zo\Game\Logic</Filter>
     </ClCompile>
-    <ClCompile Include="..\zo\Game\Logic\GameTable.cpp">
-      <Filter>zo\Game\Logic</Filter>
-    </ClCompile>
     <ClCompile Include="..\zo\Game\Logic\Poke.cpp">
       <Filter>zo\Game\Logic</Filter>
     </ClCompile>
@@ -392,6 +389,9 @@
     </ClCompile>
     <ClCompile Include="..\zo\Game\Common\Poker.cpp">
       <Filter>zo\Game\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zo\Game\Logic\GameTable.cpp">
+      <Filter>zo\Game\Logic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
