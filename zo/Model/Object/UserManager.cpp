@@ -112,5 +112,24 @@ namespace Object
 		return it2->second;
 	}
 
+	void UserManager::addOnline(User *u)
+	{
+		if (u != NULL)
+		{
+			_onlineUsers[u->serverno()].insert(u);
+		}
+	}
+
+	void UserManager::removeOnline(User *u)
+	{
+		if (u !=  NULL)
+		{
+			auto it = _onlineUsers.find(u->serverno());
+			if (it != _onlineUsers.end())
+			{
+				it->second.erase(u);
+			}
+		}
+	}
 }
 

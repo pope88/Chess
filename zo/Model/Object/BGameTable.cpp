@@ -140,6 +140,10 @@ namespace Object
 			m_vecUsers[nchair] = u;
 			u->setChairId(nchair);
 			u->setInTable(this);
+			if (m_nStatus == TS_EMPTY)
+			{
+				m_nStatus = TS_WATING;
+			}
 			return true;
 		}
 		else if(nchair == 0xFF)

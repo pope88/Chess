@@ -249,6 +249,9 @@
     <ClInclude Include="..\zo\Game\Logic\GameTable.h">
       <Filter>zo\Game\Logic</Filter>
     </ClInclude>
+    <ClInclude Include="..\zo\Packet\Handler\Game\PlayerOperate.h">
+      <Filter>zo\Packet\Handler\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\zo\ZoCfg.cpp">

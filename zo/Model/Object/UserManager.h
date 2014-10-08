@@ -17,6 +17,8 @@ namespace Object
 		UInt32 uniqueID();
 		User* findUserByName(UInt32 serverNo, const std::string &name);
 		User* findUserById(UInt32 serverNo, const std::string &pid);
+		void addOnline(User *u);
+		void removeOnline(User *u);
 
 		template<typename F>
 		void foreach(F func)

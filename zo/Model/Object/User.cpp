@@ -74,6 +74,7 @@ namespace Object
 		if (!_roleOnline)
 		{
 			_roleOnline = true;
+			userManager.addOnline(this);
 		}
 
 		userInfo();
@@ -93,6 +94,7 @@ namespace Object
 		if (_roleOnline)
 		{
 			_roleOnline = false;
+			userManager.removeOnline(this);
 		}
 
 		if (_pInTable != NULL)

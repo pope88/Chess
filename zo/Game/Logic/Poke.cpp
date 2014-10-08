@@ -36,6 +36,7 @@ void Poke::NewRound()
 	_baseChips = 0;    
 	_callChips = 0;
 	_finishNum = 0;
+	ShuffleCards();
 }
 
 
