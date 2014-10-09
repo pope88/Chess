@@ -363,6 +363,8 @@ void GameTable::sendOperateReq(Player *player)
 		m_cCurOpcode = opcode;
 
 		m_pCoreTable->removeTimer();
+
+		NotifyTable(poReq);
 		startTimer(eBET_EVENT, m_cCurOpChair);
 	}
 }
@@ -527,6 +529,7 @@ void GameTable::onTimer()
 		break;
 	case eDEALING_EVENT:
 		{
+
 		}
 		break;
 	default:

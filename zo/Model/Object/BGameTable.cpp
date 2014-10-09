@@ -265,4 +265,21 @@ namespace Object
 		}
 		return bfull;
 	}
+
+	void BGameTable::startClientTimer(char cChairID, int nPeriod)
+	{
+		if(cChairID == -1)
+		{
+			Packet::UserTimerStart ut;
+			ut.SetTimer(nPeriod);
+			notifyTable(ut);
+		}
+		else
+		{
+			Packet::UserTimerStart ut;
+			ut.SetTimer(nPeriod);
+			ut.SetChairid(cChairID);
+			notifyTable(ut);
+		}
+	}
 }

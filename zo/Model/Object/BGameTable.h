@@ -72,7 +72,7 @@ public:
 	virtual void setTimer(int nPeriod, void* pParam) {}
 	virtual void removeTimer() {}
 	virtual void notifyVisitor(char cChairID, const char* pData, int nLength, bool bExclude) {}
-	virtual void startClientTimer(char cChairID, int nPeriod) {}
+	virtual void startClientTimer(char cChairID, int nPeriod);
 	virtual int getTaxRate(){ return 0; }
 	virtual int getTableID() { return 0; }
 	virtual int changePlayerMoney(int nPID, int nVarMoney) { return 0; }
