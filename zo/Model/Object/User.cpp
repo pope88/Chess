@@ -96,16 +96,9 @@ namespace Object
 			_roleOnline = false;
 			userManager.removeOnline(this);
 		}
-
-		if (_pInTable != NULL)
-		{
-			_pInTable->onUserOut(this);
-			_pInTable = NULL;
-		}
 		if (_pInRoom != NULL)
 		{
-			_pInRoom->outUser(this);
-			_pInRoom = NULL;
+			_roomManager.playerLeaveRoom(this, _pInRoom->roomId());
 		}
 	}
 

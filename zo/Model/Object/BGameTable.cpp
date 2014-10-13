@@ -27,6 +27,17 @@ namespace Object
 		m_pTable->bindCoreTable2Table(this);
 	}
 
+
+	bool BGameTable::leaveTable(User* pPlayer)
+	{
+		if(pPlayer != NULL) 
+		{
+			pPlayer->setInTable( NULL);
+			return true;
+		}
+		return false;
+	}
+
 	int BGameTable::findEmptyChair()
 	{
 		for (size_t i = 0; i < m_vecUsers.size(); ++i)

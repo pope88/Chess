@@ -39,6 +39,10 @@ namespace Object
 
 	bool RoomManager::playerEnterRoom(User *user, UInt8 r)
 	{
+		if (user->getInRoom() != NULL)
+		{
+			playerLeaveRoom(user, user->getInRoom()->roomId());
+		}
 		if ((size_t)r < _vecRooms.size())
 		{
 			UInt32 userId = 0;

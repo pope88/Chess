@@ -111,8 +111,15 @@ namespace Object
 
 	bool GameRoom::outUser(User *u)
 	{ 
-		return _roomPlayers->removePlayer(u); 
-		u->setInRoom(NULL);
+		if (u == NULL)
+			return false;
+		if (u->getInTable() != NULL)
+			u->getInTable()->onUserOut(u);
+
+		_roomPlayers->removePlayer(u); 
+		if (u->getInRoom() != NULL)
+			u->setInRoom(NULL);
+		return true;
 	}
 
 }

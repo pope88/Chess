@@ -86,7 +86,7 @@ public:
 	   @brief 离开桌子
 	   @param pPlayer 离开玩家指针
 	*/
-	bool leaveTable(User* pPlayer) {}
+	bool leaveTable(User* pPlayer);
 	int findEmptyChair();
 	bool canStartGame();
 	void onGameStart();

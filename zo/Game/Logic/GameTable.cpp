@@ -498,20 +498,25 @@ void GameTable::sendCommonCards()
 
 void GameTable::startTimer(int nEvent, char cChair)
 {
+	UInt16  time = 0;
 	if (nEvent == eBET_EVENT)
 	{
 		this->addInterValTimer(eBET_EVENT, eBET_PERIOD);
+		time = eBET_PERIOD/1000; 
 	}
 	else if (nEvent == ePICK_EVENT)
 	{
 		this->addInterValTimer(ePICK_EVENT, ePICK_PERIOD);
+		time = ePICK_PERIOD/1000;
 	}
 	else if(nEvent == eDEALING_EVENT)
 	{
 		this->addInterValTimer(eDEALING_EVENT, eDEALING_PERIOD);
+		time = eDEALING_PERIOD/1000;
 	}
+
 	//timer
-	
+	m_pCoreTable->startClientTimer(cChair, time);
 }
 
 void GameTable::onTimer()
@@ -520,7 +525,22 @@ void GameTable::onTimer()
 	{
 	case eBET_EVENT:
 		{
-			printf("eBET_EVENT");
+			if (!m_bRacing)
+				return;
+
+			Player *player = getPlayer(m_cCurOpChair);
+			if (player == NULL)
+				return;
+
+			if (player->getStatus() == Player::PS_GIVEUP)
+			{
+				return;
+			}
+
+			if ( == 0)
+			{
+				return;
+			}
 		}
 		break;
 	case ePICK_EVENT:
