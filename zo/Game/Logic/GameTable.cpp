@@ -4,7 +4,7 @@
 #include "../../Model/Object/User.h"
 
 
-GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_bSmallBlind(false), m_bbigBlind(false), m_btimeOut(false), m_lowestChips(0), m_nCommonStage(0), m_nLastBigBlind(0)
+GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_bSmallBlind(false), m_bbigBlind(false), m_btimeOut(false), m_lowestChips(0), m_nCommonStage(0), m_nLastBigBlind(0), playerSmall(NULL), playerBig(NULL)
 {
 
 }
@@ -44,6 +44,8 @@ void GameTable::NewRound()
 	m_lowestChips = 0;
 	m_nCommonStage = 0;
 	m_nLastBigBlind = 0;
+	playerSmall = NULL;
+	playerBig = NULL;
 
 	int nChair = rand() % ePLYNUM;   //Ñ¡×¯¼Ò
 	for(int i = 0; i < ePLYNUM; ++i)
@@ -131,8 +133,7 @@ void GameTable::dealing()
 void GameTable::autoOperateBlind()
 {
 
-	Player *playerSmall= NULL;
-	Player *playerBig = NULL;
+
 	if (m_nPlyNum == 2)
 	{
 		playerSmall  = getPlayer(m_Poke.getBanker());
@@ -533,13 +534,25 @@ void GameTable::onTimer()
 				return;
 
 			if (player->getStatus() == Player::PS_GIVEUP)
+				return;
+			
+			UInt8 chairId = 0;
+			chairId = m_cCurOpChair;
+			Player *curPlayer = getPlayer(chairId);
+			if (curPlayer == NULL)
 			{
 				return;
 			}
-
-			if ( == 0)
+			else
 			{
-				return;
+				if (m_cCurOpcode & CHECK > 0)
+				{
+					onOperateAck(curPlayer, CHECK, 0);
+				}
+				else
+				{
+					onOperateAck(curPlayer, GIVEUP, 0);
+				}
 			}
 		}
 		break;

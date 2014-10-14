@@ -164,6 +164,8 @@ private:
 	UInt32 m_lowestChips;         //最低筹码限制
 	UInt8 m_nCommonStage;          //公共牌发牌步骤
 	UInt8 m_nLastBigBlind;       //上一次大盲注chairid
+	Player *playerSmall;
+	Player *playerBig;
 
 };
 
