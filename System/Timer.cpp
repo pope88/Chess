@@ -54,6 +54,10 @@ namespace System
 		UInt32 now = TimeUtil::Now();
 		while(1)
 		{
+			if (_timers.empty())
+			{
+				return;
+			}
 			TimerStruct * td = static_cast<TimerStruct *>(_timers.front());
 			if(td->count == 0)
 			{

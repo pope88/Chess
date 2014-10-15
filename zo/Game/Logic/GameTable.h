@@ -18,10 +18,10 @@ class GameTable : public ITable, public TimerBase
 		eDEALING_EVENT = 3,
 		eCOMMONCARD_EVENT = 4,
 		eCARDFACE_EVENT = 5,
-		ePICK_PERIOD = 30 * 1000,
-		eBET_PERIOD = 15 * 1000,
-		eDEALING_PERIOD = 5 * 1000,
-		eCARDFACE_PERIOD = 2 * 1000,
+		ePICK_PERIOD = 30,
+		eBET_PERIOD = 20,
+		eDEALING_PERIOD = 5,
+		eCARDFACE_PERIOD = 2,
 	};
 
 	enum 

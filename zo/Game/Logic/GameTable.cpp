@@ -20,9 +20,9 @@ void GameTable::onGameStart()
 
 	showPlayerStatus();
 
-	autoOperateBlind();
-
 	dealing();
+
+	autoOperateBlind();
 
 	SetBaseMoney();
 
@@ -33,6 +33,7 @@ void GameTable::NewRound()
 	m_Poke.NewRound();
 	m_vecCommonCards.clear();
 	m_vecPoker.clear();
+	m_bRacing = true;
 	m_cCurOpChair = 0;
 	m_cCurOpcode = 0;
 	m_nPlyNum = 0;
@@ -132,7 +133,6 @@ void GameTable::dealing()
 //auto small and big blind
 void GameTable::autoOperateBlind()
 {
-
 
 	if (m_nPlyNum == 2)
 	{
@@ -522,6 +522,7 @@ void GameTable::startTimer(int nEvent, char cChair)
 
 void GameTable::onTimer()
 {
+	UInt32 timeid = timerId();
 	switch (timerId())
 	{
 	case eBET_EVENT:

@@ -9,7 +9,7 @@ public:
 	~TimerBase() {}
 	virtual void onTimer() {}
 	inline UInt32 timerId() { return _timeId; } 
-	virtual void addInterValTimer(int timeId, UInt32 interval, bool once = false, UInt32 param = 0, UInt8 wd = 0 )
+	virtual void addInterValTimer(int timeId, UInt32 interval, bool once = true, UInt32 param = 0, UInt8 wd = 0 )
 	{
 		GAMETIMER.removeInterValTimer(Data::Define::Chess, this);
 		_timeId = timeId;
