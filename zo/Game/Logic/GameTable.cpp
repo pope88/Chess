@@ -572,7 +572,6 @@ void GameTable::onTimer()
 }
 
 
-
 UInt8 GameTable::getBeforePlayerID(UInt8 nChairID)
 {
 	int nTemp = 0;
