@@ -48,7 +48,7 @@ public:
 	virtual void release() { delete this; }
 	virtual void onTimer();
 	virtual void onGameStart();
-	void onPacketOperate(const ::ssu::Object &ack) {}
+	//void onPacketOperate(const ::ssu::Object &ack) {}
 	void onPacketPickCard(const ::ssu::Object &ack ) {}
 	void onPacketFinishSendCard(const ::ssu::Object &ack) {}
 	/**

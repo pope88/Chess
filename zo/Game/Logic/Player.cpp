@@ -59,13 +59,12 @@ void Player::getPlayerCards(::ssu::Object &noti, bool bShow)
 	//}
 }
 
-void Player::onPacketOperate(const ::ssu::Object &ack)
+void Player::onOperateAck(UInt8 opcode, int mchips)
 {
 	//if (m_pGameTable->isRacing())
 	if(true)
 	{
-
-		//((GameTable*)m_pGameTable)->onPacketOperate(ack);
+		((GameTable*)m_pGameTable)->onOperateAck(this, opcode, mchips);
 	}
 }
 

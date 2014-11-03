@@ -77,7 +77,7 @@ public:
 	//以下是系统接口函数
 	Mplayer* getCorePlayer() { return m_pCorePlayer; }
 
-	void onPacketOperate(const ::ssu::Object &ack);
+	void onOperateAck(UInt8 opcode, int mchips = 0);
 	void onPacketPickCard(const ::ssu::Object &ack) {}
 	void onPacketFinishSendCard(const ::ssu::Object &ack) {}
 public:
