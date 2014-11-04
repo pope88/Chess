@@ -114,6 +114,7 @@
     <ClInclude Include="..\System\Singleton.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="..\zo\Game\Logic\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\System\Clock.cpp">

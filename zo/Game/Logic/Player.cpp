@@ -31,7 +31,7 @@ void Player::newRound()
 	mPlayerStatus = COMMONPLAYER;
 }
 
-void Player::setGameTable(Object::BGameTable *bt)
+void Player::setGameTable(GameTable *bt)
 {
 	m_pGameTable = bt;
 }
@@ -61,11 +61,7 @@ void Player::getPlayerCards(::ssu::Object &noti, bool bShow)
 
 void Player::onOperateAck(UInt8 opcode, int mchips)
 {
-	//if (m_pGameTable->isRacing())
-	if(true)
-	{
-		((GameTable*)m_pGameTable)->onOperateAck(this, opcode, mchips);
-	}
+	m_pGameTable->onOperateAck(this, opcode, mchips);
 }
 
 

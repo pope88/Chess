@@ -7,6 +7,7 @@
 #include "../Common/Poker.h"
 #include "../../Model/Object/User.h"
 #include "../../Model/Object/BGameTable.h"
+class GameTable;
 
 class Player : public IPlayer
 {
@@ -36,7 +37,7 @@ public:
 	//开始新的一轮
 	void newRound();
 
-	void setGameTable(Object::BGameTable *bt);
+	void setGameTable(GameTable *bt);
 
 	//设置和获取玩家状态
 	UInt8 getStatus(){ return m_nStatus; }
@@ -77,7 +78,7 @@ public:
 	//以下是系统接口函数
 	Mplayer* getCorePlayer() { return m_pCorePlayer; }
 
-	void onOperateAck(UInt8 opcode, int mchips = 0);
+	virtual void onOperateAck(UInt8 opcode, int mchips = 0);
 	void onPacketPickCard(const ::ssu::Object &ack) {}
 	void onPacketFinishSendCard(const ::ssu::Object &ack) {}
 public:
@@ -86,7 +87,7 @@ public:
 	Poker mPoker;
 private:
 	Mplayer* m_pCorePlayer;		    //系统接口
-	Mtable* m_pGameTable;		    //系统接口
+	ITable* m_pGameTable;		    //系统接口
 	UInt8 m_nStatus;				//玩家状态
 	UInt8 mPlayerStatus;            //游戏状态
 

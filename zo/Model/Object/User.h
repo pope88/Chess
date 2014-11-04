@@ -125,9 +125,9 @@ class User;
 		GameRoom* getTableManager() { return NULL; }
 		void onHeartBit() {}
 		void getNetDelay() {}
-		const std::string& getPlayerIp() { 	static std::string empty; return empty; }
-		const BGameTable* getTheTable() { return _pInTable; }
-		const IPlayer* getThePlayer() { return m_pPlayer; }
+	   // void getPlayerIp(std::string &empty) { 	std::string empty; }
+		BGameTable* getTheTable() { return _pInTable; }
+		IPlayer* getThePlayer() { return m_pPlayer; }
 		void setPlayerStatus(UInt16 status) {}
 
 		

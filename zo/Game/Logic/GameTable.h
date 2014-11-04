@@ -2,12 +2,12 @@
 #define _GAMETABLE_H_
 #include "Model/BaseModel/Mplayer.h"
 #include "Model/BaseModel/Mtable.h"
-#include "Player.h"
 #include "SsuObject.h"
 #include "Poke.h"
 #include "../../Model/Object/TimerBase.h"
 #include "../../Packet/Builder.h"
 #include "../Common/CCard.h"
+#include "Player.h"
 class GameTable : public ITable, public TimerBase
 {
 	public:
@@ -90,12 +90,15 @@ public:
 	void onFinishSendAck(Player* p);
 	void sendOperateReq(Player *player);
 
-	void onOperateAck(Player *player, UInt8 opcode, int mchips = 0);
+	void onOperateAck(IPlayer *iplayer, UInt8 opcode, int mchips = 0);
 
 	void autoOperateBlind();
 	//游戏结束
 	void roundEnd();
 	void sendCommonCards();
+
+	void onPlayerJoin(IPlayer* pPlayer);
+	void onPlayerLeave(IPlayer* pPlayer);
 
 public:
 	void setGameScore() { m_baseChips = 100; m_lowestChips = 10000; m_Poke.setCallChips(m_baseChips * 2 ); }
@@ -121,8 +124,6 @@ public:
 	virtual void onUserDisconnection(Mplayer* pPlayer) {}
 	virtual void onUserReconnection(Mplayer* pPlayer) {}
 	virtual void onUserJoinVisitor(Mplayer* pPlayer) {}
-	virtual void onUserJoin(Mplayer* pPlayer) {}
-	virtual void onUserLeave(Mplayer* pPlayer) {}
 
 	
 	//开始游戏广播

@@ -4,6 +4,7 @@
 #include "User.h"
 #include "Model/BaseModel/ServerModule.h"
 #include "../../Packet/Builder.h"
+#include "Game/Logic/GameTable.h"
 
 namespace Object
 {
@@ -155,6 +156,7 @@ namespace Object
 			{
 				m_nStatus = TS_WATING;
 			}
+			static_cast<GameTable*>(m_pTable)->onPlayerJoin(u->getThePlayer());
 			return true;
 		}
 		else if(nchair == 0xFF)
@@ -172,6 +174,7 @@ namespace Object
 					{
 						m_nStatus = TS_WATING;
 					}
+					static_cast<GameTable*>(m_pTable)->onPlayerJoin(u->getThePlayer());
 					return true;
 				}
 			}
@@ -193,6 +196,7 @@ namespace Object
 				m_vecUsers[i] = NULL;
 				u->setChairId(-1);
                 u->setInTable(NULL);
+				static_cast<GameTable*>(m_pTable)->onPlayerLeave(u->getThePlayer());
 				return;
 			}
 		}

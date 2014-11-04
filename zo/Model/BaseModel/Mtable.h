@@ -63,6 +63,7 @@ class Mtable
 	    @brief 设置本局游戏底注,建议在OnStartGame回调函数中设置
 	**/
 	virtual void setBaseScore(int nScore) = 0;
+	
 };
 
 class ITable
@@ -94,16 +95,18 @@ public:
 	/**
 	   @brief 有新玩家(非断线,旁观玩家)进入房间时回调
 	*/
-	virtual void onUserJoin(Mplayer* pPlayer) = 0;
+	virtual void onPlayerJoin(IPlayer* pPlayer) = 0;
 	/**
 	   @brief 有玩家离开房间时回调
 	*/
-	virtual void onUserLeave(Mplayer* pPlayer) = 0;
+	virtual void onPlayerLeave(IPlayer* pPlayer) = 0;
 	
 	/**
 	   @brief 是否允许新进入房间玩家加入下一轮游戏
 	*/
 	virtual bool canJoinGame(){ return true; }
+
+	virtual void onOperateAck(IPlayer *player, UInt8 opcode, int mchips = 0) = 0;
 };
 
 #endif

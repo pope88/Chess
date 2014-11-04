@@ -20,4 +20,6 @@
 #include "Game/Logic/Player.h"
 
 #include "Handler/Handler.h"
+#include "Model/BaseModel/Mplayer.h"
 #include "Handler/Handlers.inl"
+

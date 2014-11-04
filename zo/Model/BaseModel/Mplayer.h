@@ -26,6 +26,7 @@ class IPlayer
 public:
 	virtual ~IPlayer(){}
 	virtual void bindUser2Player(Object::User *user) = 0;
+	virtual void onOperateAck(UInt8 opcode, int mchips = 0) = 0;
 };
 
 #endif

@@ -144,6 +144,7 @@
     <ClInclude Include="..\System\Utf.h" />
     <ClInclude Include="..\System\Vector2.h" />
     <ClInclude Include="..\System\Vector3.h" />
+    <ClInclude Include="..\zo\Game\Logic\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\System\Clock.cpp">

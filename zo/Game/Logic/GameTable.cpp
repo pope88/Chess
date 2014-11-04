@@ -3,7 +3,6 @@
 #include "../../Packet/Builder.h"
 #include "../../Model/Object/User.h"
 
-
 GameTable::GameTable():m_bRacing(false), m_cCurOpChair(0), m_cCurOpcode(0), m_nPlyNum(0), m_bNewRound(false), m_baseChips(0), m_bSmallBlind(false), m_bbigBlind(false), m_btimeOut(false), m_lowestChips(0), m_nCommonStage(0), m_nLastBigBlind(0), playerSmall(NULL), playerBig(NULL)
 {
 
@@ -226,8 +225,9 @@ void GameTable::autoOperateBlind()
 }
 
 
-void GameTable::onOperateAck(Player *player, UInt8 opcode, int mchips)
+void GameTable::onOperateAck(IPlayer *iplayer, UInt8 opcode, int mchips)
 {
+	Player *player = static_cast<Player *>(iplayer);
 	if (!m_bRacing)
 		return;
 
@@ -495,6 +495,19 @@ void GameTable::sendCommonCards()
 		pc->SetCardcolor(cards[i].m_nColor);
 	}
 	NotifyTable(pcc);
+}
+
+void GameTable::onPlayerJoin(IPlayer* pPlayer)
+{
+	if (pPlayer != NULL)
+	{
+		static_cast<Player*>(pPlayer)->setGameTable(this);
+	}
+}
+
+void GameTable::onPlayerLeave(IPlayer* pPlayer)
+{
+	//static_cast<Player*>(pPlayer)->
 }
 
 void GameTable::startTimer(int nEvent, char cChair)
