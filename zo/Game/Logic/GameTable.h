@@ -19,7 +19,7 @@ class GameTable : public ITable, public TimerBase
 		eCOMMONCARD_EVENT = 4,
 		eCARDFACE_EVENT = 5,
 		ePICK_PERIOD = 30,
-		eBET_PERIOD = 20,
+		eBET_PERIOD = 30,
 		eDEALING_PERIOD = 5,
 		eCARDFACE_PERIOD = 2,
 	};

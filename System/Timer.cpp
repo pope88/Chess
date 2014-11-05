@@ -66,6 +66,16 @@ namespace System
 				delete td;
 				continue;
 			}
+			UInt32 timeBigger = 0;
+			if(now >= td->timeNext)
+			{
+				timeBigger = now - td->timeNext;
+			}
+			else
+			{
+				timeBigger = td->timeNext - now;
+			}
+			
 			if(now >= td->timeNext)
 			{
 				if(td->count > 0) -- td->count;

@@ -516,17 +516,17 @@ void GameTable::startTimer(int nEvent, char cChair)
 	if (nEvent == eBET_EVENT)
 	{
 		this->addInterValTimer(eBET_EVENT, eBET_PERIOD);
-		time = eBET_PERIOD/1000; 
+		time = eBET_PERIOD; 
 	}
 	else if (nEvent == ePICK_EVENT)
 	{
 		this->addInterValTimer(ePICK_EVENT, ePICK_PERIOD);
-		time = ePICK_PERIOD/1000;
+		time = ePICK_PERIOD;
 	}
 	else if(nEvent == eDEALING_EVENT)
 	{
 		this->addInterValTimer(eDEALING_EVENT, eDEALING_PERIOD);
-		time = eDEALING_PERIOD/1000;
+		time = eDEALING_PERIOD;
 	}
 
 	//timer
@@ -559,7 +559,7 @@ void GameTable::onTimer()
 			}
 			else
 			{
-				if (m_cCurOpcode & CHECK > 0)
+				if ((m_cCurOpcode & CHECK) == CHECK)
 				{
 					onOperateAck(curPlayer, CHECK, 0);
 				}
@@ -667,7 +667,16 @@ void GameTable::roundEnd()
 		}
 	}
 
-	sort(m_vecPoker.begin(), m_vecPoker.end(), lessPlayer());
+	for (int i = 0; i < ePLYNUM; ++i)
+	{
+		Player* pp = getPlayer(i);
+		if ((pp != NULL) && (pp->getStatus() == Player::PS_PLAYER))
+		{
+			sort(m_vecPoker.begin(), m_vecPoker.end(), lessPlayer());
+			Packet::EndRound er;
+			er.send(static_cast<Object::User*>(pp->getCorePlayer()));
+		}
+	}
 }
 
 
