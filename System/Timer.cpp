@@ -44,7 +44,14 @@ namespace System
 
 	void Timer::remove(const void * timer)
 	{
-		static_cast<TimerStruct *>(const_cast<void *>(timer))->count = 0;
+		TimerStruct * td = static_cast<TimerStruct *>(const_cast<void *>(timer));
+
+		//added 2014.11.7
+		std::pop_heap(_timers.begin(), _timers.end(), timerCompare);
+		_timers.erase(_timers.end() - 1);
+		delete td;
+		td = NULL;
+
 	}
 
 	void Timer::process()
@@ -64,6 +71,7 @@ namespace System
 				std::pop_heap(_timers.begin(), _timers.end(), timerCompare);
 				_timers.erase(_timers.end() - 1);
 				delete td;
+				td = NULL;
 				continue;
 			}
 			UInt32 timeBigger = 0;
