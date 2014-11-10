@@ -9,7 +9,7 @@ namespace Packet
 {
 	void Builder::send(Object::User *user)
 	{
-		if (user->online())
+		if (user && user->online())
 		{
 			send(user->sessionId(), user->gatewayId());
 		}

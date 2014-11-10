@@ -201,9 +201,6 @@
     <ClInclude Include="..\zo\Model\Object\ServerManager.h">
       <Filter>zo\Model\Object</Filter>
     </ClInclude>
-    <ClInclude Include="..\zo\Model\Object\TimerBase.h">
-      <Filter>zo\Model\Object</Filter>
-    </ClInclude>
     <ClInclude Include="..\zo\Model\Object\User.h">
       <Filter>zo\Model\Object</Filter>
     </ClInclude>
@@ -251,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="..\zo\Packet\Handler\Game\PlayerOperate.h">
       <Filter>zo\Packet\Handler\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\zo\Model\Object\TimerBase.h">
+      <Filter>zo\Model\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

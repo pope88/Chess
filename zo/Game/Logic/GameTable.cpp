@@ -248,6 +248,8 @@ void GameTable::onOperateAck(IPlayer *iplayer, UInt8 opcode, int mchips)
 		return;
 	}
 
+	removeValTimer();
+
 	Packet::PlayerOperateNot ponot;
 	int mLeaveChips = player->mPoker.getPlayerChips() - player->mPoker.getChips();
 	int requireChips = m_Poke.getCallChips() - player->mPoker.getCurrentChips();
@@ -658,25 +660,26 @@ bool GameTable::isCanSendCommonCard()
 void GameTable::roundEnd()
 {
 	m_bRacing = false;
-	for (int i = 0; i < ePLYNUM; ++i)
-	{
-		Player* pp = getPlayer(i);
-		if ((pp != NULL) && (pp->getStatus() == Player::PS_PLAYER))
-		{
-			m_vecPoker.push_back(pp);
-		}
-	}
+	removeValTimer();
+	//for (int i = 0; i < ePLYNUM; ++i)
+	//{
+	//	Player* pp = getPlayer(i);
+	//	if ((pp != NULL) && (pp->getStatus() == Player::PS_PLAYER))
+	//	{
+	//		m_vecPoker.push_back(pp);
+	//	}
+	//}
 
-	for (int i = 0; i < ePLYNUM; ++i)
-	{
-		Player* pp = getPlayer(i);
-		if ((pp != NULL) && (pp->getStatus() == Player::PS_PLAYER))
-		{
-			sort(m_vecPoker.begin(), m_vecPoker.end(), lessPlayer());
-			Packet::EndRound er;
-			er.send(static_cast<Object::User*>(pp->getCorePlayer()));
-		}
-	}
+	//for (int i = 0; i < ePLYNUM; ++i)
+	//{
+	//	Player* pp = getPlayer(i);
+	//	if ((pp != NULL) && (pp->getStatus() == Player::PS_PLAYER))
+	//	{
+	//		sort(m_vecPoker.begin(), m_vecPoker.end(), lessPlayer());
+	//		Packet::EndRound er;
+	//		er.send(static_cast<Object::User*>(pp->getCorePlayer()));
+	//	}
+	//}
 }
 
 

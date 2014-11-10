@@ -45,12 +45,12 @@ namespace System
 	void Timer::remove(const void * timer)
 	{
 		TimerStruct * td = static_cast<TimerStruct *>(const_cast<void *>(timer));
-
+		td->count = 0;
 		//added 2014.11.7
-		std::pop_heap(_timers.begin(), _timers.end(), timerCompare);
-		_timers.erase(_timers.end() - 1);
-		delete td;
-		td = NULL;
+		//std::pop_heap(_timers.begin(), _timers.end(), timerCompare);
+		//_timers.erase(_timers.end() - 1);
+		//delete td;
+		//td = NULL;
 
 	}
 

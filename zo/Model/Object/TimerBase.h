@@ -15,6 +15,11 @@ public:
 		_timeId = timeId;
 		GAMETIMER.addInterValTimer(Data::Define::Chess, this, interval, once, param, wd);
 	}
+	void removeValTimer()
+	{
+		GAMETIMER.removeInterValTimer(Data::Define::Chess, this);
+		_timeId = 0;
+	}
 private:
 	UInt32 _timeId;
 };
