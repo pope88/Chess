@@ -317,6 +317,7 @@ void GameTable::onOperateAck(IPlayer *iplayer, UInt8 opcode, int mchips)
 	if (m_nPlyNum == 1)
 	{
 		roundEnd();
+		return;
 	}
 
 	if ( (player->getChairID() == m_Poke.getBanker() 
@@ -509,7 +510,29 @@ void GameTable::onPlayerJoin(IPlayer* pPlayer)
 
 void GameTable::onPlayerLeave(IPlayer* pPlayer)
 {
-	//static_cast<Player*>(pPlayer)->
+	if (pPlayer == NULL)
+	{
+		return;
+	}
+	Player* player = static_cast<Player*>(pPlayer);
+
+	//notify player out
+	Packet::UserLeaveTable ul;
+	ul.SetChairid(player->getChairID());
+	NotifyTable(ul, 0, player);
+
+	--m_nPlyNum;
+
+	player->setGameTable(NULL);
+
+	//if end ,end
+	if (m_nPlyNum == 1)
+	{
+		roundEnd();
+	}
+
+	//end the table
+	m_pCoreTable->endGame();
 }
 
 void GameTable::startTimer(int nEvent, char cChair)
@@ -531,6 +554,7 @@ void GameTable::startTimer(int nEvent, char cChair)
 		time = eDEALING_PERIOD;
 	}
 
+	printf("Start Timer Event-%d---time-%d---chairid-%d---\n", nEvent, time, cChair);
 	//timer
 	m_pCoreTable->startClientTimer(cChair, time);
 }
@@ -538,6 +562,7 @@ void GameTable::startTimer(int nEvent, char cChair)
 void GameTable::onTimer()
 {
 	UInt32 timeid = timerId();
+	printf("On Timer---%d--\n", timeid);
 	switch (timerId())
 	{
 	case eBET_EVENT:
@@ -659,7 +684,11 @@ bool GameTable::isCanSendCommonCard()
 
 void GameTable::roundEnd()
 {
+	m_pCoreTable->endGame();
+
+	printf("-----round end--------\n");
 	m_bRacing = false;
+
 	removeValTimer();
 	//for (int i = 0; i < ePLYNUM; ++i)
 	//{
@@ -670,16 +699,16 @@ void GameTable::roundEnd()
 	//	}
 	//}
 
-	//for (int i = 0; i < ePLYNUM; ++i)
-	//{
-	//	Player* pp = getPlayer(i);
-	//	if ((pp != NULL) && (pp->getStatus() == Player::PS_PLAYER))
-	//	{
-	//		sort(m_vecPoker.begin(), m_vecPoker.end(), lessPlayer());
-	//		Packet::EndRound er;
-	//		er.send(static_cast<Object::User*>(pp->getCorePlayer()));
-	//	}
-	//}
+	for (int i = 0; i < ePLYNUM; ++i)
+	{
+		Player* pp = getPlayer(i);
+		if ((pp != NULL) && (pp->getStatus() == Player::PS_PLAYER))
+		{
+			//sort(m_vecPoker.begin(), m_vecPoker.end(), lessPlayer());
+			Packet::EndRound er;
+			er.send(static_cast<Object::User*>(pp->getCorePlayer()));
+		}
+	}
 }
 
 
