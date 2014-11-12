@@ -516,6 +516,13 @@ void GameTable::onPlayerLeave(IPlayer* pPlayer)
 	}
 	Player* player = static_cast<Player*>(pPlayer);
 
+	player->setGameTable(NULL);
+	
+	player->setStatus(Player::PS_NONE);
+
+	if(!m_bRacing)
+		return;
+
 	//notify player out
 	Packet::UserLeaveTable ul;
 	ul.SetChairid(player->getChairID());
@@ -523,16 +530,11 @@ void GameTable::onPlayerLeave(IPlayer* pPlayer)
 
 	--m_nPlyNum;
 
-	player->setGameTable(NULL);
-
 	//if end ,end
 	if (m_nPlyNum == 1)
 	{
 		roundEnd();
 	}
-
-	//end the table
-	m_pCoreTable->endGame();
 }
 
 void GameTable::startTimer(int nEvent, char cChair)
@@ -702,7 +704,7 @@ void GameTable::roundEnd()
 	for (int i = 0; i < ePLYNUM; ++i)
 	{
 		Player* pp = getPlayer(i);
-		if ((pp != NULL) && (pp->getStatus() == Player::PS_PLAYER))
+		if ((pp != NULL) && (pp->getStatus() != Player::PS_NONE))
 		{
 			//sort(m_vecPoker.begin(), m_vecPoker.end(), lessPlayer());
 			Packet::EndRound er;
